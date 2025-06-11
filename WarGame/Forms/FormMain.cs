@@ -1,7 +1,6 @@
 
 using WarGame.Resources;
 using WarGame.Other;
-using System.ComponentModel;
 
 namespace WarGame;
 
@@ -15,7 +14,7 @@ public sealed partial class FormMain : Form
     {
         InitializeComponent();
 
-        _dx = new SharpDxMain(pictureBoxMain, 60);
+        _dx = new SharpDxMain(pictureBoxMain, 100);
 
         Icon = EmbeddedResources.Get<Icon>("Sprites.WarGame.ico");
 
