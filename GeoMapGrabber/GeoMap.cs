@@ -1,4 +1,4 @@
-﻿namespace WarGame.Other;
+﻿namespace GeoMapGrabber.Other;
 
 public class GeoMap
 {
