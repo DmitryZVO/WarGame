@@ -131,7 +131,7 @@ public partial class FormMain : Form
         int n = 1;
         int t = 0;
         var maxStep = (step * 2 + 1) * (step * 2 + 1);
-        var oneStep = 99 / maxStep;
+        var oneStep = 99.0d / maxStep;
         var timeStart = DateTime.Now;
         for (var xs = -step; xs <= step; xs++)
         {
@@ -149,10 +149,6 @@ public partial class FormMain : Form
                 var mat = OpenCvSharp.Extensions.BitmapConverter.ToMat(bm);
                 bm.Dispose();
 
-                var sec = (DateTime.Now - timeStart).TotalSeconds;
-                var min = Math.Round(sec / 60, MidpointRounding.ToZero);
-                labelInfo.Text = $"ШАГ {n} из {maxStep}, сохранено {t} тайлов, ВРЕМЕНИ прошло: {min:0} мин {sec - min * 60:0} сек";
-
                 for (var x = -_grabTylesBlocks / 2; x < _grabTylesBlocks / 2; x++)
                 {
                     for (var y = -_grabTylesBlocks / 2; y < _grabTylesBlocks / 2; y++)
@@ -167,12 +163,14 @@ public partial class FormMain : Form
                         mm.Dispose();
                         t++;
 
-                        progressBarGrab.Value = Math.Max(0, Math.Min(99, n * oneStep));
-                        sec = (DateTime.Now - timeStart).TotalSeconds;
-                        min = Math.Round(sec / 60, MidpointRounding.ToZero);
-                        labelInfo.Text = $"ШАГ {n} из {maxStep}, сохранено {t} тайлов, ВРЕМЕНИ прошло: {min:0} мин {sec - min * 60:0} сек";
                     }
                 }
+
+                var sec = (DateTime.Now - timeStart).TotalSeconds;
+                var min = Math.Round(sec / 60, MidpointRounding.ToZero);
+                progressBarGrab.Value = (int)Math.Max(1.0d, Math.Min(99.0d, n * oneStep));
+                labelInfo.Text = $"ШАГ {n} из {maxStep}, сохранено {t} тайлов, ВРЕМЕНИ прошло: {min:0} мин {sec - min * 60:0} сек";
+
                 //mat.SubMat(new OpenCvSharp.Rect(_tileSize * -(_grabTylesBlocks / 2) + mat.Width / 2, _tileSize * -(_grabTylesBlocks / 2) + mat.Height / 2 + _topMenuHeight / 2, _tileSize * _grabTylesBlocks, _tileSize * _grabTylesBlocks)).SaveImage($"{path}\\{_startZoom}_tiles_all.png");
                 mat.Dispose();
                 n++;
