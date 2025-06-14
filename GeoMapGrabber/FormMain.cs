@@ -2,8 +2,11 @@
 
 using CefSharp.OffScreen;
 using GeoMapGrabber.Other;
-using System.Runtime.Serialization;
-
+using OpenCvSharp;
+using OpenCvSharp.ImgHash;
+using System.Data;
+using System.Data.SQLite;
+using System.Security.Policy;
 namespace GeoMapGrabber;
 
 public partial class FormMain : Form
@@ -16,8 +19,8 @@ public partial class FormMain : Form
     private readonly int _grabTylesTimeSec = 80;
     private double _grabTylesRadiusKm = 20038;
 
-    private int _tileSize = 256;
-    private int _topMenuHeight = 38;
+    private readonly int _tileSize = 256;
+    private readonly int _topMenuHeight = 38;
 
     public FormMain()
     {
@@ -111,17 +114,8 @@ public partial class FormMain : Form
         labelInfo.Text = "";
         Random r = new();
 
-        if (!Directory.Exists($"{Application.StartupPath}Maps"))
-        {
-            Directory.CreateDirectory($"{Application.StartupPath}Maps");
-        }
-        var path = $"{Application.StartupPath}Maps\\{_startZoom}";
-        if (!Directory.Exists(path))
-        {
-            Directory.CreateDirectory(path);
-        }
+        using var sql = OpenTilesSqlDb();
 
-        var wb = new ChromiumWebBrowser(string.Empty) { Size = new Size(_tileSize * (_grabTylesBlocks + 1), _tileSize * (_grabTylesBlocks + 1)) };
         var xStart = GeoMap.TileXForLon(_startZoom, _startLon);
         var yStart = GeoMap.TileYForLat(_startZoom, _startLat);
 
@@ -143,6 +137,7 @@ public partial class FormMain : Form
                 var lat = GeoMap.LatForTile(_startZoom, x0, y0);
                 var lon = GeoMap.LonForTile(_startZoom, x0, y0);
                 var completionSource = new TaskCompletionSource<Bitmap>();
+                var wb = new ChromiumWebBrowser(string.Empty) { Size = new System.Drawing.Size(_tileSize * (_grabTylesBlocks + 1), _tileSize * (_grabTylesBlocks + 1)) };
                 await wb.LoadUrlAsync($"https://bestmaps.ru/map/yandex/satellite/{_startZoom}/{lat.ToString().Replace(',', '.')}/{lon.ToString().Replace(',', '.')}");
                 await Task.Delay(80000 - r.Next(0, 5000));
                 var bm = wb.ScreenshotOrNull(PopupBlending.Main);
@@ -159,7 +154,8 @@ public partial class FormMain : Form
                         if (y0 + y >= Math.Pow(2, _startZoom)) continue;
 
                         var mm = mat.SubMat(new OpenCvSharp.Rect(_tileSize * x + mat.Width / 2, _tileSize * y + mat.Height / 2 + _topMenuHeight / 2, _tileSize, _tileSize));
-                        mm.SaveImage($"{path}\\{_startZoom}_{x0 + x}_{y0 + y}.png");
+                        WriteTile(sql, mm, _startZoom, x0 + x, y0 + y);
+                        //mm.SaveImage($"{path}\\{_startZoom}_{x0 + x}_{y0 + y}.png");
                         mm.Dispose();
                         t++;
 
@@ -173,10 +169,49 @@ public partial class FormMain : Form
 
                 //mat.SubMat(new OpenCvSharp.Rect(_tileSize * -(_grabTylesBlocks / 2) + mat.Width / 2, _tileSize * -(_grabTylesBlocks / 2) + mat.Height / 2 + _topMenuHeight / 2, _tileSize * _grabTylesBlocks, _tileSize * _grabTylesBlocks)).SaveImage($"{path}\\{_startZoom}_tiles_all.png");
                 mat.Dispose();
+                wb.Dispose();
                 n++;
             }
         }
         progressBarGrab.Value = 0;
+    }
+
+    private SQLiteConnection OpenTilesSqlDb()
+    {
+        if (!Directory.Exists($"{Application.StartupPath}Maps"))
+        {
+            Directory.CreateDirectory($"{Application.StartupPath}Maps");
+        }
+        if (!File.Exists($"{Application.StartupPath}Maps\\tiles.db"))
+        {
+            var fs = File.Create($"{Application.StartupPath}Maps\\tiles.db");
+            fs.Dispose();
+        }
+        var _sqlite = new SQLiteConnection($"Data Source={Application.StartupPath}Maps\\tiles.db;Version=3;");
+        _sqlite.Open();
+        using var cmd = _sqlite.CreateCommand();
+        cmd.CommandText = "CREATE TABLE IF NOT EXISTS Tiles( " +
+                          "zoom INTEGER NOT NULL, " +
+                          "x INTEGER NOT NULL, " +
+                          "y INTEGER NOT NULL, " +
+                          "type INTEGER NOT NULL, " +
+                          "blob BLOB NOT NULL, " +
+                          "PRIMARY KEY (zoom, x, y)); ";
+        cmd.ExecuteNonQuery();
+        return _sqlite;
+    }
+
+    private void WriteTile(SQLiteConnection sql, Mat tile, int zoom, int x, int y, bool replace = false)
+    {
+        Cv2.ImEncode(".png", tile, out var data);
+        using var cmd = sql.CreateCommand();
+        cmd.CommandText = "INSERT OR " + (replace ? "REPLACE" : "IGNORE") + " INTO Tiles VALUES (@zoom, @x, @y, @type, @blob);";
+        cmd.Parameters.AddWithValue("@zoom", zoom);
+        cmd.Parameters.AddWithValue("@x", x);
+        cmd.Parameters.AddWithValue("@y", y);
+        cmd.Parameters.AddWithValue("@type", 0); // яндекс тайл
+        cmd.Parameters.Add("@blob", DbType.Binary, data.Length).Value = data;
+        cmd.ExecuteNonQuery();
     }
 
     private void GrabKmChanged(object? sender, EventArgs e)

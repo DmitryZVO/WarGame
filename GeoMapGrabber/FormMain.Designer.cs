@@ -34,6 +34,7 @@
             label2 = new Label();
             textBoxLat = new TextBox();
             groupBoxGrabber = new GroupBox();
+            labelInfo = new Label();
             buttonGrab = new Button();
             textBoxGrabTimeAll = new TextBox();
             label11 = new Label();
@@ -55,7 +56,6 @@
             label3 = new Label();
             progressBarGrab = new ProgressBar();
             groupBoxGeoMap = new GroupBox();
-            labelInfo = new Label();
             groupBoxGrabber.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownGrabKm).BeginInit();
             groupBoxGeoMap.SuspendLayout();
@@ -129,6 +129,13 @@
             groupBoxGrabber.TabIndex = 5;
             groupBoxGrabber.TabStop = false;
             groupBoxGrabber.Text = "Граббер карты";
+            // 
+            // labelInfo
+            // 
+            labelInfo.Location = new Point(8, 793);
+            labelInfo.Name = "labelInfo";
+            labelInfo.Size = new Size(693, 18);
+            labelInfo.TabIndex = 19;
             // 
             // buttonGrab
             // 
@@ -207,7 +214,7 @@
             // numericUpDownGrabKm
             // 
             numericUpDownGrabKm.Location = new Point(204, 154);
-            numericUpDownGrabKm.Maximum = new decimal(new int[] { 20038, 0, 0, 0 });
+            numericUpDownGrabKm.Maximum = new decimal(new int[] { 40075, 0, 0, 0 });
             numericUpDownGrabKm.Name = "numericUpDownGrabKm";
             numericUpDownGrabKm.Size = new Size(117, 23);
             numericUpDownGrabKm.TabIndex = 10;
@@ -326,13 +333,6 @@
             groupBoxGeoMap.TabIndex = 7;
             groupBoxGeoMap.TabStop = false;
             groupBoxGeoMap.Text = "Карта";
-            // 
-            // labelInfo
-            // 
-            labelInfo.Location = new Point(8, 793);
-            labelInfo.Name = "labelInfo";
-            labelInfo.Size = new Size(693, 18);
-            labelInfo.TabIndex = 19;
             // 
             // FormMain
             // 
