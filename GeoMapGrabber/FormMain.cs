@@ -3,14 +3,14 @@
 using CefSharp.OffScreen;
 using GeoMapGrabber.Other;
 using OpenCvSharp;
-using OpenCvSharp.ImgHash;
 using System.Data;
 using System.Data.SQLite;
-using System.Security.Policy;
 namespace GeoMapGrabber;
 
 public partial class FormMain : Form
 {
+    private readonly ImageEncodingParam _webp_par = new(ImwriteFlags.WebPQuality, 10);
+
     // ЕЛЬКИНО: 54.151851, 37.542351
     private double _startLat = 54.151851d;
     private double _startLon = 37.542351d;
@@ -137,10 +137,28 @@ public partial class FormMain : Form
                 var lat = GeoMap.LatForTile(_startZoom, x0, y0);
                 var lon = GeoMap.LonForTile(_startZoom, x0, y0);
                 var completionSource = new TaskCompletionSource<Bitmap>();
-                var wb = new ChromiumWebBrowser(string.Empty) { Size = new System.Drawing.Size(_tileSize * (_grabTylesBlocks + 1), _tileSize * (_grabTylesBlocks + 1)) };
-                await wb.LoadUrlAsync($"https://bestmaps.ru/map/yandex/satellite/{_startZoom}/{lat.ToString().Replace(',', '.')}/{lon.ToString().Replace(',', '.')}");
-                await Task.Delay(80000 - r.Next(0, 5000));
-                var bm = wb.ScreenshotOrNull(PopupBlending.Main);
+                var s = _tileSize * (_grabTylesBlocks + 1);
+                ChromiumWebBrowser? wb = null;
+                Bitmap? bm = null;
+                do
+                {
+                    if (wb != null)
+                    {
+                        wb.Dispose();
+                        wb = null;
+                    }
+                    wb = new ChromiumWebBrowser(string.Empty) { Size = new System.Drawing.Size(s, s) };
+                    await Task.Delay(1000);
+                    await wb.LoadUrlAsync($"https://bestmaps.ru/map/yandex/satellite/{_startZoom}/{lat.ToString().Replace(',', '.')}/{lon.ToString().Replace(',', '.')}");
+                    await Task.Delay(80000 - r.Next(0, 5000));
+                    if (bm != null)
+                    {
+                        bm.Dispose();
+                        bm = null;
+                    }
+                    bm = wb.ScreenshotOrNull(PopupBlending.Main);
+                } 
+                while (bm == null || bm.Width != s);
                 var mat = OpenCvSharp.Extensions.BitmapConverter.ToMat(bm);
                 bm.Dispose();
 
@@ -155,7 +173,6 @@ public partial class FormMain : Form
 
                         var mm = mat.SubMat(new OpenCvSharp.Rect(_tileSize * x + mat.Width / 2, _tileSize * y + mat.Height / 2 + _topMenuHeight / 2, _tileSize, _tileSize));
                         WriteTile(sql, mm, _startZoom, x0 + x, y0 + y);
-                        //mm.SaveImage($"{path}\\{_startZoom}_{x0 + x}_{y0 + y}.png");
                         mm.Dispose();
                         t++;
 
@@ -167,7 +184,6 @@ public partial class FormMain : Form
                 progressBarGrab.Value = (int)Math.Max(1.0d, Math.Min(99.0d, n * oneStep));
                 labelInfo.Text = $"ШАГ {n} из {maxStep}, сохранено {t} тайлов, ВРЕМЕНИ прошло: {min:0} мин {sec - min * 60:0} сек";
 
-                //mat.SubMat(new OpenCvSharp.Rect(_tileSize * -(_grabTylesBlocks / 2) + mat.Width / 2, _tileSize * -(_grabTylesBlocks / 2) + mat.Height / 2 + _topMenuHeight / 2, _tileSize * _grabTylesBlocks, _tileSize * _grabTylesBlocks)).SaveImage($"{path}\\{_startZoom}_tiles_all.png");
                 mat.Dispose();
                 wb.Dispose();
                 n++;
@@ -203,7 +219,7 @@ public partial class FormMain : Form
 
     private void WriteTile(SQLiteConnection sql, Mat tile, int zoom, int x, int y, bool replace = false)
     {
-        Cv2.ImEncode(".png", tile, out var data);
+        Cv2.ImEncode(".webp", tile, out var data, _webp_par);
         using var cmd = sql.CreateCommand();
         cmd.CommandText = "INSERT OR " + (replace ? "REPLACE" : "IGNORE") + " INTO Tiles VALUES (@zoom, @x, @y, @type, @blob);";
         cmd.Parameters.AddWithValue("@zoom", zoom);
