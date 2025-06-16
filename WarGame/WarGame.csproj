@@ -10,20 +10,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Sprites\TileNone.png" />
     <None Remove="Resources\Sprites\WarGame.ico" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Sprites\TileNone.png" />
     <EmbeddedResource Include="Resources\Sprites\WarGame.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Core\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="CefSharp.Common.NETCore" Version="137.0.100" />
-    <PackageReference Include="CefSharp.OffScreen.NETCore" Version="137.0.100" />
     <PackageReference Include="OpenCvSharp4" Version="4.11.0.20250507" />
     <PackageReference Include="OpenCvSharp4.Extensions" Version="4.11.0.20250507" />
     <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.11.0.20250507" />
@@ -34,10 +30,7 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\GeoMapGrabber\GeoMapGrabber.csproj" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 
 </Project>

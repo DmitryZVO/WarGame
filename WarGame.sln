@@ -5,8 +5,6 @@ VisualStudioVersion = 17.14.36203.30
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarGame", "WarGame\WarGame.csproj", "{1FA100CF-CA58-4DDE-89FA-CB5B0DEEDB91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoMapGrabber", "GeoMapGrabber\GeoMapGrabber.csproj", "{C61F6CF4-76D1-4399-9D87-7A73400E9180}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{1FA100CF-CA58-4DDE-89FA-CB5B0DEEDB91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FA100CF-CA58-4DDE-89FA-CB5B0DEEDB91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FA100CF-CA58-4DDE-89FA-CB5B0DEEDB91}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C61F6CF4-76D1-4399-9D87-7A73400E9180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C61F6CF4-76D1-4399-9D87-7A73400E9180}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C61F6CF4-76D1-4399-9D87-7A73400E9180}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C61F6CF4-76D1-4399-9D87-7A73400E9180}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

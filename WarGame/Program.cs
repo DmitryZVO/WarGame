@@ -15,6 +15,8 @@ internal static class Program
             return;
         }
 
+        Core.Values.Init();
+
         Application.Run(Fm);
     }
 }

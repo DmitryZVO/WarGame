@@ -48,6 +48,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(pictureBoxMain);
+            MaximizeBox = false;
             Name = "FormMain";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Боевая игра. ООО КБ ЦБС. г. Тула, 2025";

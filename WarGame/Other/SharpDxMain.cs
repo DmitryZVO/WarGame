@@ -1,5 +1,6 @@
 ﻿using SharpDX.Mathematics.Interop;
 using WarGame.Resources;
+using WarGame.Core;
 
 namespace WarGame.Other;
 
@@ -15,12 +16,13 @@ internal class SharpDxMain : SharpDx
     {
         lock (this)
         {
-            Rt?.Clear(new RawColor4(0.0f, 0.0f, 0.0f, 0.0f));
+            Values.Map.Draw(this);
+            Values.ObjectsStatic.Draw(this);
         }
     }
 
     protected sealed override void DrawInfo()
     {
-        base.DrawInfo();
+        //base.DrawInfo();
     }
 }

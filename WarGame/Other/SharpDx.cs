@@ -22,20 +22,20 @@ public abstract class SharpDx : IDisposable
     protected readonly Surface D2dSurface;
     protected readonly SharpDX.DXGI.Factory D2DFactory;
     protected readonly SharpDX.Direct2D1.Factory D2dFactory;
-    protected RenderTarget? Rt;
+    public RenderTarget? Rt;
     protected readonly Texture2D BackBuffer;
     protected readonly RenderTargetView RenderView;
     protected readonly SharpDX.Direct3D11.DeviceContext Context;
     protected readonly SharpDX.DirectWrite.Factory DWf;
     protected readonly PixelFormat PixelFormat;
     protected readonly PictureBox FormTarget;
-    protected readonly DefBrushes Brushes;
+    public readonly DefBrushes Brushes;
     protected double FpsScr; // текущая FPS экрана
     protected double FpsOcv; // текущая FPS экрана
     protected readonly SpritesDb Sprites; // Спрайты
     protected Bitmap FrameVideo; // Видеокадр
-    protected int BaseWidth;
-    protected int BaseHeight;
+    public int BaseWidth;
+    public int BaseHeight;
 
     protected RawMatrix3x2 ZeroTransform = new(1, 0, 0, 1, 0, 0);
     private bool _closed;
@@ -80,7 +80,7 @@ public abstract class SharpDx : IDisposable
         }
     }
 
-    protected class DefBrushes
+    public class DefBrushes
     {
         public TextFormat SysText14;
         public TextFormat SysText20;

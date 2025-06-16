@@ -1,9 +1,9 @@
 
-using CefSharp.OffScreen;
-using System.Windows.Forms;
+using CefSharp.DevTools.Profiler;
 using WarGame.Other;
 using WarGame.Resources;
-using System.Drawing;
+using WarGame.Core;
+using System.Xml;
 
 namespace WarGame;
 
@@ -17,13 +17,128 @@ public sealed partial class FormMain : Form
     {
         InitializeComponent();
 
-        _dx = new SharpDxMain(pictureBoxMain, 100);
+        _dx = new SharpDxMain(pictureBoxMain, 60);
+        Core.Values.Map.Init(_dx);
 
         Icon = EmbeddedResources.Get<Icon>("Sprites.WarGame.ico");
 
         pictureBoxMain.DoubleClick += FullScreen;
         Shown += FormShown;
         Closed += FormOnClosing;
+        pictureBoxMain.MouseDown += PictureBoxMain_MouseDown;
+        pictureBoxMain.MouseUp += PictureBoxMain_MouseUp;
+        pictureBoxMain.MouseMove += PictureBoxMain_MouseMove;
+        pictureBoxMain.MouseWheel += PictureBoxMain_MouseWheel;
+    }
+
+    private void PictureBoxMain_MouseWheel(object? sender, MouseEventArgs e)
+    {
+        var zoom = Values.GlobalPos.ZoomLocal + Math.Sign(e.Delta)*0.2d;
+        var step0 = 2.0d;
+        var step1 = 4.0d;
+        switch (Values.GlobalPos.Zoom)
+        {
+            case 6:
+                if (zoom < 0)
+                {
+                    Values.GlobalPos.Zoom = 6;
+                    Values.GlobalPos.ZoomLocal = 0.0d;
+                }
+                else if (zoom >= step0)
+                {
+                    Values.GlobalPos.Zoom = 8;
+                    Values.GlobalPos.ZoomLocal = zoom - step0;
+                }
+                else
+                {
+                    Values.GlobalPos.ZoomLocal = zoom;
+                }
+                break;
+            case 8:
+                if (zoom < 0)
+                {
+                    Values.GlobalPos.Zoom = 6;
+                    Values.GlobalPos.ZoomLocal = zoom + step0;
+                }
+                else if (zoom >= step1)
+                {
+                    Values.GlobalPos.Zoom = 12;
+                    Values.GlobalPos.ZoomLocal = zoom - step1;
+                }
+                else
+                {
+                    Values.GlobalPos.ZoomLocal = zoom;
+                }
+                break;
+            case 12:
+                if (zoom < 0)
+                {
+                    Values.GlobalPos.Zoom = 8;
+                    Values.GlobalPos.ZoomLocal = zoom + step1;
+                }
+                else if (zoom >= step1)
+                {
+                    Values.GlobalPos.Zoom = 16;
+                    Values.GlobalPos.ZoomLocal = zoom - step1;
+                }
+                else
+                {
+                    Values.GlobalPos.ZoomLocal = zoom;
+                }
+                break;
+            case 16:
+                if (zoom < 0)
+                {
+                    Values.GlobalPos.Zoom = 12;
+                    Values.GlobalPos.ZoomLocal = zoom + step1;
+                }
+                else if (zoom >= step1)
+                {
+                    Values.GlobalPos.Zoom = 16;
+                    Values.GlobalPos.ZoomLocal = step1;
+                }
+                else
+                {
+                    Values.GlobalPos.ZoomLocal = zoom;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void PictureBoxMain_MouseUp(object? sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Left)
+        {
+            Values.ControlUser.MouseLeftDown = false;
+            return;
+        }
+        if (e.Button == MouseButtons.Right)
+        {
+            Values.ControlUser.MouseRightDown = false;
+            return;
+        }
+    }
+
+    private void PictureBoxMain_MouseMove(object? sender, MouseEventArgs e)
+    {
+        if (Values.ControlUser.MouseRightDown && !Values.ControlUser.MouseLeftDown) // Перемещение карты
+        {
+            var dX = Values.ControlUser.MouseX - e.X;
+            var dY = Values.ControlUser.MouseY - e.Y;
+
+            Values.GlobalPos.LonX += dX / GeoMath.TileSize * GeoMath.GetLenXForOneTile(Values.GlobalPos.Zoom, Values.GlobalPos.LatY, Values.GlobalPos.LonX);
+            Values.GlobalPos.LatY += dY / GeoMath.TileSize * GeoMath.GetLenYForOneTile(Values.GlobalPos.Zoom, Values.GlobalPos.LatY, Values.GlobalPos.LonX);
+        }
+        Values.ControlUser.MouseX = e.X;
+        Values.ControlUser.MouseY = e.Y;
+    }
+
+    private void PictureBoxMain_MouseDown(object? sender, MouseEventArgs e)
+    {
+        Values.ControlUser.MouseRightDown = e.Button == MouseButtons.Right;
+        Values.ControlUser.MouseLeftDown = e.Button == MouseButtons.Left;
     }
 
     private void FormOnClosing(object? sender, EventArgs e)
@@ -31,34 +146,8 @@ public sealed partial class FormMain : Form
         _dx.Dispose();
     }
 
-    private async void FormShown(object? sender, EventArgs e)
+    private void FormShown(object? sender, EventArgs e)
     {
-        var zoom = 19;
-        var tileX0 = 316927;
-        var tileY0 = 164368;
-        var tileSize = 256;
-        var topMenuHeight = 38;
-        var lat = GeoMap.LatForTile(zoom, tileX0, tileY0);
-        var lon = GeoMap.LonForTile(zoom, tileX0, tileY0);
-        //var x = GeoMap.TileXForLon(19, lon);
-        //var y = GeoMap.TileYForLat(19, lat);
-        var completionSource = new TaskCompletionSource<Bitmap>();
-        var wb = new ChromiumWebBrowser(string.Empty) { Size = new Size(tileSize * 51, tileSize * 51) };
-        await wb.LoadUrlAsync($"https://bestmaps.ru/map/yandex/satellite/{zoom}/{lat.ToString().Replace(',', '.')}/{lon.ToString().Replace(',', '.')}");
-        await Task.Delay(80000);
-
-        using var bm = wb.ScreenshotOrNull(PopupBlending.Main);
-        using var mat = OpenCvSharp.Extensions.BitmapConverter.ToMat(bm);
-        for (var x = -25; x < 25; x++)
-        {
-            for (var y = -25; y < 25; y++)
-            {
-                using var mm = mat.SubMat(new OpenCvSharp.Rect(tileSize * x + mat.Width / 2, tileSize * y + mat.Height / 2 + topMenuHeight / 2, tileSize, tileSize));
-                mm.SaveImage($"{zoom}_{tileX0 + x}_{tileY0 + y}.png");
-            }
-        }
-        mat.SubMat(new OpenCvSharp.Rect(tileSize * -25 + mat.Width / 2, tileSize * -25 + mat.Height / 2 + topMenuHeight / 2, tileSize * 50, tileSize * 50)).SaveImage($"{zoom}_tiles_all.png");
-        //bm.Save("test.png");
         _ = _dx.StartAsync(default);
     }
 
