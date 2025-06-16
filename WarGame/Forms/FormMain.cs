@@ -1,9 +1,7 @@
 
-using CefSharp.DevTools.Profiler;
 using WarGame.Other;
 using WarGame.Resources;
 using WarGame.Core;
-using System.Xml;
 
 namespace WarGame;
 
@@ -34,8 +32,6 @@ public sealed partial class FormMain : Form
     private void PictureBoxMain_MouseWheel(object? sender, MouseEventArgs e)
     {
         var zoom = Values.GlobalPos.ZoomLocal + Math.Sign(e.Delta)*0.2d;
-        var step0 = 2.0d;
-        var step1 = 4.0d;
         switch (Values.GlobalPos.Zoom)
         {
             case 6:
@@ -44,10 +40,10 @@ public sealed partial class FormMain : Form
                     Values.GlobalPos.Zoom = 6;
                     Values.GlobalPos.ZoomLocal = 0.0d;
                 }
-                else if (zoom >= step0)
+                else if (zoom >= Values.GlobalPos.ZoomLocalStep0)
                 {
                     Values.GlobalPos.Zoom = 8;
-                    Values.GlobalPos.ZoomLocal = zoom - step0;
+                    Values.GlobalPos.ZoomLocal = zoom - Values.GlobalPos.ZoomLocalStep0;
                 }
                 else
                 {
@@ -58,12 +54,12 @@ public sealed partial class FormMain : Form
                 if (zoom < 0)
                 {
                     Values.GlobalPos.Zoom = 6;
-                    Values.GlobalPos.ZoomLocal = zoom + step0;
+                    Values.GlobalPos.ZoomLocal = zoom + Values.GlobalPos.ZoomLocalStep0;
                 }
-                else if (zoom >= step1)
+                else if (zoom >= Values.GlobalPos.ZoomLocalStep1)
                 {
                     Values.GlobalPos.Zoom = 12;
-                    Values.GlobalPos.ZoomLocal = zoom - step1;
+                    Values.GlobalPos.ZoomLocal = zoom - Values.GlobalPos.ZoomLocalStep1;
                 }
                 else
                 {
@@ -74,12 +70,12 @@ public sealed partial class FormMain : Form
                 if (zoom < 0)
                 {
                     Values.GlobalPos.Zoom = 8;
-                    Values.GlobalPos.ZoomLocal = zoom + step1;
+                    Values.GlobalPos.ZoomLocal = zoom + Values.GlobalPos.ZoomLocalStep1;
                 }
-                else if (zoom >= step1)
+                else if (zoom >= Values.GlobalPos.ZoomLocalStep1)
                 {
                     Values.GlobalPos.Zoom = 16;
-                    Values.GlobalPos.ZoomLocal = zoom - step1;
+                    Values.GlobalPos.ZoomLocal = zoom - Values.GlobalPos.ZoomLocalStep1;
                 }
                 else
                 {
@@ -90,12 +86,12 @@ public sealed partial class FormMain : Form
                 if (zoom < 0)
                 {
                     Values.GlobalPos.Zoom = 12;
-                    Values.GlobalPos.ZoomLocal = zoom + step1;
+                    Values.GlobalPos.ZoomLocal = zoom + Values.GlobalPos.ZoomLocalStep1;
                 }
-                else if (zoom >= step1)
+                else if (zoom >= Values.GlobalPos.ZoomLocalStep1)
                 {
                     Values.GlobalPos.Zoom = 16;
-                    Values.GlobalPos.ZoomLocal = step1;
+                    Values.GlobalPos.ZoomLocal = Values.GlobalPos.ZoomLocalStep1;
                 }
                 else
                 {

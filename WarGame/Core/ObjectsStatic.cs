@@ -87,6 +87,14 @@ public class ObjectsStatic
             LonX = 30.314997d,
             LatY = 59.938784d,
         });
+        Items.Add(new ObjectStatic()
+        {
+            Name = "Одесса", // 59.938784, 30.314997
+            Visible = true,
+            Type = 0,
+            LonX = 30.731689d,
+            LatY = 46.484213d,
+        });
     }
 
     public void Draw(SharpDx dx)
