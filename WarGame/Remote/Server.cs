@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Text.Json;
-using WarGame.Core;
+﻿using System.Text.Json;
 
 namespace WarGame.Remote;
 
