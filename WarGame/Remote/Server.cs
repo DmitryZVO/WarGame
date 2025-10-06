@@ -12,7 +12,7 @@ public class Server
 
     public async void Init(CancellationToken ct = default)
     {
-        var cycles = 0;
+        var cycles = 999;
         while (!ct.IsCancellationRequested)
         {
             var check = await CheckAsync();
