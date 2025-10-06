@@ -38,13 +38,6 @@ public class Tiles
 
     public Tile GetTile(int z, int x, int y)
     {
-        /*
-        if (_tileNone.Equals(SharpDx.NoneBitmap) && Files.TileNone != null)
-        {
-            _tileNone = _dx?.CreateDxBitmap(Files.TileNone)!;
-        }
-        */
-
         Tile ret = new Tile(z,x,y);
         ret.TimeCreate = DateTime.Now;
         ret.TimeLastRequest = DateTime.Now;
@@ -139,7 +132,7 @@ public class GeoMap
 
             dx.Rt.DrawLine(new RawVector2(dx.BaseWidth / 2.0f, dx.BaseHeight / 2.0f - 6.0f), new RawVector2(dx.BaseWidth / 2.0f, dx.BaseHeight / 2.0f + 6.0f), dx.Brushes.SysTextBrushYellow);
             dx.Rt.DrawLine(new RawVector2(dx.BaseWidth / 2.0f - 6.0f, dx.BaseHeight / 2.0f), new RawVector2(dx.BaseWidth / 2.0f + 6.0f, dx.BaseHeight / 2.0f), dx.Brushes.SysTextBrushYellow);
-            var rect = new RawRectangleF(dx.BaseWidth * 0.870f, dx.BaseHeight * 0.00f, dx.BaseWidth, dx.BaseHeight * 0.01f);
+            var rect = new RawRectangleF(dx.BaseWidth * 0.870f, dx.BaseHeight * 0.003f, dx.BaseWidth * 0.999f, dx.BaseHeight * 0.013f);
             dx.Rt.FillRectangle(rect, dx.Brushes.RoiNone);
             dx.Rt.DrawText($"{Values.GlobalPos.LatY:0.00000000}, {Values.GlobalPos.LonX:0.00000000}, {Values.GlobalPos.Zoom+Values.GlobalPos.ZoomLocal:0.00}/{x0:0}/{y0:0}",
             dx.Brushes.SysText14, rect,dx.Brushes.SysTextBrushYellow);

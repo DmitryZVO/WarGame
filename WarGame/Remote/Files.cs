@@ -11,7 +11,7 @@ public class Files
         try
         {
             using var web = new HttpClient();
-            web.BaseAddress = new Uri(Values.ServerDataUrl);
+            web.BaseAddress = new Uri(Values.Server.Url);
             using var answ = await web.GetAsync($"GetFile?type={type}&name={name}", ct);
             return !answ.IsSuccessStatusCode ? NoneBitmap : new Bitmap(new MemoryStream(Convert.FromBase64String(await answ.Content.ReadAsStringAsync(ct))));
         }

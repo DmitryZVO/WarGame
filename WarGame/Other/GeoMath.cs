@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic.Logging;
-using OpenCvSharp;
+﻿using OpenCvSharp;
 using SharpDX.Mathematics.Interop;
 using WarGame.Core;
 

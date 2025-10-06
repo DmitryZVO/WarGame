@@ -17,6 +17,7 @@ internal class SharpDxMain : SharpDx
         lock (this)
         {
             Values.Map.Draw(this);
+            Rt?.DrawRectangle(new RawRectangleF(0, 0, BaseWidth, BaseHeight), Values.Server.Alive ? Brushes.RoiGreen03 : Brushes.RoiRed03, 8f);
             Values.ObjectsStatic.Draw(this);
         }
     }
