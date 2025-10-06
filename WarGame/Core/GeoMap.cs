@@ -1,8 +1,6 @@
-﻿using OpenCvSharp;
-using SharpDX.Mathematics.Interop;
-using System.Data.SQLite;
+﻿using SharpDX.Mathematics.Interop;
 using WarGame.Other;
-using WarGame.Resources;
+using WarGame.Remote;
 
 namespace WarGame.Core;
 
@@ -27,22 +25,30 @@ public class Tile
 
 public class Tiles
 {
-    private SharpDX.Direct2D1.Bitmap _tileNone = new SharpDX.Direct2D1.Bitmap(0);
+
+    public SharpDX.Direct2D1.Bitmap TileNone = SharpDx.NoneBitmap;
     private List<Tile> _tiles = [];
     private SharpDx? _dx;
 
     public void SetTileNone(SharpDx dx, Bitmap tileNone)
     {
         _dx = dx;
-        _tileNone = _dx.CreateDxBitmap(tileNone)!;
+        TileNone = _dx.CreateDxBitmap(tileNone)!;
     }
 
     public Tile GetTile(int z, int x, int y)
     {
+        /*
+        if (_tileNone.Equals(SharpDx.NoneBitmap) && Files.TileNone != null)
+        {
+            _tileNone = _dx?.CreateDxBitmap(Files.TileNone)!;
+        }
+        */
+
         Tile ret = new Tile(z,x,y);
         ret.TimeCreate = DateTime.Now;
         ret.TimeLastRequest = DateTime.Now;
-        ret.Bitmap = _tileNone;
+        ret.Bitmap = TileNone;
 
         bool find = false;
         lock (_tiles)
@@ -61,47 +67,20 @@ public class Tiles
         return ret;
     }
 
-    private async void LoadTileAsync(int z, int x, int y)
+    private async void LoadTileAsync(int z, int x, int y, CancellationToken ct = default)
     {
         var t = new Tile(z, x, y);
         t.TimeCreate = DateTime.Now;
         t.TimeLastRequest = DateTime.Now;
-        t.Bitmap = _tileNone;
+        t.Bitmap = TileNone;
 
         lock (_tiles)
         {
             if (!_tiles.Exists(t => t.Zoom == z && t.X == x && t.Y == y)) _tiles.Add(t);
         }
 
-        Mat? mat = null;
-        var files = Directory.GetFiles($"{Application.StartupPath}Maps");
-
-        foreach (var f in files)
-        {
-            var _sqlite = new SQLiteConnection($"Data Source={f};Version=3;");
-            await _sqlite.OpenAsync();
-
-            var cmd = _sqlite.CreateCommand();
-            cmd.CommandText = "SELECT * FROM Tiles WHERE zoom=@zoom AND x=@x AND y=@y AND type=@type";
-            cmd.Parameters.AddWithValue("@zoom", z);
-            cmd.Parameters.AddWithValue("@x", x);
-            cmd.Parameters.AddWithValue("@y", y);
-            cmd.Parameters.AddWithValue("@type", 0);
-            var reader = await cmd.ExecuteReaderAsync();
-            var bmp = Array.Empty<byte>();
-            if (await reader.ReadAsync())
-            {
-                bmp = (byte[])reader["blob"];
-                //using var ms = new MemoryStream(bmp);
-                mat = bmp.Length <= 0 ? null : Cv2.ImDecode(bmp, ImreadModes.Unchanged);
-            }
-            await reader.DisposeAsync();
-            await cmd.DisposeAsync();
-            await _sqlite.DisposeAsync();
-            if (mat != null) break;
-        }
+        var mat = await Remote.Tiles.GetTileAsync(x, y, z, ct);
         if (mat == null) return;
-
         t.Bitmap = _dx?.CreateDxBitmap(mat);
     }
 }
@@ -119,7 +98,7 @@ public class GeoMap
 
         lock (dx.Rt!)
         {
-            _tiles.SetTileNone(dx, EmbeddedResources.Get<Bitmap>("Sprites.TileNone.png")!);
+            _tiles.SetTileNone(dx, Files.NoneBitmap);
         }
     }
 
@@ -129,6 +108,11 @@ public class GeoMap
 
         lock (dx.Rt!)
         {
+            if (_tiles.TileNone.Size.Width == Files.NoneBitmap.Width && Remote.Tiles.TileNone != null && !Remote.Tiles.TileNone.Equals(Files.NoneBitmap))
+            {
+                _tiles.SetTileNone(dx, Remote.Tiles.TileNone);
+            }
+
             dx.Rt.Clear(new RawColor4(0.0f, 0.0f, 0.0f, 0.0f));
 
             //Отрисовка тайловой сетки

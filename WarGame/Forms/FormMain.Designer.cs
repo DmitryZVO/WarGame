@@ -38,7 +38,7 @@
             pictureBoxMain.Dock = DockStyle.Fill;
             pictureBoxMain.Location = new Point(0, 0);
             pictureBoxMain.Name = "pictureBoxMain";
-            pictureBoxMain.Size = new Size(800, 450);
+            pictureBoxMain.Size = new Size(1904, 1041);
             pictureBoxMain.TabIndex = 0;
             pictureBoxMain.TabStop = false;
             // 
@@ -46,7 +46,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1904, 1041);
             Controls.Add(pictureBoxMain);
             MaximizeBox = false;
             Name = "FormMain";

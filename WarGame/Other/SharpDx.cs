@@ -13,6 +13,8 @@ namespace WarGame.Other;
 
 public abstract class SharpDx : IDisposable
 {
+    public static Bitmap NoneBitmap { get; } = new Bitmap(0);
+
     protected int FpsTarget; // сжелаемое FPS
     protected int FpsScrC; // счетчик кадров экрана
     protected int FpsOcvC; // счетчик кадров техзрения

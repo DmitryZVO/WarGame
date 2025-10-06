@@ -10,12 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Sprites\TileNone.png" />
+    <None Remove="Resources\Sprites\None.png" />
     <None Remove="Resources\Sprites\WarGame.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Sprites\TileNone.png" />
+    <EmbeddedResource Include="Resources\Sprites\None.png" />
     <EmbeddedResource Include="Resources\Sprites\WarGame.ico" />
   </ItemGroup>
 
