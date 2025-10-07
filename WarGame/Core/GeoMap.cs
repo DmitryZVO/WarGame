@@ -46,8 +46,11 @@ public class Tiles
         bool find = false;
         lock (_tiles)
         {
+            var time = DateTime.Now;
+            _tiles.FindAll(t => t.Zoom != Values.GlobalPos.Zoom).ForEach(t=>t.Bitmap?.Dispose());
             _tiles.RemoveAll(t => t.Zoom != Values.GlobalPos.Zoom);
-            _tiles.RemoveAll(t => (DateTime.Now - t.TimeLastRequest).TotalSeconds > 1);
+            _tiles.FindAll(t => (time - t.TimeLastRequest).TotalSeconds > 1).ForEach(t => t.Bitmap?.Dispose());
+            _tiles.RemoveAll(t => (time - t.TimeLastRequest).TotalSeconds > 1);
             var t = _tiles.Find(t => t.Zoom == z && t.X == x && t.Y == y);
             if (t != null)
             {
@@ -75,6 +78,8 @@ public class Tiles
         var mat = await Remote.Tiles.GetTileAsync(x, y, z, ct);
         if (mat == null) return;
         t.Bitmap = _dx?.CreateDxBitmap(mat);
+        mat.Dispose();
+        mat = null;
     }
 }
 
@@ -129,7 +134,6 @@ public class GeoMap
                     dx.Rt.DrawBitmap(tile.Bitmap, r, alpha, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
                 }
             }
-
             dx.Rt.DrawLine(new RawVector2(dx.BaseWidth / 2.0f, dx.BaseHeight / 2.0f - 6.0f), new RawVector2(dx.BaseWidth / 2.0f, dx.BaseHeight / 2.0f + 6.0f), dx.Brushes.SysTextBrushYellow);
             dx.Rt.DrawLine(new RawVector2(dx.BaseWidth / 2.0f - 6.0f, dx.BaseHeight / 2.0f), new RawVector2(dx.BaseWidth / 2.0f + 6.0f, dx.BaseHeight / 2.0f), dx.Brushes.SysTextBrushYellow);
             var rect = new RawRectangleF(dx.BaseWidth * 0.870f, dx.BaseHeight * 0.003f, dx.BaseWidth * 0.999f, dx.BaseHeight * 0.013f);
