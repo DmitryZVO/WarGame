@@ -35,7 +35,6 @@ public static class Core
         if (Config.FormTelem.Enable) FrmTelem.Show();
 
         Server.Init();
-        Files.Load();
     }
 
     public static void DeInit()

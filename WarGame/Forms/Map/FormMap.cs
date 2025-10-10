@@ -1,3 +1,4 @@
+using WarGame.Remote;
 using WarGame.Resources;
 
 namespace WarGame.Forms.Map;
@@ -7,7 +8,7 @@ public sealed partial class FormMap : Form
     public static GeoPosition GlobalPos { get; private set; } = new();
     public static GeoMap Map { get; private set; } = new();
     public static ControlUser ControlUser { get; private set; } = new();
-    public static ObjectsStatic ObjectsStatic { get; private set; } = new();
+    public static StaticObjects ObjectsStatic { get; private set; } = new();
 
     private Point _posFromDisplays;
     private readonly SharpDx _dx;
@@ -18,10 +19,9 @@ public sealed partial class FormMap : Form
         _posFromDisplays = pos;
 
         _dx = new SharpDxMap(pictureBoxMain, fps);
-        Map.Init(_dx);
 
         GlobalPos.Init();
-        ObjectsStatic.Init();
+        ObjectsStatic.Init(_dx);
 
         Icon = EmbeddedResources.Get<Icon>("Sprites.WarGame.ico");
 

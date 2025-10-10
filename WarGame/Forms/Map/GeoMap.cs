@@ -1,7 +1,4 @@
 ﻿using SharpDX.Mathematics.Interop;
-using WarGame.Forms;
-using WarGame.Model;
-using WarGame.Remote;
 
 namespace WarGame.Forms.Map;
 
@@ -17,24 +14,14 @@ public class Tile(int z, int x, int y)
 
 public class Tiles
 {
-
-    public SharpDX.Direct2D1.Bitmap TileNone = SharpDx.NoneBitmap;
     private readonly List<Tile> _tiles = [];
-    private SharpDx? _dx;
 
-    public void SetTileNone(SharpDx dx, Bitmap tileNone)
-    {
-        _dx = dx;
-        TileNone = _dx.CreateDxBitmap(tileNone)!;
-    }
-
-    public Tile GetTile(int z, int x, int y)
+    public Tile GetTile(SharpDx dx, int z, int x, int y)
     {
         Tile ret = new(z, x, y)
         {
             TimeCreate = DateTime.Now,
             TimeLastRequest = DateTime.Now,
-            Bitmap = TileNone
         };
 
         bool find = false;
@@ -52,18 +39,17 @@ public class Tiles
                 find = true;
             }
         }
-        if (!find) LoadTileAsync(z, x, y);
+        if (!find) LoadTileAsync(dx, z, x, y);
         ret.TimeLastRequest = DateTime.Now;
         return ret;
     }
 
-    private async void LoadTileAsync(int z, int x, int y, CancellationToken ct = default)
+    private async void LoadTileAsync(SharpDx dx, int z, int x, int y, CancellationToken ct = default)
     {
         var t = new Tile(z, x, y)
         {
             TimeCreate = DateTime.Now,
             TimeLastRequest = DateTime.Now,
-            Bitmap = TileNone
         };
 
         lock (_tiles)
@@ -71,9 +57,9 @@ public class Tiles
             if (!_tiles.Exists(t => t.Zoom == z && t.X == x && t.Y == y)) _tiles.Add(t);
         }
 
-        var mat = await Remote.Tiles.GetTileAsync(x, y, z, ct);
+        var mat = await Remote.Files.GetTileAsync(x, y, z, ct);
         if (mat == null) return;
-        t.Bitmap = _dx?.CreateDxBitmap(mat);
+        t.Bitmap = dx?.CreateDxBitmap(mat);
         mat.Dispose();
         mat = null;
     }
@@ -86,27 +72,12 @@ public class GeoMap
     public int VisibleTilesCountX { get; set; } = 10; // Ширина сетки тайлов для отрисовки на экран
     public int VisibleTilesCountY { get; set; } = 6; // Высота сетки тайлов для отрисовки на экран
 
-    public void Init(SharpDx dx)
-    {
-        if (dx.Rt == null) return;
-
-        lock (dx.Rt!)
-        {
-            _tiles.SetTileNone(dx, Files.NoneBitmap);
-        }
-    }
-
     public void Draw(SharpDx dx)
     {
         if (dx.Rt == null) return;
 
         lock (dx.Rt!)
         {
-            if (_tiles.TileNone.Size.Width == Files.NoneBitmap.Width && Remote.Tiles.TileNone != null && !Remote.Tiles.TileNone.Equals(Files.NoneBitmap))
-            {
-                _tiles.SetTileNone(dx, Remote.Tiles.TileNone);
-            }
-
             dx.Rt.Clear(new RawColor4(0.0f, 0.0f, 0.0f, 0.0f));
 
             //Отрисовка тайловой сетки
@@ -125,9 +96,9 @@ public class GeoMap
                 for (var x = -FormMap.Map.VisibleTilesCountX / 2; x <= FormMap.Map.VisibleTilesCountX / 2; x++)
                 {
                     var r = new RawRectangleF(dx.BaseWidth / 2.0f + x * tileSize + (float)sx, dx.BaseHeight / 2.0f + y * tileSize + (float)sy, dx.BaseWidth / 2.0f + (x + 1) * tileSize + (float)sx, dx.BaseHeight / 2.0f + (y + 1) * tileSize + (float)sy);
-                    var tile = _tiles.GetTile(z, x0 + x, y0 + y);
+                    var tile = _tiles.GetTile(dx, z, x0 + x, y0 + y);
                     var alpha = (float)Math.Min((DateTime.Now - tile.TimeCreate).TotalSeconds / 0.5f, 1.0f);
-                    dx.Rt.DrawBitmap(tile.Bitmap, r, alpha, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
+                    dx.Rt.DrawBitmap(tile.Bitmap ?? ((SharpDxMap)dx).BitmapNone, r, alpha, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
                 }
             }
             dx.Rt.DrawLine(new RawVector2(dx.BaseWidth / 2.0f, dx.BaseHeight / 2.0f - 6.0f), new RawVector2(dx.BaseWidth / 2.0f, dx.BaseHeight / 2.0f + 6.0f), dx.Brushes.SysTextBrushYellow);

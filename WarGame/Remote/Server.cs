@@ -6,6 +6,7 @@ namespace WarGame.Remote;
 public class Server
 {
     public DateTime Time { get; private set; } = DateTime.MinValue;
+    public DateTime TimeStampStaticObjects { get; private set; } = DateTime.MinValue;
     public bool Alive { get; private set; }
 
     public async void Init(CancellationToken ct = default)
@@ -17,6 +18,7 @@ public class Server
             if (check != null)
             {
                 Time = new DateTime(check.Time);
+                TimeStampStaticObjects = new DateTime(check.TimeStampStaticObjects);
                 cycles = 0;
             }
             else
@@ -40,13 +42,13 @@ public class Server
         }
         catch
         {
-            //
+            return null;
         }
-        return null;
     }
 
 }
 public class ServerCheck
 {
     public long Time { get; set; }
+    public long TimeStampStaticObjects { get; set; }
 }

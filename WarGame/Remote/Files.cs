@@ -1,29 +1,37 @@
-﻿using WarGame.Model;
+﻿using OpenCvSharp;
+using WarGame.Model;
 
 namespace WarGame.Remote;
 
 public class Files
 {
-    public static Bitmap NoneBitmap { get; private set; } = new Bitmap(1, 1);
-
-    public static async Task<Bitmap> GetFileAsync(string type, string name, CancellationToken ct = default)
+    public static async Task<Bitmap?> GetSpriteAsync(string type, string name, CancellationToken ct = default)
     {
         try
         {
             using var web = new HttpClient();
             web.BaseAddress = new Uri(Core.Config.ServerUrl);
             using var answ = await web.GetAsync($"GetFile?type={type}&name={name}", ct);
-            return !answ.IsSuccessStatusCode ? NoneBitmap : new Bitmap(new MemoryStream(Convert.FromBase64String(await answ.Content.ReadAsStringAsync(ct))));
+            return !answ.IsSuccessStatusCode ? null : new Bitmap(new MemoryStream(Convert.FromBase64String(await answ.Content.ReadAsStringAsync(ct))));
         }
         catch
         {
-            //
+            return null;
         }
-        return NoneBitmap;
     }
 
-    public static async void Load()
+    public static async Task<Mat?> GetTileAsync(int x, int y, int z, CancellationToken ct = default)
     {
-        Tiles.TileNone = await GetFileAsync("Sprites", "TileNone.png");
+        try
+        {
+            using var web = new HttpClient();
+            web.BaseAddress = new Uri(Core.Config.ServerUrl);
+            using var answ = await web.GetAsync($"GetTile?x={x:0}&y={y:0}&z={z:0}", ct);
+            return !answ.IsSuccessStatusCode ? null : Cv2.ImDecode(Convert.FromBase64String(await answ.Content.ReadAsStringAsync(ct)), ImreadModes.Unchanged);
+        }
+        catch
+        {
+            return null;
+        }
     }
 }
