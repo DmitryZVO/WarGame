@@ -1,4 +1,4 @@
-﻿using WarGame.Core;
+﻿using WarGame.Model;
 
 namespace WarGame.Remote;
 
@@ -11,7 +11,7 @@ public class Files
         try
         {
             using var web = new HttpClient();
-            web.BaseAddress = new Uri(Values.Server.Url);
+            web.BaseAddress = new Uri(Core.Config.ServerUrl);
             using var answ = await web.GetAsync($"GetFile?type={type}&name={name}", ct);
             return !answ.IsSuccessStatusCode ? NoneBitmap : new Bitmap(new MemoryStream(Convert.FromBase64String(await answ.Content.ReadAsStringAsync(ct))));
         }
@@ -22,7 +22,7 @@ public class Files
         return NoneBitmap;
     }
 
-    public async void Load()
+    public static async void Load()
     {
         Tiles.TileNone = await GetFileAsync("Sprites", "TileNone.png");
     }

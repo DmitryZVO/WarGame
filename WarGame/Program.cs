@@ -1,9 +1,9 @@
+using WarGame.Model;
+
 namespace WarGame;
 
 internal static class Program
 {
-    public static FormMain Fm = new();
-
     [STAThread]
     static void Main()
     {
@@ -16,7 +16,9 @@ internal static class Program
             return;
         }
 
-        Core.Values.Init();
-        Application.Run(Fm);
+
+        Core.Init();
+        Application.Run(Core.FrmMap!);
+        Core.DeInit();
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace WarGame.Core;
+﻿namespace WarGame.Forms;
 
 public class ControlUser
 {

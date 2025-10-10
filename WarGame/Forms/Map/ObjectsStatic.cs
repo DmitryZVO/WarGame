@@ -1,10 +1,8 @@
-﻿using WarGame.Other;
-
-namespace WarGame.Core;
+﻿namespace WarGame.Forms.Map;
 
 public class ObjectsStatic
 {
-    public List<ObjectStatic> Items { get; set; } = new();
+    public List<ObjectStatic> Items { get; set; } = [];
     public void Init()
     {
         Items.Add(new ObjectStatic()
@@ -120,25 +118,25 @@ public class ObjectStatic
     {
         if (dx.Rt == null) return;
 
-        if (!GeoMath.TileIsVisible(Values.GlobalPos.Zoom, LonX, LatY)) return;
-        var tileSize = (int)(GeoMath.TileSize + Values.GlobalPos.ZoomLocal * GeoMath.TileSize);
-        var tileObjectX = GeoMath.TileXForLon(Values.GlobalPos.Zoom, LonX);
-        var tileObjectY = GeoMath.TileYForLat(Values.GlobalPos.Zoom, LatY);
-        var tileCenterX = GeoMath.TileXForLon(Values.GlobalPos.Zoom, Values.GlobalPos.LonX);
-        var tileCenterY = GeoMath.TileYForLat(Values.GlobalPos.Zoom, Values.GlobalPos.LatY);
+        if (!GeoMath.TileIsVisible(FormMap.GlobalPos.Zoom, LonX, LatY)) return;
+        var tileSize = (int)(GeoMath.TileSize + FormMap.GlobalPos.ZoomLocal * GeoMath.TileSize);
+        var tileObjectX = GeoMath.TileXForLon(FormMap.GlobalPos.Zoom, LonX);
+        var tileObjectY = GeoMath.TileYForLat(FormMap.GlobalPos.Zoom, LatY);
+        var tileCenterX = GeoMath.TileXForLon(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LonX);
+        var tileCenterY = GeoMath.TileYForLat(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY);
         var posX = (tileObjectX - tileCenterX) * tileSize;
         var posY = (tileObjectY - tileCenterY) * tileSize;
-        var tileCenter = GeoMath.GetTileCoord(Values.GlobalPos.Zoom, Values.GlobalPos.LonX, Values.GlobalPos.LatY);
-        var deltaSx = tileCenter.Left - Values.GlobalPos.LonX;
-        var deltaSy = tileCenter.Top - Values.GlobalPos.LatY;
-        var sx = deltaSx / GeoMath.GetLenXForOneTile(Values.GlobalPos.Zoom, Values.GlobalPos.LatY, Values.GlobalPos.LonX) * tileSize;
-        var sy = deltaSy / GeoMath.GetLenYForOneTile(Values.GlobalPos.Zoom, Values.GlobalPos.LatY, Values.GlobalPos.LonX) * tileSize;
+        var tileCenter = GeoMath.GetTileCoord(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LonX, FormMap.GlobalPos.LatY);
+        var deltaSx = tileCenter.Left - FormMap.GlobalPos.LonX;
+        var deltaSy = tileCenter.Top - FormMap.GlobalPos.LatY;
+        var sx = deltaSx / GeoMath.GetLenXForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize;
+        var sy = deltaSy / GeoMath.GetLenYForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize;
 
-        var tileObject = GeoMath.GetTileCoord(Values.GlobalPos.Zoom, LonX, LatY);
+        var tileObject = GeoMath.GetTileCoord(FormMap.GlobalPos.Zoom, LonX, LatY);
         var objectSx = LonX - tileObject.Left;
         var objectSy = LatY - tileObject.Top;
-        var ox = objectSx / GeoMath.GetLenXForOneTile(Values.GlobalPos.Zoom, LatY, LonX) * tileSize;
-        var oy = objectSy / GeoMath.GetLenYForOneTile(Values.GlobalPos.Zoom, LatY, LonX) * tileSize;
+        var ox = objectSx / GeoMath.GetLenXForOneTile(FormMap.GlobalPos.Zoom, LatY, LonX) * tileSize;
+        var oy = objectSy / GeoMath.GetLenYForOneTile(FormMap.GlobalPos.Zoom, LatY, LonX) * tileSize;
 
         var pos = new SharpDX.Mathematics.Interop.RawVector2(dx.BaseWidth / 2.0f + posX + (float)sx + (float)ox, dx.BaseHeight / 2.0f + posY + (float)sy + (float)oy);
         var radius = 5.0f;

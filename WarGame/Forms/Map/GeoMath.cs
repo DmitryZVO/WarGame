@@ -1,18 +1,17 @@
 ﻿using OpenCvSharp;
 using SharpDX.Mathematics.Interop;
-using WarGame.Core;
 
-namespace WarGame.Other;
+namespace WarGame.Forms.Map;
 
 public class GeoMath
 {
     public static double TileSize { get; set; } = 256.0d;
-    public static double LonXForTile(int z, int x, int y) // Долгота (x от нулевого меридиана, Longitude)
+    public static double LonXForTile(int z, int x, int _) // Долгота (x от нулевого меридиана, Longitude)
     {
         var tilesAll = Math.Pow(2, z) / 2.0d;
         return (x / tilesAll - 1.0d) * 180.0d;
     }
-    public static double LatYForTile(int z, int x, int y) // Широта (y от экватора, Latitude)
+    public static double LatYForTile(int z, int _, int y) // Широта (y от экватора, Latitude)
     {
         var a = 6378137.0d;
         var c1 = 0.00335655146887969d;
@@ -25,7 +24,7 @@ public class GeoMath
         var g = Math.PI / 2.0d - 2.0d * Math.Atan(1.0d / Math.Exp(mercY / a));
         var f = g + c1 * Math.Sin(2.0d * g) + c2 * Math.Sin(4.0d * g) + c3 * Math.Sin(6.0 * g) + c4 * Math.Sin(8.0 * g);
 
-        return (f * 180.0d) / Math.PI;
+        return f * 180.0d / Math.PI;
     }
     public static int TileXForLon(int z, double lon) // Долгота (x от нулевого меридиана, Longitude)
     {
@@ -35,7 +34,7 @@ public class GeoMath
     public static int TileYForLat(int z, double lat) // Широта (y от экватора, Latitude)
     {
         var p = Math.Pow(2, z + 8) / 2.0d;
-        var beta = (Math.PI * lat) / 180.0d;
+        var beta = Math.PI * lat / 180.0d;
         var ex = 0.0818191908426d; //эксцентриситет земного эллипсоида. Если тайлы нужно получить для эллиптической проекции Меркатора, то ε = 0.0818191908426.Если для сферической проекции, то ε = 0.По умолчанию в Яндекс.Картах используется эллиптическая проекция Меркатора.
         var phi = (1.0d - ex*Math.Sin(beta)) / (1.0d + ex*Math.Sin(beta));
         var gama = Math.Tan(Math.PI / 4.0d + beta / 2.0d) * Math.Pow(phi, ex / 2.0d);
@@ -47,7 +46,7 @@ public class GeoMath
     {
         var x0 = TileXForLon(z, lon);
         var y0 = TileYForLat(z, lat);
-        return LonXForTile(z, x0 + 1, y0) - GeoMath.LonXForTile(z, x0, y0);
+        return LonXForTile(z, x0 + 1, y0) - LonXForTile(z, x0, y0);
     }
 
     public static double GetLenYForOneTile(int z, double lat, double lon)
@@ -84,28 +83,28 @@ public class GeoMath
 
     public static bool TileIsVisible(int z, int x, int y)
     {
-        var tx = TileXForLon(z, Values.GlobalPos.LonX);
-        var ty = TileYForLat(z, Values.GlobalPos.LatY);
-        return x >= tx - Values.Map.VisibleTilesCountX / 2 && x <= tx - Values.Map.VisibleTilesCountX / 2 && y >= ty - Values.Map.VisibleTilesCountY / 2 && y <= ty - Values.Map.VisibleTilesCountY / 2;
+        var tx = TileXForLon(z, FormMap.GlobalPos.LonX);
+        var ty = TileYForLat(z, FormMap.GlobalPos.LatY);
+        return x >= tx - FormMap.Map.VisibleTilesCountX / 2 && x <= tx - FormMap.Map.VisibleTilesCountX / 2 && y >= ty - FormMap.Map.VisibleTilesCountY / 2 && y <= ty - FormMap.Map.VisibleTilesCountY / 2;
     }
 
     public static bool TileIsVisible(int z, double lon, double lat)
     {
         var x = TileXForLon(z, lon);
         var y = TileYForLat(z, lat);
-        var tx = TileXForLon(z, Values.GlobalPos.LonX);
-        var ty = TileYForLat(z, Values.GlobalPos.LatY);
-        return x >= tx - Values.Map.VisibleTilesCountX / 2 && x <= tx + Values.Map.VisibleTilesCountX / 2 && y >= ty - Values.Map.VisibleTilesCountY / 2 && y <= ty + Values.Map.VisibleTilesCountY / 2;
+        var tx = TileXForLon(z, FormMap.GlobalPos.LonX);
+        var ty = TileYForLat(z, FormMap.GlobalPos.LatY);
+        return x >= tx - FormMap.Map.VisibleTilesCountX / 2 && x <= tx + FormMap.Map.VisibleTilesCountX / 2 && y >= ty - FormMap.Map.VisibleTilesCountY / 2 && y <= ty + FormMap.Map.VisibleTilesCountY / 2;
     }
 
     public static RawVector2 GetScreenSeek(double lonX, double latY)
     {
-        var z = Values.GlobalPos.Zoom;
-        var tileSize = (int)(TileSize + Values.GlobalPos.ZoomLocal * TileSize);
-        var x0 = TileXForLon(z, Values.GlobalPos.LonX);
-        var y0 = TileYForLat(z, Values.GlobalPos.LatY);
-        var sx0 = LonXForTile(z, x0, y0);
-        var sy0 = LatYForTile(z, x0, y0);
+        var z = FormMap.GlobalPos.Zoom;
+        var tileSize = (int)(TileSize + FormMap.GlobalPos.ZoomLocal * TileSize);
+        var x0 = TileXForLon(z, FormMap.GlobalPos.LonX);
+        var y0 = TileYForLat(z, FormMap.GlobalPos.LatY);
+        //var sx0 = LonXForTile(z, x0, y0);
+        //var sy0 = LatYForTile(z, x0, y0);
 
         var x1 = TileXForLon(z, lonX);
         var y1 = TileYForLat(z, latY);
@@ -114,8 +113,8 @@ public class GeoMath
 
         var deltaSx = lonX - sx1;
         var deltaSy = latY - sy1;
-        var sx = deltaSx / GetLenXForOneTile(Values.GlobalPos.Zoom, Values.GlobalPos.LatY, Values.GlobalPos.LonX) * tileSize + tileSize * (x0 - x1);
-        var sy = deltaSy / GetLenYForOneTile(Values.GlobalPos.Zoom, Values.GlobalPos.LatY, Values.GlobalPos.LonX) * tileSize + tileSize * (y0 - y1);
+        var sx = deltaSx / GetLenXForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize + tileSize * (x0 - x1);
+        var sy = deltaSy / GetLenYForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize + tileSize * (y0 - y1);
         return new RawVector2((float)sx, (float)sy);
     }
 }

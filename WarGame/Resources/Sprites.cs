@@ -1,4 +1,4 @@
-﻿using WarGame.Other;
+﻿using WarGame.Forms;
 using WarGame.Resources;
 using Bitmap = SharpDX.Direct2D1.Bitmap;
 
@@ -8,9 +8,10 @@ public class Sprites : SharpDx.SpritesDb
 {
     public sealed override void LoadBitmap(SharpDx sdx)
     {
+        Items = [];
+        /*
         Items = new Dictionary<string, Bitmap>
         {
-            /*
             {
                 "CCW",
                 sdx.CreateDxBitmap(EmbeddedResources.Get<System.Drawing.Bitmap>("Sprites.CCW.png")!)!
@@ -22,7 +23,7 @@ public class Sprites : SharpDx.SpritesDb
                 "VT40",
                 sdx.CreateDxBitmap(EmbeddedResources.Get<System.Drawing.Bitmap>("Sprites.VT40.png")!)!
             },
-            */
         };
+        */
     }
 }

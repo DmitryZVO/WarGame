@@ -1,4 +1,5 @@
 ﻿using OpenCvSharp;
+using WarGame.Model;
 
 namespace WarGame.Remote;
 
@@ -11,7 +12,7 @@ public class Tiles
         try
         {
             using var web = new HttpClient();
-            web.BaseAddress = new Uri(Core.Values.Server.Url);
+            web.BaseAddress = new Uri(Core.Config.ServerUrl);
             using var answ = await web.GetAsync($"GetTile?x={x:0}&y={y:0}&z={z:0}", ct);
             ret = !answ.IsSuccessStatusCode ? null : Cv2.ImDecode(Convert.FromBase64String(await answ.Content.ReadAsStringAsync(ct)), ImreadModes.Unchanged);
         }

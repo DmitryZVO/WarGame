@@ -1,33 +1,25 @@
 ﻿using SharpDX.Mathematics.Interop;
-using WarGame.Other;
+using WarGame.Forms;
+using WarGame.Model;
 using WarGame.Remote;
 
-namespace WarGame.Core;
+namespace WarGame.Forms.Map;
 
-public class Tile
+public class Tile(int z, int x, int y)
 {
     public SharpDX.Direct2D1.Bitmap? Bitmap { get; set; }
-    public DateTime TimeCreate { get; set; } = DateTime.MinValue;
+    public DateTime TimeCreate { get; set; } = DateTime.Now;
     public DateTime TimeLastRequest { get; set; } = DateTime.MaxValue;
-    public int Zoom { get; set; }
-    public int X { get; set; }
-    public int Y { get; set; }
-
-    public Tile(int z, int x, int y)
-    {
-        Zoom = z;
-        X = x;
-        Y = y;
-        TimeCreate = DateTime.Now;
-        TimeLastRequest = DateTime.MaxValue;
-    }
+    public int Zoom { get; set; } = z;
+    public int X { get; set; } = x;
+    public int Y { get; set; } = y;
 }
 
 public class Tiles
 {
 
     public SharpDX.Direct2D1.Bitmap TileNone = SharpDx.NoneBitmap;
-    private List<Tile> _tiles = [];
+    private readonly List<Tile> _tiles = [];
     private SharpDx? _dx;
 
     public void SetTileNone(SharpDx dx, Bitmap tileNone)
@@ -38,17 +30,19 @@ public class Tiles
 
     public Tile GetTile(int z, int x, int y)
     {
-        Tile ret = new Tile(z,x,y);
-        ret.TimeCreate = DateTime.Now;
-        ret.TimeLastRequest = DateTime.Now;
-        ret.Bitmap = TileNone;
+        Tile ret = new(z, x, y)
+        {
+            TimeCreate = DateTime.Now,
+            TimeLastRequest = DateTime.Now,
+            Bitmap = TileNone
+        };
 
         bool find = false;
         lock (_tiles)
         {
             var time = DateTime.Now;
-            _tiles.FindAll(t => t.Zoom != Values.GlobalPos.Zoom).ForEach(t=>t.Bitmap?.Dispose());
-            _tiles.RemoveAll(t => t.Zoom != Values.GlobalPos.Zoom);
+            _tiles.FindAll(t => t.Zoom != FormMap.GlobalPos.Zoom).ForEach(t=>t.Bitmap?.Dispose());
+            _tiles.RemoveAll(t => t.Zoom != FormMap.GlobalPos.Zoom);
             _tiles.FindAll(t => (time - t.TimeLastRequest).TotalSeconds > 1).ForEach(t => t.Bitmap?.Dispose());
             _tiles.RemoveAll(t => (time - t.TimeLastRequest).TotalSeconds > 1);
             var t = _tiles.Find(t => t.Zoom == z && t.X == x && t.Y == y);
@@ -65,10 +59,12 @@ public class Tiles
 
     private async void LoadTileAsync(int z, int x, int y, CancellationToken ct = default)
     {
-        var t = new Tile(z, x, y);
-        t.TimeCreate = DateTime.Now;
-        t.TimeLastRequest = DateTime.Now;
-        t.Bitmap = TileNone;
+        var t = new Tile(z, x, y)
+        {
+            TimeCreate = DateTime.Now,
+            TimeLastRequest = DateTime.Now,
+            Bitmap = TileNone
+        };
 
         lock (_tiles)
         {
@@ -85,7 +81,7 @@ public class Tiles
 
 public class GeoMap
 {
-    private Tiles _tiles = new();
+    private readonly Tiles _tiles = new();
     public bool TestMode { get; set; }
     public int VisibleTilesCountX { get; set; } = 10; // Ширина сетки тайлов для отрисовки на экран
     public int VisibleTilesCountY { get; set; } = 6; // Высота сетки тайлов для отрисовки на экран
@@ -114,19 +110,19 @@ public class GeoMap
             dx.Rt.Clear(new RawColor4(0.0f, 0.0f, 0.0f, 0.0f));
 
             //Отрисовка тайловой сетки
-            var z = Values.GlobalPos.Zoom;
-            var x0 = GeoMath.TileXForLon(z, Values.GlobalPos.LonX);
-            var y0 = GeoMath.TileYForLat(z, Values.GlobalPos.LatY);
-            var tileSize = (int)(GeoMath.TileSize + Values.GlobalPos.ZoomLocal * GeoMath.TileSize);
+            var z = FormMap.GlobalPos.Zoom;
+            var x0 = GeoMath.TileXForLon(z, FormMap.GlobalPos.LonX);
+            var y0 = GeoMath.TileYForLat(z, FormMap.GlobalPos.LatY);
+            var tileSize = (int)(GeoMath.TileSize + FormMap.GlobalPos.ZoomLocal * GeoMath.TileSize);
             var sx0 = GeoMath.LonXForTile(z, x0, y0);
             var sy0 = GeoMath.LatYForTile(z, x0, y0);
-            var deltaSx = sx0 - Values.GlobalPos.LonX;
-            var deltaSy = sy0 - Values.GlobalPos.LatY;
-            var sx = deltaSx / GeoMath.GetLenXForOneTile(Values.GlobalPos.Zoom, Values.GlobalPos.LatY, Values.GlobalPos.LonX) * tileSize;
-            var sy = deltaSy / GeoMath.GetLenYForOneTile(Values.GlobalPos.Zoom, Values.GlobalPos.LatY, Values.GlobalPos.LonX) * tileSize;
-            for (var y = -Values.Map.VisibleTilesCountY / 2; y <= Values.Map.VisibleTilesCountY / 2; y++)
+            var deltaSx = sx0 - FormMap.GlobalPos.LonX;
+            var deltaSy = sy0 - FormMap.GlobalPos.LatY;
+            var sx = deltaSx / GeoMath.GetLenXForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize;
+            var sy = deltaSy / GeoMath.GetLenYForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize;
+            for (var y = -FormMap.Map.VisibleTilesCountY / 2; y <= FormMap.Map.VisibleTilesCountY / 2; y++)
             {
-                for (var x = -Values.Map.VisibleTilesCountX / 2; x <= Values.Map.VisibleTilesCountX / 2; x++)
+                for (var x = -FormMap.Map.VisibleTilesCountX / 2; x <= FormMap.Map.VisibleTilesCountX / 2; x++)
                 {
                     var r = new RawRectangleF(dx.BaseWidth / 2.0f + x * tileSize + (float)sx, dx.BaseHeight / 2.0f + y * tileSize + (float)sy, dx.BaseWidth / 2.0f + (x + 1) * tileSize + (float)sx, dx.BaseHeight / 2.0f + (y + 1) * tileSize + (float)sy);
                     var tile = _tiles.GetTile(z, x0 + x, y0 + y);
@@ -138,7 +134,7 @@ public class GeoMap
             dx.Rt.DrawLine(new RawVector2(dx.BaseWidth / 2.0f - 6.0f, dx.BaseHeight / 2.0f), new RawVector2(dx.BaseWidth / 2.0f + 6.0f, dx.BaseHeight / 2.0f), dx.Brushes.SysTextBrushYellow);
             var rect = new RawRectangleF(dx.BaseWidth * 0.870f, dx.BaseHeight * 0.003f, dx.BaseWidth * 0.999f, dx.BaseHeight * 0.013f);
             dx.Rt.FillRectangle(rect, dx.Brushes.RoiNone);
-            dx.Rt.DrawText($"{Values.GlobalPos.LatY:0.00000000}, {Values.GlobalPos.LonX:0.00000000}, {Values.GlobalPos.Zoom+Values.GlobalPos.ZoomLocal:0.00}/{x0:0}/{y0:0}",
+            dx.Rt.DrawText($"{FormMap.GlobalPos.LatY:0.00000000}, {FormMap.GlobalPos.LonX:0.00000000}, {FormMap.GlobalPos.Zoom+ FormMap.GlobalPos.ZoomLocal:0.00}/{x0:0}/{y0:0}",
             dx.Brushes.SysText14, rect,dx.Brushes.SysTextBrushYellow);
         }
     }

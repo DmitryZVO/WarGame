@@ -1,10 +1,10 @@
 ﻿using System.Text.Json;
+using WarGame.Model;
 
 namespace WarGame.Remote;
 
 public class Server
 {
-    public string Url { get; set; } = "http://212.12.7.116:1111"; // Тестовый сервер офис
     public DateTime Time { get; private set; } = DateTime.MinValue;
     public bool Alive { get; private set; }
 
@@ -13,7 +13,7 @@ public class Server
         var cycles = 999;
         while (!ct.IsCancellationRequested)
         {
-            var check = await CheckAsync();
+            var check = await CheckAsync(ct);
             if (check != null)
             {
                 Time = new DateTime(check.Time);
@@ -29,12 +29,12 @@ public class Server
         }
     }
 
-    public async Task<ServerCheck?> CheckAsync(CancellationToken ct = default)
+    public static async Task<ServerCheck?> CheckAsync(CancellationToken ct = default)
     {
         try
         {
             using var web = new HttpClient();
-            web.BaseAddress = new Uri(Url);
+            web.BaseAddress = new Uri(Core.Config.ServerUrl);
             using var answ = await web.GetAsync($"ServerCheck", ct);
             return !answ.IsSuccessStatusCode ? null : JsonSerializer.Deserialize<ServerCheck>(await answ.Content.ReadAsStringAsync(ct));
         }

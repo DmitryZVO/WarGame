@@ -1,6 +1,4 @@
-﻿using OpenCvSharp;
-
-namespace WarGame.Core;
+﻿namespace WarGame.Forms.Map;
 
 public class GeoPosition
 {

@@ -6,10 +6,11 @@ using SharpDX.Direct3D11;
 using SharpDX.DirectWrite;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
-using Rectangle = System.Drawing.Rectangle;
+using WarGame.Model;
 using Bitmap = SharpDX.Direct2D1.Bitmap;
+using Rectangle = System.Drawing.Rectangle;
 
-namespace WarGame.Other;
+namespace WarGame.Forms;
 
 public abstract class SharpDx : IDisposable
 {
@@ -82,93 +83,60 @@ public abstract class SharpDx : IDisposable
         }
     }
 
-    public class DefBrushes
+    public class DefBrushes(SharpDx sdx)
     {
-        public TextFormat SysText14;
-        public TextFormat SysText20;
-        public TextFormat SysText34;
-        public TextFormat SysText74;
-        public TextFormat SysText104;
-        public SharpDX.Direct2D1.Brush SysTextBrushBlue;
-        public SharpDX.Direct2D1.Brush SysTextBrushOrange;
-        public SharpDX.Direct2D1.Brush SysTextBrushYellow;
-        public SharpDX.Direct2D1.Brush SysTextBrushRed;
-        public SharpDX.Direct2D1.Brush SysTextBrushDarkGreen;
-        public SharpDX.Direct2D1.Brush SysTextBrushGreen;
-        public SharpDX.Direct2D1.Brush SysTextBrushWhite;
-        public SharpDX.Direct2D1.Brush SysTextBrushGray;
-        public SharpDX.Direct2D1.Brush SysTextBrushBlack;
-        public SharpDX.Direct2D1.Brush RoiNone;
-        public SharpDX.Direct2D1.Brush RoiHq;
-        public SharpDX.Direct2D1.Brush RoiRed01;
-        public SharpDX.Direct2D1.Brush RoiGreen01;
-        public SharpDX.Direct2D1.Brush RoiGray01;
-        public SharpDX.Direct2D1.Brush RoiYellow01;
-        public SharpDX.Direct2D1.Brush RoiRed02;
-        public SharpDX.Direct2D1.Brush RoiGreen02;
-        public SharpDX.Direct2D1.Brush RoiGray02;
-        public SharpDX.Direct2D1.Brush RoiBlue02;
-        public SharpDX.Direct2D1.Brush RoiYellow02;
-        public SharpDX.Direct2D1.Brush RoiRed03;
-        public SharpDX.Direct2D1.Brush RoiGreen03;
-        public SharpDX.Direct2D1.Brush RoiGray03;
-        public SharpDX.Direct2D1.Brush RoiYellow03;
-
-        public DefBrushes(SharpDx sdx)
-        {
-            SysText14 = new TextFormat(sdx.DWf, "Arial", 14);
-            SysText20 = new TextFormat(sdx.DWf, "Arial", 20);
-            SysText34 = new TextFormat(sdx.DWf, "Arial", 34);
-            SysText74 = new TextFormat(sdx.DWf, "Arial", 74);
-            SysText104 = new TextFormat(sdx.DWf, "Arial", 104);
-            SysTextBrushBlue = new SolidColorBrush(sdx.Rt,
+        public TextFormat SysText14 = new(sdx.DWf, "Arial", 14);
+        public TextFormat SysText20 = new(sdx.DWf, "Arial", 20);
+        public TextFormat SysText34 = new(sdx.DWf, "Arial", 34);
+        public TextFormat SysText74 = new(sdx.DWf, "Arial", 74);
+        public TextFormat SysText104 = new(sdx.DWf, "Arial", 104);
+        public SharpDX.Direct2D1.Brush SysTextBrushBlue = new SolidColorBrush(sdx.Rt,
                 new RawColor4(0.3F, 0.3F, 1.0F, 1.0F));
-            SysTextBrushOrange = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush SysTextBrushOrange = new SolidColorBrush(sdx.Rt,
                 new RawColor4(1.0F, 0.5F, 0.0F, 0.9F));
-            SysTextBrushRed = new SolidColorBrush(sdx.Rt,
-                new RawColor4(1.0F, 0.0F, 0.0F, 0.9F));
-            SysTextBrushYellow = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush SysTextBrushYellow = new SolidColorBrush(sdx.Rt,
                 new RawColor4(1.0F, 1.0F, 0.0F, 0.9F));
-            SysTextBrushGreen = new SolidColorBrush(sdx.Rt,
-                new RawColor4(0.0F, 1.0F, 0.0F, 0.9F));
-            SysTextBrushDarkGreen = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush SysTextBrushRed = new SolidColorBrush(sdx.Rt,
+                new RawColor4(1.0F, 0.0F, 0.0F, 0.9F));
+        public SharpDX.Direct2D1.Brush SysTextBrushDarkGreen = new SolidColorBrush(sdx.Rt,
                 new RawColor4(0.0F, 0.5F, 0.0F, 0.9F));
-            SysTextBrushWhite = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush SysTextBrushGreen = new SolidColorBrush(sdx.Rt,
+                new RawColor4(0.0F, 1.0F, 0.0F, 0.9F));
+        public SharpDX.Direct2D1.Brush SysTextBrushWhite = new SolidColorBrush(sdx.Rt,
                 new RawColor4(1.0F, 1.0F, 1.0F, 0.9F));
-            SysTextBrushGray = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush SysTextBrushGray = new SolidColorBrush(sdx.Rt,
                 new RawColor4(0.3F, 0.3F, 0.3F, 0.9F));
-            SysTextBrushBlack = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush SysTextBrushBlack = new SolidColorBrush(sdx.Rt,
                 new RawColor4(0.0F, 0.0F, 0.0F, 0.9F));
-            RoiNone = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush RoiNone = new SolidColorBrush(sdx.Rt,
                 new RawColor4(0.0F, 0.0F, 0.0F, 0.5F));
-            RoiHq = new SolidColorBrush(sdx.Rt, new RawColor4(1.0F, 1.0F, 0.0F, 0.1F));
-            RoiRed01 = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush RoiHq = new SolidColorBrush(sdx.Rt, new RawColor4(1.0F, 1.0F, 0.0F, 0.1F));
+        public SharpDX.Direct2D1.Brush RoiRed01 = new SolidColorBrush(sdx.Rt,
                 new RawColor4(1.0F, 0.0F, 0.0F, 0.1F));
-            RoiGreen01 = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush RoiGreen01 = new SolidColorBrush(sdx.Rt,
                 new RawColor4(0.0F, 1.0F, 0.0F, 0.1F));
-            RoiGray01 = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush RoiGray01 = new SolidColorBrush(sdx.Rt,
                 new RawColor4(1.0F, 1.0F, 1.0F, 0.1F));
-            RoiYellow01 = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush RoiYellow01 = new SolidColorBrush(sdx.Rt,
                 new RawColor4(1.0F, 1.0F, 0.0F, 0.1F));
-            RoiRed02 = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush RoiRed02 = new SolidColorBrush(sdx.Rt,
                 new RawColor4(1.0F, 0.0F, 0.0F, 0.2F));
-            RoiBlue02 = new SolidColorBrush(sdx.Rt,
-                new RawColor4(0.0F, 0.0F, 1.0F, 0.2F));
-            RoiGreen02 = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush RoiGreen02 = new SolidColorBrush(sdx.Rt,
                 new RawColor4(0.0F, 1.0F, 0.0F, 0.2F));
-            RoiGray02 = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush RoiGray02 = new SolidColorBrush(sdx.Rt,
                 new RawColor4(1.0F, 1.0F, 1.0F, 0.2F));
-            RoiYellow02 = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush RoiBlue02 = new SolidColorBrush(sdx.Rt,
+                new RawColor4(0.0F, 0.0F, 1.0F, 0.2F));
+        public SharpDX.Direct2D1.Brush RoiYellow02 = new SolidColorBrush(sdx.Rt,
                 new RawColor4(1.0F, 1.0F, 0.0F, 0.2F));
-            RoiRed03 = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush RoiRed03 = new SolidColorBrush(sdx.Rt,
                 new RawColor4(1.0F, 0.0F, 0.0F, 0.3F));
-            RoiGreen03 = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush RoiGreen03 = new SolidColorBrush(sdx.Rt,
                 new RawColor4(0.0F, 1.0F, 0.0F, 0.3F));
-            RoiGray03 = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush RoiGray03 = new SolidColorBrush(sdx.Rt,
                 new RawColor4(1.0F, 1.0F, 1.0F, 0.3F));
-            RoiYellow03 = new SolidColorBrush(sdx.Rt,
+        public SharpDX.Direct2D1.Brush RoiYellow03 = new SolidColorBrush(sdx.Rt,
                 new RawColor4(1.0F, 1.0F, 0.0F, 0.3F));
-        }
 
         public void Dispose()
         {
@@ -451,6 +419,19 @@ public abstract class SharpDx : IDisposable
         FpsScrC++;
     }
 
+    protected virtual void DrawServerStatus()
+    {
+        Rt?.DrawRectangle(new RawRectangleF(0, 0, BaseWidth, BaseHeight), Core.Server.Alive ? Brushes.RoiGreen03 : Brushes.RoiRed03, 8f);
+        if (!Core.Server.Alive)
+        {
+            Rt?.FillRectangle(new RawRectangleF(0, 0, BaseWidth, BaseHeight), Brushes.RoiRed01);
+            var rect = new RawRectangleF(BaseWidth * 0.33f, BaseHeight * 0.505f, BaseWidth * 0.663f, BaseHeight * 0.565f);
+            Rt?.FillRectangle(rect, Brushes.RoiNone);
+            Rt?.DrawRectangle(rect, Brushes.RoiRed03, 6f);
+            Rt?.DrawText($"СЕРВЕР НЕ ДОСТУПЕН", Brushes.SysText74, rect, Brushes.RoiRed03);
+        }
+    }
+
     protected virtual void DrawUser()
     {
         Rt?.Clear(new RawColor4(0, 0, 0, 1));
@@ -466,7 +447,7 @@ public abstract class SharpDx : IDisposable
     }
     public abstract class SpritesDb
     {
-        public Dictionary<string, Bitmap> Items { get; set; } = new();
+        public Dictionary<string, Bitmap> Items { get; set; } = [];
 
         public virtual void DisposeBitmap()
         {
