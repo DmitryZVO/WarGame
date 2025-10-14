@@ -18,6 +18,7 @@ public struct ConfigApp
     public FormPos FormRls { get; set; } = new FormPos();
     public FormPos FormVideo { get; set; } = new FormPos();
     public FormPos FormTelem { get; set; } = new FormPos();
+    public MapPos Map { get; set; } = new MapPos();
 
     public ConfigApp()
     {
@@ -57,5 +58,15 @@ public struct ConfigApp
         public int PosX { get; set; } = 0;
         public int PosY { get; set; } = 0;
         public int Fps { get; set; } = 60;
+    }
+
+    public class MapPos
+    {
+        public double LonX { get; set; } // Стартовая точка системы (Lon, Lat)
+        public double LatY { get; set; } // Стартовая точка системы (Lon, Lat)
+        public int Zoom { get; set; } = 6; // Глобальный zoom
+        public double ZoomLocal { get; set; } = 0.0d; // Локальный zoom
+        public double ZoomLocalStep0 = 2.0d; // Максимальный зум для уровня 0 (земля)
+        public double ZoomLocalStep1 = 4.0d; // Максимальный зум для уровня 1 (города)
     }
 }

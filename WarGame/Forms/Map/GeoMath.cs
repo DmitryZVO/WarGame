@@ -1,5 +1,6 @@
 ﻿using OpenCvSharp;
-//using SharpDX.Mathematics.Interop;
+using WarGame.Model;
+using SharpDX.Mathematics.Interop;
 
 namespace WarGame.Forms.Map;
 
@@ -7,56 +8,56 @@ public class GeoMath
 {
     public static double TileSize { get; set; } = 256.0d;
 
-    public static SharpDX.Mathematics.Interop.RawVector2 GpsPositionToScreen(SharpDx dx, PointF f)
+    public static RawVector2 GpsPositionToScreen(SharpDx dx, double LonX, double LatY)
     {
-        var tileSize = (int)(TileSize + FormMap.GlobalPos.ZoomLocal * TileSize);
-        var tileObjectX = TileXForLon(FormMap.GlobalPos.Zoom, f.X);
-        var tileObjectY = TileYForLat(FormMap.GlobalPos.Zoom, f.Y);
-        var tileCenterX = TileXForLon(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LonX);
-        var tileCenterY = TileYForLat(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY);
+        var tileSize = (int)(TileSize + Core.Config.Map.ZoomLocal * TileSize);
+        var tileObjectX = TileXForLon(Core.Config.Map.Zoom, LonX);
+        var tileObjectY = TileYForLat(Core.Config.Map.Zoom, LatY);
+        var tileCenterX = TileXForLon(Core.Config.Map.Zoom, Core.Config.Map.LonX);
+        var tileCenterY = TileYForLat(Core.Config.Map.Zoom, Core.Config.Map.LatY);
         var posX = (tileObjectX - tileCenterX) * tileSize;
         var posY = (tileObjectY - tileCenterY) * tileSize;
-        var tileCenter = GetTileCoord(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LonX, FormMap.GlobalPos.LatY);
-        var deltaSx = tileCenter.Left - FormMap.GlobalPos.LonX;
-        var deltaSy = tileCenter.Top - FormMap.GlobalPos.LatY;
-        var sx = deltaSx / GetLenXForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize;
-        var sy = deltaSy / GetLenYForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize;
+        var tileCenter = GetTileCoord(Core.Config.Map.Zoom, Core.Config.Map.LonX, Core.Config.Map.LatY);
+        var deltaSx = tileCenter.Left - Core.Config.Map.LonX;
+        var deltaSy = tileCenter.Top - Core.Config.Map.LatY;
+        var sx = deltaSx / GetLenXForOneTile(Core.Config.Map.Zoom, Core.Config.Map.LatY, Core.Config.Map.LonX) * tileSize;
+        var sy = deltaSy / GetLenYForOneTile(Core.Config.Map.Zoom, Core.Config.Map.LatY, Core.Config.Map.LonX) * tileSize;
 
-        var tileObject = GetTileCoord(FormMap.GlobalPos.Zoom, f.X, f.Y);
-        var objectSx = f.X - tileObject.Left;
-        var objectSy = f.Y - tileObject.Top;
-        var ox = objectSx / GetLenXForOneTile(FormMap.GlobalPos.Zoom, f.Y, f.X) * tileSize;
-        var oy = objectSy / GetLenYForOneTile(FormMap.GlobalPos.Zoom, f.Y, f.X) * tileSize;
+        var tileObject = GetTileCoord(Core.Config.Map.Zoom, LonX, LatY);
+        var objectSx = LonX - tileObject.Left;
+        var objectSy = LatY - tileObject.Top;
+        var ox = objectSx / GetLenXForOneTile(Core.Config.Map.Zoom, LatY, LonX) * tileSize;
+        var oy = objectSy / GetLenYForOneTile(Core.Config.Map.Zoom, LatY, LonX) * tileSize;
 
-        return new SharpDX.Mathematics.Interop.RawVector2(dx.BaseWidth / 2.0f + posX + (float)sx + (float)ox, dx.BaseHeight / 2.0f + posY + (float)sy + (float)oy);
+        return new RawVector2(dx.BaseWidth / 2.0f + posX + (float)sx + (float)ox, dx.BaseHeight / 2.0f + posY + (float)sy + (float)oy);
     }
 
-    public static SharpDX.Mathematics.Interop.RawVector2 ScreenPositionToGps(SharpDx dx, PointF f)
+    public static RawVector2 ScreenPositionToGps(SharpDx dx, float x, float y)
     {
         // Размер тайла в пикселях с учетом текущего локального зума
-        var tileSize = (double)(TileSize + FormMap.GlobalPos.ZoomLocal * TileSize);
+        var tileSize = (double)(TileSize + Core.Config.Map.ZoomLocal * TileSize);
         // Смещение координаты от центра экрана
-        var lenX = f.X - dx.BaseWidth / 2.0d;
-        var lenY = f.Y - dx.BaseHeight / 2.0d;
+        var lenX = x - dx.BaseWidth / 2.0d;
+        var lenY = y - dx.BaseHeight / 2.0d;
         var tileSx = (int)(lenX / tileSize); // Смещение тайла точки от центра экрана (в тайлах)
         var tileSy = (int)(lenY / tileSize); // Смещение тайла точки от центра экрана (в тайлах)
 
         // Находим номер тайла, на котором стоит центр экрана
-        var tileX = TileXForLon(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LonX);
-        var tileY = TileYForLat(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY);
+        var tileX = TileXForLon(Core.Config.Map.Zoom, Core.Config.Map.LonX);
+        var tileY = TileYForLat(Core.Config.Map.Zoom, Core.Config.Map.LatY);
 
         // Находим номер тайла, на котором стоит текущая координата
-        var tilePoint = GetTileCoord(FormMap.GlobalPos.Zoom, tileX + tileSx, tileY + tileSy);
+        var tilePoint = GetTileCoord(Core.Config.Map.Zoom, tileX + tileSx, tileY + tileSy);
         var deltaScreenX = (tilePoint.Right - tilePoint.Left) / tileSize; // Дельта в Gps координатах для 1 пикселя в текущем масштабе
         var deltaScreenY = (tilePoint.Bottom - tilePoint.Top) / tileSize; // Дельта в Gps координатах для 1 пикселя в текущем масштабе
 
         // Находим координату на экране тайла, на котором стоит текущая координата
-        var tileScreenPoint = GpsPositionToScreen(dx, new PointF((float)tilePoint.Left, (float)tilePoint.Top));
+        var tileScreenPoint = GpsPositionToScreen(dx, tilePoint.Left, tilePoint.Top);
         // Пересчитываем расстояние от левого верхней точки тайла до текущей позиции в пикселях
-        lenX = f.X - tileScreenPoint.X;
-        lenY = f.Y - tileScreenPoint.Y;
+        lenX = x - tileScreenPoint.X;
+        lenY = y - tileScreenPoint.Y;
 
-        return new SharpDX.Mathematics.Interop.RawVector2((float)(tilePoint.Left + lenX * deltaScreenX), (float)(tilePoint.Top + lenY * deltaScreenY));
+        return new RawVector2((float)(tilePoint.Left + lenX * deltaScreenX), (float)(tilePoint.Top + lenY * deltaScreenY));
     }
 
     public static double LonXForTile(double z, int x, int _) // Долгота (x от нулевого меридиана, Longitude)
@@ -114,10 +115,10 @@ public class GeoMath
         return new System.Drawing.Point(TileXForLon(z, lon), TileYForLat(z, lat));
     }
 
-    public static Rect2d GetTileCoord(int z, double lon, double lat)
+    public static Rect2d GetTileCoord(int z, double lonX, double latY)
     {
-        var tx = TileXForLon(z, lon);
-        var ty = TileYForLat(z, lat);
+        var tx = TileXForLon(z, lonX);
+        var ty = TileYForLat(z, latY);
         var x0 = LonXForTile(z, tx, ty);
         var y0 = LatYForTile(z, tx, ty);
         var x1 = LonXForTile(z, tx + 1, ty + 1);
@@ -136,8 +137,8 @@ public class GeoMath
 
     public static bool TileIsVisible(int z, int x, int y)
     {
-        var tx = TileXForLon(z, FormMap.GlobalPos.LonX);
-        var ty = TileYForLat(z, FormMap.GlobalPos.LatY);
+        var tx = TileXForLon(z, Core.Config.Map.LonX);
+        var ty = TileYForLat(z, Core.Config.Map.LatY);
         return x >= tx - FormMap.Map.VisibleTilesCountX / 2 && x <= tx - FormMap.Map.VisibleTilesCountX / 2 && y >= ty - FormMap.Map.VisibleTilesCountY / 2 && y <= ty - FormMap.Map.VisibleTilesCountY / 2;
     }
 
@@ -145,17 +146,17 @@ public class GeoMath
     {
         var x = TileXForLon(z, lon);
         var y = TileYForLat(z, lat);
-        var tx = TileXForLon(z, FormMap.GlobalPos.LonX);
-        var ty = TileYForLat(z, FormMap.GlobalPos.LatY);
+        var tx = TileXForLon(z, Core.Config.Map.LonX);
+        var ty = TileYForLat(z, Core.Config.Map.LatY);
         return x >= tx - FormMap.Map.VisibleTilesCountX / 2 && x <= tx + FormMap.Map.VisibleTilesCountX / 2 && y >= ty - FormMap.Map.VisibleTilesCountY / 2 && y <= ty + FormMap.Map.VisibleTilesCountY / 2;
     }
 
-    public static SharpDX.Mathematics.Interop.RawVector2 GetScreenSeek(double lonX, double latY)
+    public static RawVector2 GetScreenSeek(double lonX, double latY)
     {
-        var z = FormMap.GlobalPos.Zoom;
-        var tileSize = (int)(TileSize + FormMap.GlobalPos.ZoomLocal * TileSize);
-        var x0 = TileXForLon(z, FormMap.GlobalPos.LonX);
-        var y0 = TileYForLat(z, FormMap.GlobalPos.LatY);
+        var z = Core.Config.Map.Zoom;
+        var tileSize = (int)(TileSize + Core.Config.Map.ZoomLocal * TileSize);
+        var x0 = TileXForLon(z, Core.Config.Map.LonX);
+        var y0 = TileYForLat(z, Core.Config.Map.LatY);
         //var sx0 = LonXForTile(z, x0, y0);
         //var sy0 = LatYForTile(z, x0, y0);
 
@@ -166,8 +167,8 @@ public class GeoMath
 
         var deltaSx = lonX - sx1;
         var deltaSy = latY - sy1;
-        var sx = deltaSx / GetLenXForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize + tileSize * (x0 - x1);
-        var sy = deltaSy / GetLenYForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize + tileSize * (y0 - y1);
-        return new SharpDX.Mathematics.Interop.RawVector2((float)sx, (float)sy);
+        var sx = deltaSx / GetLenXForOneTile(Core.Config.Map.Zoom, Core.Config.Map.LatY, Core.Config.Map.LonX) * tileSize + tileSize * (x0 - x1);
+        var sy = deltaSy / GetLenYForOneTile(Core.Config.Map.Zoom, Core.Config.Map.LatY, Core.Config.Map.LonX) * tileSize + tileSize * (y0 - y1);
+        return new RawVector2((float)sx, (float)sy);
     }
 }

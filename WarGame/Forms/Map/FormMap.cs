@@ -1,10 +1,11 @@
+using WarGame.Model;
 using WarGame.Resources;
 
 namespace WarGame.Forms.Map;
 
 public sealed partial class FormMap : Form
 {
-    public static GeoPosition GlobalPos { get; private set; } = new();
+    //public static GeoPosition GlobalPos { get; private set; } = new();
     public static GeoMap Map { get; private set; } = new();
     public static StaticObjects ObjectsStatic { get; private set; } = new();
 
@@ -37,7 +38,7 @@ public sealed partial class FormMap : Form
 
         _dx = new SharpDxMap(pictureBoxMain, fps);
 
-        GlobalPos.Init();
+        //GlobalPos.Init();
         ObjectsStatic.Init(_dx);
 
         Icon = EmbeddedResources.Get<Icon>("Sprites.WarGame.ico");
@@ -74,71 +75,71 @@ public sealed partial class FormMap : Form
 
     private void PictureBoxMain_MouseWheel(object? sender, MouseEventArgs e)
     {
-        var zoom = GlobalPos.ZoomLocal + Math.Sign(e.Delta) * 0.2d;
-        switch (GlobalPos.Zoom)
+        var zoom = Core.Config.Map.ZoomLocal + Math.Sign(e.Delta) * 0.2d;
+        switch (Core.Config.Map.Zoom)
         {
             case 6:
                 if (zoom < 0)
                 {
-                    GlobalPos.Zoom = 6;
-                    GlobalPos.ZoomLocal = 0.0d;
+                    Core.Config.Map.Zoom = 6;
+                    Core.Config.Map.ZoomLocal = 0.0d;
                 }
-                else if (zoom >= GlobalPos.ZoomLocalStep0)
+                else if (zoom >= Core.Config.Map.ZoomLocalStep0)
                 {
-                    GlobalPos.Zoom = 8;
-                    GlobalPos.ZoomLocal = zoom - GlobalPos.ZoomLocalStep0;
+                    Core.Config.Map.Zoom = 8;
+                    Core.Config.Map.ZoomLocal = zoom - Core.Config.Map.ZoomLocalStep0;
                 }
                 else
                 {
-                    GlobalPos.ZoomLocal = zoom;
+                    Core.Config.Map.ZoomLocal = zoom;
                 }
                 break;
             case 8:
                 if (zoom < 0)
                 {
-                    GlobalPos.Zoom = 6;
-                    GlobalPos.ZoomLocal = zoom + GlobalPos.ZoomLocalStep0;
+                    Core.Config.Map.Zoom = 6;
+                    Core.Config.Map.ZoomLocal = zoom + Core.Config.Map.ZoomLocalStep0;
                 }
-                else if (zoom >= GlobalPos.ZoomLocalStep1)
+                else if (zoom >= Core.Config.Map.ZoomLocalStep1)
                 {
-                    GlobalPos.Zoom = 12;
-                    GlobalPos.ZoomLocal = zoom - GlobalPos.ZoomLocalStep1;
+                    Core.Config.Map.Zoom = 12;
+                    Core.Config.Map.ZoomLocal = zoom - Core.Config.Map.ZoomLocalStep1;
                 }
                 else
                 {
-                    GlobalPos.ZoomLocal = zoom;
+                    Core.Config.Map.ZoomLocal = zoom;
                 }
                 break;
             case 12:
                 if (zoom < 0)
                 {
-                    GlobalPos.Zoom = 8;
-                    GlobalPos.ZoomLocal = zoom + GlobalPos.ZoomLocalStep1;
+                    Core.Config.Map.Zoom = 8;
+                    Core.Config.Map.ZoomLocal = zoom + Core.Config.Map.ZoomLocalStep1;
                 }
-                else if (zoom >= GlobalPos.ZoomLocalStep1)
+                else if (zoom >= Core.Config.Map.ZoomLocalStep1)
                 {
-                    GlobalPos.Zoom = 16;
-                    GlobalPos.ZoomLocal = zoom - GlobalPos.ZoomLocalStep1;
+                    Core.Config.Map.Zoom = 16;
+                    Core.Config.Map.ZoomLocal = zoom - Core.Config.Map.ZoomLocalStep1;
                 }
                 else
                 {
-                    GlobalPos.ZoomLocal = zoom;
+                    Core.Config.Map.ZoomLocal = zoom;
                 }
                 break;
             case 16:
                 if (zoom < 0)
                 {
-                    GlobalPos.Zoom = 12;
-                    GlobalPos.ZoomLocal = zoom + GlobalPos.ZoomLocalStep1;
+                    Core.Config.Map.Zoom = 12;
+                    Core.Config.Map.ZoomLocal = zoom + Core.Config.Map.ZoomLocalStep1;
                 }
-                else if (zoom >= GlobalPos.ZoomLocalStep1)
+                else if (zoom >= Core.Config.Map.ZoomLocalStep1)
                 {
-                    GlobalPos.Zoom = 16;
-                    GlobalPos.ZoomLocal = GlobalPos.ZoomLocalStep1;
+                    Core.Config.Map.Zoom = 16;
+                    Core.Config.Map.ZoomLocal = Core.Config.Map.ZoomLocalStep1;
                 }
                 else
                 {
-                    GlobalPos.ZoomLocal = zoom;
+                    Core.Config.Map.ZoomLocal = zoom;
                 }
                 break;
             default:
@@ -189,8 +190,8 @@ public sealed partial class FormMap : Form
             _lastMapMove = true;
             var dX = _lastMouseX - e.X;
             var dY = _lastMouseY - e.Y;
-            GlobalPos.LonX += (dX / GeoMath.TileSize) * GeoMath.GetLenXForOneTile(GlobalPos.Zoom + GlobalPos.ZoomLocal, GlobalPos.LatY, GlobalPos.LonX);
-            GlobalPos.LatY += (dY / GeoMath.TileSize) * GeoMath.GetLenYForOneTile(GlobalPos.Zoom + GlobalPos.ZoomLocal, GlobalPos.LatY, GlobalPos.LonX);
+            Core.Config.Map.LonX += (dX / GeoMath.TileSize) * GeoMath.GetLenXForOneTile(Core.Config.Map.Zoom + Core.Config.Map.ZoomLocal, Core.Config.Map.LatY, Core.Config.Map.LonX);
+            Core.Config.Map.LatY += (dY / GeoMath.TileSize) * GeoMath.GetLenYForOneTile(Core.Config.Map.Zoom + Core.Config.Map.ZoomLocal, Core.Config.Map.LatY, Core.Config.Map.LonX);
         }
 
         // Перемещение объектов
@@ -199,7 +200,7 @@ public sealed partial class FormMap : Form
             var obj = ObjectsStatic.Items.Find(x => x.Selected || x.Coords.Any(y => y.Selected));
             if (obj != null)
             {
-                var gpsPosNew = GeoMath.ScreenPositionToGps(_dx, new PointF(e.X, e.Y));
+                var gpsPosNew = GeoMath.ScreenPositionToGps(_dx, e.X, e.Y);
                 if (obj.Selected)
                 {
                     obj.Coords[0].X = gpsPosNew.X;

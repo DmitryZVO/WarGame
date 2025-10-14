@@ -132,16 +132,16 @@ public class StaticObject
         if (Type < 10) // Одиночные объекты
         {
             if (Coords.Count <= 0) return;
-            if (!GeoMath.TileIsVisible(FormMap.GlobalPos.Zoom, Coords[0].X, Coords[0].Y)) return;
-            var pos = GeoMath.GpsPositionToScreen(dx, new PointF(Coords[0].X, Coords[0].Y));
+            if (!GeoMath.TileIsVisible(Core.Config.Map.Zoom, Coords[0].X, Coords[0].Y)) return;
+            var pos = GeoMath.GpsPositionToScreen(dx, Coords[0].X, Coords[0].Y);
             switch (Type)
             {
                 case 0: // город
                     {
                         var radius = 20.0f;
-                        var rectBmp = new SharpDX.Mathematics.Interop.RawRectangleF(pos.X - radius, pos.Y - radius, pos.X + radius, pos.Y + radius);
-                        dx.Rt.DrawBitmap(StaticObjects.BitmapCity ?? ((SharpDxMap)dx).BitmapNone, rectBmp, 0.8f, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
-                        dx.Rt.DrawText($"{Name}", dx.Brushes.SysText20, new SharpDX.Mathematics.Interop.RawRectangleF(pos.X + radius, pos.Y - 0.5f * radius, pos.X + 100 * radius, pos.Y + 0.5f * radius), dx.Brushes.SysTextBrushYellow);
+                        var rectBmp = new RawRectangleF(pos.X - radius, pos.Y - radius, pos.X + radius, pos.Y + radius);
+                        dx.Rt.DrawBitmap(StaticObjects.BitmapCity ?? ((SharpDxMap)dx).BitmapNone, rectBmp, 0.8f, BitmapInterpolationMode.Linear);
+                        dx.Rt.DrawText($"{Name}", dx.Brushes.SysText20, new RawRectangleF(pos.X + radius, pos.Y - 0.5f * radius, pos.X + 100 * radius, pos.Y + 0.5f * radius), dx.Brushes.SysTextBrushYellow);
                         CheckLighting(dx, rectBmp);
                         CheckSelecting(dx, rectBmp);
                         break;
@@ -149,9 +149,9 @@ public class StaticObject
                 case 1: // метка
                     {
                         var radius = 20.0f;
-                        var rectBmp = new SharpDX.Mathematics.Interop.RawRectangleF(pos.X - radius, pos.Y - radius, pos.X + radius, pos.Y + radius);
-                        dx.Rt.DrawBitmap(StaticObjects.BitmapFlag ?? ((SharpDxMap)dx).BitmapNone, rectBmp, 0.8f, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
-                        dx.Rt.DrawText($"{Name}", dx.Brushes.SysText20, new SharpDX.Mathematics.Interop.RawRectangleF(pos.X + radius, pos.Y - 0.5f * radius, pos.X + 100 * radius, pos.Y + 0.5f * radius), dx.Brushes.SysTextBrushYellow);
+                        var rectBmp = new RawRectangleF(pos.X - radius, pos.Y - radius, pos.X + radius, pos.Y + radius);
+                        dx.Rt.DrawBitmap(StaticObjects.BitmapFlag ?? ((SharpDxMap)dx).BitmapNone, rectBmp, 0.8f,    BitmapInterpolationMode.Linear);
+                        dx.Rt.DrawText($"{Name}", dx.Brushes.SysText20, new RawRectangleF(pos.X + radius, pos.Y - 0.5f * radius, pos.X + 100 * radius, pos.Y + 0.5f * radius), dx.Brushes.SysTextBrushYellow);
                         CheckLighting(dx, rectBmp);
                         CheckSelecting(dx, rectBmp);
                         break;
@@ -163,13 +163,13 @@ public class StaticObject
         {
             var radius = 8.0f;
             if (Coords.Count <= 2) return;
-            var vertex = new List<SharpDX.Mathematics.Interop.RawVector2>();
+            var vertex = new List<RawVector2>();
             var inDisplay = false;
             foreach (var c in Coords)
             {
-                var v = GeoMath.GpsPositionToScreen(dx, new PointF(c.X, c.Y));
-                if (!inDisplay && GeoMath.TileIsVisible(FormMap.GlobalPos.Zoom, c.X, c.Y)) inDisplay = true;
-                vertex.Add(new SharpDX.Mathematics.Interop.RawVector2(v.X, v.Y));
+                var v = GeoMath.GpsPositionToScreen(dx, c.X, c.Y);
+                if (!inDisplay && GeoMath.TileIsVisible(Core.Config.Map.Zoom, c.X, c.Y)) inDisplay = true;
+                vertex.Add(new RawVector2(v.X, v.Y));
                 var rectVert = new RawRectangleF(v.X - radius, v.Y - radius, v.X + radius, v.Y + radius);
                 c.CheckLighting(dx, rectVert);
                 if (c.Selected) c.CheckSelecting(dx, rectVert);

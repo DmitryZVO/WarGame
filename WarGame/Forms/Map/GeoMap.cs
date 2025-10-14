@@ -1,4 +1,5 @@
 ﻿using SharpDX.Mathematics.Interop;
+using WarGame.Model;
 
 namespace WarGame.Forms.Map;
 
@@ -28,8 +29,8 @@ public class Tiles
         lock (_tiles)
         {
             var time = DateTime.Now;
-            _tiles.FindAll(t => t.Zoom != FormMap.GlobalPos.Zoom).ForEach(t=>t.Bitmap?.Dispose());
-            _tiles.RemoveAll(t => t.Zoom != FormMap.GlobalPos.Zoom);
+            _tiles.FindAll(t => t.Zoom != Core.Config.Map.Zoom).ForEach(t=>t.Bitmap?.Dispose());
+            _tiles.RemoveAll(t => t.Zoom != Core.Config.Map.Zoom);
             _tiles.FindAll(t => (time - t.TimeLastRequest).TotalSeconds > 1).ForEach(t => t.Bitmap?.Dispose());
             _tiles.RemoveAll(t => (time - t.TimeLastRequest).TotalSeconds > 1);
             var t = _tiles.Find(t => t.Zoom == z && t.X == x && t.Y == y);
@@ -82,16 +83,16 @@ public class GeoMap
             dx.Rt.Clear(new RawColor4(0.0f, 0.0f, 0.0f, 0.0f));
 
             //Отрисовка тайловой сетки
-            var z = FormMap.GlobalPos.Zoom;
-            var x0 = GeoMath.TileXForLon(z, FormMap.GlobalPos.LonX);
-            var y0 = GeoMath.TileYForLat(z, FormMap.GlobalPos.LatY);
-            var tileSize = (int)(GeoMath.TileSize + FormMap.GlobalPos.ZoomLocal * GeoMath.TileSize);
+            var z = Core.Config.Map.Zoom;
+            var x0 = GeoMath.TileXForLon(z, Core.Config.Map.LonX);
+            var y0 = GeoMath.TileYForLat(z, Core.Config.Map.LatY);
+            var tileSize = (int)(GeoMath.TileSize + Core.Config.Map.ZoomLocal * GeoMath.TileSize);
             var sx0 = GeoMath.LonXForTile(z, x0, y0);
             var sy0 = GeoMath.LatYForTile(z, x0, y0);
-            var deltaSx = sx0 - FormMap.GlobalPos.LonX;
-            var deltaSy = sy0 - FormMap.GlobalPos.LatY;
-            var sx = deltaSx / GeoMath.GetLenXForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize;
-            var sy = deltaSy / GeoMath.GetLenYForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize;
+            var deltaSx = sx0 - Core.Config.Map.LonX;
+            var deltaSy = sy0 - Core.Config.Map.LatY;
+            var sx = deltaSx / GeoMath.GetLenXForOneTile(Core.Config.Map.Zoom, Core.Config.Map.LatY, Core.Config.Map.LonX) * tileSize;
+            var sy = deltaSy / GeoMath.GetLenYForOneTile(Core.Config.Map.Zoom, Core.Config.Map.LatY, Core.Config.Map.LonX) * tileSize;
             for (var y = -FormMap.Map.VisibleTilesCountY / 2; y <= FormMap.Map.VisibleTilesCountY / 2; y++)
             {
                 for (var x = -FormMap.Map.VisibleTilesCountX / 2; x <= FormMap.Map.VisibleTilesCountX / 2; x++)
@@ -106,13 +107,13 @@ public class GeoMap
             dx.Rt.DrawLine(new RawVector2(dx.BaseWidth / 2.0f - 6.0f, dx.BaseHeight / 2.0f), new RawVector2(dx.BaseWidth / 2.0f + 6.0f, dx.BaseHeight / 2.0f), dx.Brushes.SysTextBrushYellow);
             var rect = new RawRectangleF(dx.BaseWidth * 0.870f, dx.BaseHeight * 0.003f, dx.BaseWidth * 0.999f, dx.BaseHeight * 0.013f);
             dx.Rt.FillRectangle(rect, dx.Brushes.RoiNone);
-            dx.Rt.DrawText($"{FormMap.GlobalPos.LatY:0.00000000}, {FormMap.GlobalPos.LonX:0.00000000}, {FormMap.GlobalPos.Zoom+ FormMap.GlobalPos.ZoomLocal:0.00}/{x0:0}/{y0:0}",
+            dx.Rt.DrawText($"{Core.Config.Map.LatY:0.000000}, {Core.Config.Map.LonX:0.000000}, {Core.Config.Map.Zoom+ Core.Config.Map.ZoomLocal:0.00}/{x0:0}/{y0:0}",
             dx.Brushes.SysText14, rect,dx.Brushes.SysTextBrushYellow);
 
             rect = new RawRectangleF(dx.BaseWidth * 0.870f, dx.BaseHeight * 0.013f, dx.BaseWidth * 0.999f, dx.BaseHeight * 0.023f);
             dx.Rt.FillRectangle(rect, dx.Brushes.RoiNone);
-            var posMouse = GeoMath.ScreenPositionToGps(dx, new PointF(Control.MousePosition.X, Control.MousePosition.Y));
-            dx.Rt.DrawText($"{posMouse.Y:0.00000000}, {posMouse.X:0.00000000}", dx.Brushes.SysText14, rect, dx.Brushes.SysTextBrushYellow);
+            var posMouse = GeoMath.ScreenPositionToGps(dx, Control.MousePosition.X, Control.MousePosition.Y);
+            dx.Rt.DrawText($"{posMouse.Y:0.000000}, {posMouse.X:0.000000}", dx.Brushes.SysText14, rect, dx.Brushes.SysTextBrushYellow);
         }
     }
 }
