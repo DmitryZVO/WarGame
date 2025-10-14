@@ -68,6 +68,7 @@ public class Tiles
 public class GeoMap
 {
     private readonly Tiles _tiles = new();
+    public bool EditMode { get; set; }
     public bool TestMode { get; set; }
     public int VisibleTilesCountX { get; set; } = 10; // Ширина сетки тайлов для отрисовки на экран
     public int VisibleTilesCountY { get; set; } = 6; // Высота сетки тайлов для отрисовки на экран
@@ -107,6 +108,11 @@ public class GeoMap
             dx.Rt.FillRectangle(rect, dx.Brushes.RoiNone);
             dx.Rt.DrawText($"{FormMap.GlobalPos.LatY:0.00000000}, {FormMap.GlobalPos.LonX:0.00000000}, {FormMap.GlobalPos.Zoom+ FormMap.GlobalPos.ZoomLocal:0.00}/{x0:0}/{y0:0}",
             dx.Brushes.SysText14, rect,dx.Brushes.SysTextBrushYellow);
+
+            rect = new RawRectangleF(dx.BaseWidth * 0.870f, dx.BaseHeight * 0.013f, dx.BaseWidth * 0.999f, dx.BaseHeight * 0.023f);
+            dx.Rt.FillRectangle(rect, dx.Brushes.RoiNone);
+            var posMouse = GeoMath.ScreenPositionToGps(dx, new PointF(Control.MousePosition.X, Control.MousePosition.Y));
+            dx.Rt.DrawText($"{posMouse.Y:0.00000000}, {posMouse.X:0.00000000}", dx.Brushes.SysText14, rect, dx.Brushes.SysTextBrushYellow);
         }
     }
 }

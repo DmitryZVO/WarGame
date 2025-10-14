@@ -29,6 +29,7 @@ partial class FormMap
     private void InitializeComponent()
     {
         pictureBoxMain = new PictureBox();
+        buttonEdit = new Button();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMain).BeginInit();
         SuspendLayout();
         // 
@@ -42,12 +43,23 @@ partial class FormMap
         pictureBoxMain.TabIndex = 0;
         pictureBoxMain.TabStop = false;
         // 
+        // buttonEdit
+        // 
+        buttonEdit.FlatStyle = FlatStyle.Flat;
+        buttonEdit.Location = new Point(12, 12);
+        buttonEdit.Name = "buttonEdit";
+        buttonEdit.Size = new Size(117, 25);
+        buttonEdit.TabIndex = 1;
+        buttonEdit.Text = "РЕДАКТИРОВАТЬ";
+        buttonEdit.UseVisualStyleBackColor = true;
+        // 
         // FormMap
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(2560, 1440);
         ControlBox = false;
+        Controls.Add(buttonEdit);
         Controls.Add(pictureBoxMain);
         FormBorderStyle = FormBorderStyle.None;
         MaximizeBox = false;
@@ -64,4 +76,5 @@ partial class FormMap
     #endregion
 
     private PictureBox pictureBoxMain;
+    private Button buttonEdit;
 }

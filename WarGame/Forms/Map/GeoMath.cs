@@ -1,17 +1,70 @@
 ﻿using OpenCvSharp;
-using SharpDX.Mathematics.Interop;
+//using SharpDX.Mathematics.Interop;
 
 namespace WarGame.Forms.Map;
 
 public class GeoMath
 {
     public static double TileSize { get; set; } = 256.0d;
-    public static double LonXForTile(int z, int x, int _) // Долгота (x от нулевого меридиана, Longitude)
+
+    public static SharpDX.Mathematics.Interop.RawVector2 GpsPositionToScreen(SharpDx dx, PointF f)
+    {
+        var tileSize = (int)(TileSize + FormMap.GlobalPos.ZoomLocal * TileSize);
+        var tileObjectX = TileXForLon(FormMap.GlobalPos.Zoom, f.X);
+        var tileObjectY = TileYForLat(FormMap.GlobalPos.Zoom, f.Y);
+        var tileCenterX = TileXForLon(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LonX);
+        var tileCenterY = TileYForLat(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY);
+        var posX = (tileObjectX - tileCenterX) * tileSize;
+        var posY = (tileObjectY - tileCenterY) * tileSize;
+        var tileCenter = GetTileCoord(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LonX, FormMap.GlobalPos.LatY);
+        var deltaSx = tileCenter.Left - FormMap.GlobalPos.LonX;
+        var deltaSy = tileCenter.Top - FormMap.GlobalPos.LatY;
+        var sx = deltaSx / GetLenXForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize;
+        var sy = deltaSy / GetLenYForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize;
+
+        var tileObject = GetTileCoord(FormMap.GlobalPos.Zoom, f.X, f.Y);
+        var objectSx = f.X - tileObject.Left;
+        var objectSy = f.Y - tileObject.Top;
+        var ox = objectSx / GetLenXForOneTile(FormMap.GlobalPos.Zoom, f.Y, f.X) * tileSize;
+        var oy = objectSy / GetLenYForOneTile(FormMap.GlobalPos.Zoom, f.Y, f.X) * tileSize;
+
+        return new SharpDX.Mathematics.Interop.RawVector2(dx.BaseWidth / 2.0f + posX + (float)sx + (float)ox, dx.BaseHeight / 2.0f + posY + (float)sy + (float)oy);
+    }
+
+    public static SharpDX.Mathematics.Interop.RawVector2 ScreenPositionToGps(SharpDx dx, PointF f)
+    {
+        // Размер тайла в пикселях с учетом текущего локального зума
+        var tileSize = (double)(TileSize + FormMap.GlobalPos.ZoomLocal * TileSize);
+        // Смещение координаты от центра экрана
+        var lenX = f.X - dx.BaseWidth / 2.0d;
+        var lenY = f.Y - dx.BaseHeight / 2.0d;
+        var tileSx = (int)(lenX / tileSize); // Смещение тайла точки от центра экрана (в тайлах)
+        var tileSy = (int)(lenY / tileSize); // Смещение тайла точки от центра экрана (в тайлах)
+
+        // Находим номер тайла, на котором стоит центр экрана
+        var tileX = TileXForLon(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LonX);
+        var tileY = TileYForLat(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY);
+
+        // Находим номер тайла, на котором стоит текущая координата
+        var tilePoint = GetTileCoord(FormMap.GlobalPos.Zoom, tileX + tileSx, tileY + tileSy);
+        var deltaScreenX = (tilePoint.Right - tilePoint.Left) / tileSize; // Дельта в Gps координатах для 1 пикселя в текущем масштабе
+        var deltaScreenY = (tilePoint.Bottom - tilePoint.Top) / tileSize; // Дельта в Gps координатах для 1 пикселя в текущем масштабе
+
+        // Находим координату на экране тайла, на котором стоит текущая координата
+        var tileScreenPoint = GpsPositionToScreen(dx, new PointF((float)tilePoint.Left, (float)tilePoint.Top));
+        // Пересчитываем расстояние от левого верхней точки тайла до текущей позиции в пикселях
+        lenX = f.X - tileScreenPoint.X;
+        lenY = f.Y - tileScreenPoint.Y;
+
+        return new SharpDX.Mathematics.Interop.RawVector2((float)(tilePoint.Left + lenX * deltaScreenX), (float)(tilePoint.Top + lenY * deltaScreenY));
+    }
+
+    public static double LonXForTile(double z, int x, int _) // Долгота (x от нулевого меридиана, Longitude)
     {
         var tilesAll = Math.Pow(2, z) / 2.0d;
         return (x / tilesAll - 1.0d) * 180.0d;
     }
-    public static double LatYForTile(int z, int _, int y) // Широта (y от экватора, Latitude)
+    public static double LatYForTile(double z, int _, int y) // Широта (y от экватора, Latitude)
     {
         var a = 6378137.0d;
         var c1 = 0.00335655146887969d;
@@ -26,12 +79,12 @@ public class GeoMath
 
         return f * 180.0d / Math.PI;
     }
-    public static int TileXForLon(int z, double lon) // Долгота (x от нулевого меридиана, Longitude)
+    public static int TileXForLon(double z, double lon) // Долгота (x от нулевого меридиана, Longitude)
     {
         var p = Math.Pow(2, z + 8) / 2.0d;
         return (int)Math.Round(p * (1.0d + lon / 180.0d) / TileSize, MidpointRounding.ToNegativeInfinity);
     }
-    public static int TileYForLat(int z, double lat) // Широта (y от экватора, Latitude)
+    public static int TileYForLat(double z, double lat) // Широта (y от экватора, Latitude)
     {
         var p = Math.Pow(2, z + 8) / 2.0d;
         var beta = Math.PI * lat / 180.0d;
@@ -42,14 +95,14 @@ public class GeoMath
         return (int)Math.Round(p * (1.0d - Math.Log(gama) / Math.PI) / TileSize, MidpointRounding.ToNegativeInfinity);
     }
 
-    public static double GetLenXForOneTile(int z, double lat, double lon)
+    public static double GetLenXForOneTile(double z, double lat, double lon)
     {
         var x0 = TileXForLon(z, lon);
         var y0 = TileYForLat(z, lat);
         return LonXForTile(z, x0 + 1, y0) - LonXForTile(z, x0, y0);
     }
 
-    public static double GetLenYForOneTile(int z, double lat, double lon)
+    public static double GetLenYForOneTile(double z, double lat, double lon)
     {
         var x0 = TileXForLon(z, lon);
         var y0 = TileYForLat(z, lat);
@@ -97,7 +150,7 @@ public class GeoMath
         return x >= tx - FormMap.Map.VisibleTilesCountX / 2 && x <= tx + FormMap.Map.VisibleTilesCountX / 2 && y >= ty - FormMap.Map.VisibleTilesCountY / 2 && y <= ty + FormMap.Map.VisibleTilesCountY / 2;
     }
 
-    public static RawVector2 GetScreenSeek(double lonX, double latY)
+    public static SharpDX.Mathematics.Interop.RawVector2 GetScreenSeek(double lonX, double latY)
     {
         var z = FormMap.GlobalPos.Zoom;
         var tileSize = (int)(TileSize + FormMap.GlobalPos.ZoomLocal * TileSize);
@@ -115,6 +168,6 @@ public class GeoMath
         var deltaSy = latY - sy1;
         var sx = deltaSx / GetLenXForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize + tileSize * (x0 - x1);
         var sy = deltaSy / GetLenYForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize + tileSize * (y0 - y1);
-        return new RawVector2((float)sx, (float)sy);
+        return new SharpDX.Mathematics.Interop.RawVector2((float)sx, (float)sy);
     }
 }

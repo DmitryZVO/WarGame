@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using SharpDX.Direct2D1;
+using SharpDX.Mathematics.Interop;
+using System.Text.Json;
 using WarGame.Model;
 using WarGame.Remote;
 
@@ -77,54 +79,128 @@ public class StaticObjects
 
 public class StaticObject
 {
+    public class Coord
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
+        public bool Lighting { get; set; } // подсветка
+        public bool Selected { get; set; } // объект выбран
+        public void CheckSelecting(SharpDx dx, RawRectangleF rect)
+        {
+            if (!Selected) return;
+            dx.Rt?.DrawRectangle(rect, dx.Brushes.RoiYellow03, 3.0f);
+        }
+        public void CheckLighting(SharpDx dx, RawRectangleF rect)
+        {
+            Lighting = Control.MousePosition.X <= rect.Right &&
+                    Control.MousePosition.X >= rect.Left &&
+                    Control.MousePosition.Y <= rect.Bottom &&
+                    Control.MousePosition.Y >= rect.Top;
+            if (!Lighting) return;
+            dx.Rt?.DrawRectangle(rect, dx.Brushes.RoiGray03, 3.0f);
+        }
+    }
+
+    public void CheckSelecting(SharpDx dx, RawRectangleF rect)
+    {
+        if (!Selected) return;
+        dx.Rt?.DrawRectangle(rect, dx.Brushes.RoiYellow03, 3.0f);
+    }
+
+    public bool Lighting { get; set; } // подсветка
+    public bool Selected { get; set; } // объект выбран
     public int Id { get; set; }
     public int Type { get; set; }
-    public double LonX { get; set; }
-    public double LatY { get; set; }
+    public List<Coord> Coords { get; set; } = [];
     public bool Visible { get; set; }
     public string Name { get; set; } = string.Empty;
+
+    public void CheckLighting(SharpDx dx, RawRectangleF rect)
+    {
+        Lighting = Control.MousePosition.X <= rect.Right &&
+                Control.MousePosition.X >= rect.Left &&
+                Control.MousePosition.Y <= rect.Bottom &&
+                Control.MousePosition.Y >= rect.Top;
+        if (!Lighting) return;
+        dx.Rt?.DrawRectangle(rect, dx.Brushes.RoiGray03, 3.0f);
+    }
 
     public void Draw(SharpDx dx)
     {
         if (dx.Rt == null) return;
 
-        if (!GeoMath.TileIsVisible(FormMap.GlobalPos.Zoom, LonX, LatY)) return;
-        var tileSize = (int)(GeoMath.TileSize + FormMap.GlobalPos.ZoomLocal * GeoMath.TileSize);
-        var tileObjectX = GeoMath.TileXForLon(FormMap.GlobalPos.Zoom, LonX);
-        var tileObjectY = GeoMath.TileYForLat(FormMap.GlobalPos.Zoom, LatY);
-        var tileCenterX = GeoMath.TileXForLon(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LonX);
-        var tileCenterY = GeoMath.TileYForLat(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY);
-        var posX = (tileObjectX - tileCenterX) * tileSize;
-        var posY = (tileObjectY - tileCenterY) * tileSize;
-        var tileCenter = GeoMath.GetTileCoord(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LonX, FormMap.GlobalPos.LatY);
-        var deltaSx = tileCenter.Left - FormMap.GlobalPos.LonX;
-        var deltaSy = tileCenter.Top - FormMap.GlobalPos.LatY;
-        var sx = deltaSx / GeoMath.GetLenXForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize;
-        var sy = deltaSy / GeoMath.GetLenYForOneTile(FormMap.GlobalPos.Zoom, FormMap.GlobalPos.LatY, FormMap.GlobalPos.LonX) * tileSize;
-
-        var tileObject = GeoMath.GetTileCoord(FormMap.GlobalPos.Zoom, LonX, LatY);
-        var objectSx = LonX - tileObject.Left;
-        var objectSy = LatY - tileObject.Top;
-        var ox = objectSx / GeoMath.GetLenXForOneTile(FormMap.GlobalPos.Zoom, LatY, LonX) * tileSize;
-        var oy = objectSy / GeoMath.GetLenYForOneTile(FormMap.GlobalPos.Zoom, LatY, LonX) * tileSize;
-
-        var pos = new SharpDX.Mathematics.Interop.RawVector2(dx.BaseWidth / 2.0f + posX + (float)sx + (float)ox, dx.BaseHeight / 2.0f + posY + (float)sy + (float)oy);
-        switch (Type)
+        if (Type < 10) // Одиночные объекты
         {
-            case 0: // город
-                {
-                    var radius = 20.0f;
-                    dx.Rt.DrawBitmap(StaticObjects.BitmapCity ?? ((SharpDxMap)dx).BitmapNone, new SharpDX.Mathematics.Interop.RawRectangleF(pos.X - radius, pos.Y - radius, pos.X + radius, pos.Y + radius), 0.8f, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
-                    dx.Rt.DrawText($"{Name}", dx.Brushes.SysText20, new SharpDX.Mathematics.Interop.RawRectangleF(pos.X + radius, pos.Y - 0.5f * radius, pos.X + 100 * radius, pos.Y + 0.5f * radius), dx.Brushes.SysTextBrushYellow);
-                    break;
-                }
-            case 1: // метка
-                {
-                    var radius = 20.0f;
-                    dx.Rt.DrawBitmap(StaticObjects.BitmapFlag ?? ((SharpDxMap)dx).BitmapNone, new SharpDX.Mathematics.Interop.RawRectangleF(pos.X, pos.Y - 2 * radius, pos.X + 2 * radius, pos.Y - 0), 0.8f, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
-                    dx.Rt.DrawText($"{Name}", dx.Brushes.SysText20, new SharpDX.Mathematics.Interop.RawRectangleF(pos.X + 2*radius, pos.Y - 1.5f * radius, pos.X + 100 * radius, pos.Y + 0.5f * radius), dx.Brushes.SysTextBrushYellow);
-                    break;
-                }
-        };
+            if (Coords.Count <= 0) return;
+            if (!GeoMath.TileIsVisible(FormMap.GlobalPos.Zoom, Coords[0].X, Coords[0].Y)) return;
+            var pos = GeoMath.GpsPositionToScreen(dx, new PointF(Coords[0].X, Coords[0].Y));
+            switch (Type)
+            {
+                case 0: // город
+                    {
+                        var radius = 20.0f;
+                        var rectBmp = new SharpDX.Mathematics.Interop.RawRectangleF(pos.X - radius, pos.Y - radius, pos.X + radius, pos.Y + radius);
+                        dx.Rt.DrawBitmap(StaticObjects.BitmapCity ?? ((SharpDxMap)dx).BitmapNone, rectBmp, 0.8f, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
+                        dx.Rt.DrawText($"{Name}", dx.Brushes.SysText20, new SharpDX.Mathematics.Interop.RawRectangleF(pos.X + radius, pos.Y - 0.5f * radius, pos.X + 100 * radius, pos.Y + 0.5f * radius), dx.Brushes.SysTextBrushYellow);
+                        CheckLighting(dx, rectBmp);
+                        CheckSelecting(dx, rectBmp);
+                        break;
+                    }
+                case 1: // метка
+                    {
+                        var radius = 20.0f;
+                        var rectBmp = new SharpDX.Mathematics.Interop.RawRectangleF(pos.X - radius, pos.Y - radius, pos.X + radius, pos.Y + radius);
+                        dx.Rt.DrawBitmap(StaticObjects.BitmapFlag ?? ((SharpDxMap)dx).BitmapNone, rectBmp, 0.8f, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
+                        dx.Rt.DrawText($"{Name}", dx.Brushes.SysText20, new SharpDX.Mathematics.Interop.RawRectangleF(pos.X + radius, pos.Y - 0.5f * radius, pos.X + 100 * radius, pos.Y + 0.5f * radius), dx.Brushes.SysTextBrushYellow);
+                        CheckLighting(dx, rectBmp);
+                        CheckSelecting(dx, rectBmp);
+                        break;
+                    }
+            }
+            return;
+        }
+        if (Type <= 10) // Полигоны
+        {
+            var radius = 8.0f;
+            if (Coords.Count <= 2) return;
+            var vertex = new List<SharpDX.Mathematics.Interop.RawVector2>();
+            var inDisplay = false;
+            foreach (var c in Coords)
+            {
+                var v = GeoMath.GpsPositionToScreen(dx, new PointF(c.X, c.Y));
+                if (!inDisplay && GeoMath.TileIsVisible(FormMap.GlobalPos.Zoom, c.X, c.Y)) inDisplay = true;
+                vertex.Add(new SharpDX.Mathematics.Interop.RawVector2(v.X, v.Y));
+                var rectVert = new RawRectangleF(v.X - radius, v.Y - radius, v.X + radius, v.Y + radius);
+                c.CheckLighting(dx, rectVert);
+                if (c.Selected) c.CheckSelecting(dx, rectVert);
+            }
+            if (!inDisplay) return;
+
+            switch (Type)
+            {
+                case 10: // разрешенный рабочий полигон
+                    {
+                        using var geo = new PathGeometry(dx.D2dFactory);
+                        var mainPolygon = geo.Open();
+                        mainPolygon.BeginFigure(vertex[0], new FigureBegin());
+                        for (var i=1;i<vertex.Count;i++)
+                        {
+                            mainPolygon.AddLine(vertex[i]);
+                        }
+                        mainPolygon.AddLine(vertex[0]);
+                        mainPolygon.EndFigure(new FigureEnd());
+                        mainPolygon.Close();
+                        dx.Rt?.FillGeometry(geo, dx.Brushes.RoiBlue02);
+                        dx.Rt?.DrawGeometry(geo, dx.Brushes.RoiGreen03, 5.0f);
+
+                        foreach (var v in vertex)
+                        {
+                            dx.Rt?.FillEllipse(new Ellipse(v, radius, radius), dx.Brushes.RoiGreen03);
+                        }
+                        break;
+                    }
+            }
+            return;
+        }
     }
 }

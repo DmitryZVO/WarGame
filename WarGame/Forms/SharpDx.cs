@@ -22,7 +22,7 @@ public abstract class SharpDx : IDisposable
     protected SwapChain? SwapChain;
     protected readonly Surface D2dSurface;
     protected readonly SharpDX.DXGI.Factory D2DFactory;
-    protected readonly SharpDX.Direct2D1.Factory D2dFactory;
+    public readonly SharpDX.Direct2D1.Factory D2dFactory;
     public RenderTarget? Rt;
     protected readonly Texture2D BackBuffer;
     protected readonly RenderTargetView RenderView;
