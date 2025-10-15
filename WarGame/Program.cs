@@ -16,7 +16,6 @@ internal static class Program
             return;
         }
 
-
         Core.Init();
         Application.Run(Core.FrmMap!);
         Core.DeInit();

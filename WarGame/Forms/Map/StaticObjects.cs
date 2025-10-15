@@ -1,5 +1,6 @@
 ﻿using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
+using System.Text;
 using System.Text.Json;
 using WarGame.Model;
 using WarGame.Remote;
@@ -10,7 +11,7 @@ public class StaticObjects
 {
     public static SharpDX.Direct2D1.Bitmap? BitmapCity { get; set; }
     public static SharpDX.Direct2D1.Bitmap? BitmapFlag { get; set; }
-    public DateTime TimeStamp { get; set; } = DateTime.MinValue;
+    public long TimeStamp { get; set; } = 0;
     public List<StaticObject> Items { get; set; } = [];
 
     public void Draw(SharpDx dx)
@@ -46,6 +47,25 @@ public class StaticObjects
             return false;
         }
         return true;
+    }
+
+    public async Task<bool> ChangeAsync(CancellationToken ct = default)
+    {
+        try
+        {
+            using var web = new HttpClient();
+            web.BaseAddress = new Uri(Core.Config.ServerUrl);
+            var jsonString = JsonSerializer.Serialize(this);
+            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            content.Headers.ContentLength = jsonString.Length;
+            using var answ = await web.PostAsync($"SetStaticObjects?id=0", content, ct);
+            return answ.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     public async void Init(SharpDx dx, CancellationToken ct = default)

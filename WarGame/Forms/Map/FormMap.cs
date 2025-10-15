@@ -1,11 +1,11 @@
 using WarGame.Model;
+using WarGame.Remote;
 using WarGame.Resources;
 
 namespace WarGame.Forms.Map;
 
 public sealed partial class FormMap : Form
 {
-    //public static GeoPosition GlobalPos { get; private set; } = new();
     public static GeoMap Map { get; private set; } = new();
     public static StaticObjects ObjectsStatic { get; private set; } = new();
 
@@ -18,9 +18,9 @@ public sealed partial class FormMap : Form
     private bool _lastMouseRight;
     private bool _lastMapMove;
 
-    private readonly ContextMenuStrip _contextMenuMap = new();
-    private readonly ContextMenuStrip _contextMenuVertex = new();
-    private readonly ContextMenuStrip _contextMenuStaticObject = new();
+    private readonly ContextMenuStrip _contextMenuMapEdit = new();
+    private readonly ContextMenuStrip _contextMenuVertexEdit = new();
+    private readonly ContextMenuStrip _contextMenuStaticObjectEdit = new();
 
     private void UpdateLastMouseState()
     {
@@ -55,20 +55,72 @@ public sealed partial class FormMap : Form
         var item = new ToolStripMenuItem("Добавить");
         item.DropDownItems.Add("Метка");
         item.DropDownItems.Add("Полигон");
-        item.DropDownItems.Add("Город");
-        _contextMenuMap.Items.Add(item);
+        item.DropDownItems.Add("Населенный пункт");
+        _contextMenuMapEdit.Items.Add(item);
 
-        _contextMenuVertex.Items.Add("Добавить точку");
-        _contextMenuVertex.Items.Add("Удалить точку");
+        _contextMenuVertexEdit.Items.Add("Добавить вершину", null, (_, _) => { AddVertex(); });
+        _contextMenuVertexEdit.Items.Add("Удалить вершину", null, (_, _) => { DeleteVertex(); });
 
-        _contextMenuStaticObject.Items.Add("Подробная информация");
-        _contextMenuStaticObject.Items.Add("Удалить");
+        _contextMenuStaticObjectEdit.Items.Add("Удалить объект", null, (_, _) => { DeleteStaticObject(); });
 
         UpdateLastMouseState();
     }
 
-    private void ButtonEdit_Click(object? sender, EventArgs e)
+    private static void DeleteStaticObject()
     {
+        ObjectsStatic.Items.RemoveAll(x => x.Selected);
+        Map.EditNeedSave = true;
+    }
+
+    private static void DeleteVertex()
+    {
+        var poly = ObjectsStatic.Items.Find(x => x.Coords.Any(y => y.Selected));
+        if (poly == null) return;
+        if (poly.Coords.Count <= 3)
+        {
+            MessageBox.Show("Полигон не может содержать менее трех вершин!", "ОШИБКА", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+        poly.Coords.RemoveAll(x => x.Selected);
+        Map.EditNeedSave = true;
+    }
+
+    private static void AddVertex()
+    {
+        var poly = ObjectsStatic.Items.Find(x => x.Coords.Any(y => y.Selected));
+        if (poly == null) return;
+        var vert = poly.Coords.FindIndex(x => x.Selected);
+        if (vert <0) return;
+        poly.Coords.ForEach(x => x.Selected = false);
+        poly.Coords.ForEach(x => x.Lighting = false);
+        poly.Coords.Insert(vert+1, new StaticObject.Coord() { Selected = true, Lighting = false, X = poly.Coords[vert].X, Y = poly.Coords[vert].Y });
+        Map.EditNeedSave = true;
+    }
+
+    private async void ButtonEdit_Click(object? sender, EventArgs e)
+    {
+        if (!Map.EditMode) Map.EditNeedSave = false;
+        if (Map.EditMode && Map.EditNeedSave)
+        {
+            var quest = MessageBox.Show("Сохранить изменения?", "СОХРАНИТЬ", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (quest == DialogResult.Yes) // Сохраняем изменения
+            {
+                if (!await ObjectsStatic.ChangeAsync())
+                {
+                    MessageBox.Show("Сохранение не удалось!", "ОШИБКА", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            else if (quest == DialogResult.No) // Не сохраняем изменения
+            {
+                ObjectsStatic.TimeStamp = 0;
+            }
+            else
+            {
+                return;
+            }
+            Map.EditNeedSave = false;
+        }
         Map.EditMode = !Map.EditMode;
         buttonEdit.BackColor = Map.EditMode ? Color.LightGreen : Color.White;
     }
@@ -76,6 +128,9 @@ public sealed partial class FormMap : Form
     private void PictureBoxMain_MouseWheel(object? sender, MouseEventArgs e)
     {
         var zoom = Core.Config.Map.ZoomLocal + Math.Sign(e.Delta) * 0.2d;
+        var mouseScreenX = MousePosition.X;
+        var mouseScreenY = MousePosition.Y;
+        var mouseGps = GeoMath.ScreenPositionToGps(_dx, mouseScreenX, mouseScreenY);
         switch (Core.Config.Map.Zoom)
         {
             case 6:
@@ -145,6 +200,10 @@ public sealed partial class FormMap : Form
             default:
                 break;
         }
+        var mouseNewPosScreen = GeoMath.GpsPositionToScreen(_dx, mouseGps.X, mouseGps.Y);
+        var deltaX = mouseNewPosScreen.X - mouseScreenX;
+        var deltaY = mouseNewPosScreen.Y - mouseScreenY;
+        MoveMapOnDeltaScreen(deltaX, deltaY);
         UpdateLastMouseState();
     }
 
@@ -159,27 +218,42 @@ public sealed partial class FormMap : Form
         {
             var buttonOk = false;
             // Есть выделенный объект
-            var obj = ObjectsStatic.Items.Find(x => x.Lighting);
-            if (!buttonOk && obj != null)
+            var obj = ObjectsStatic.Items.Find(x => x.Selected);
+            if (!buttonOk && obj != null && obj.Lighting)
             {
-                _contextMenuStaticObject.Show(new Point(_lastMouseX, _lastMouseY));
+                if (Map.EditMode)
+                {
+                    _contextMenuStaticObjectEdit.Show(new Point(_lastMouseX, _lastMouseY));
+                }
                 buttonOk = true;
             }
-            obj = ObjectsStatic.Items.Find(x => x.Coords.Any(y => y.Lighting));
-            var vert = obj?.Coords.Find(x => x.Lighting);
+            obj = ObjectsStatic.Items.Find(x => x.Coords.Any(y => y.Selected));
+            var vert = obj?.Coords.Find(x => x.Selected);
             //Есть выделенная вершина
-            if (!buttonOk && vert != null)
+            if (!buttonOk && vert != null && vert.Lighting)
             {
-                _contextMenuVertex.Show(new Point(_lastMouseX, _lastMouseY));
+                if (Map.EditMode)
+                {
+                    _contextMenuVertexEdit.Show(new Point(_lastMouseX, _lastMouseY));
+                }
                 buttonOk = true;
             }
             //Нет выделенных объектов
-            if (!buttonOk)
+            if (!buttonOk && !ObjectsStatic.Items.Any(x => x.Coords.Any(y => y.Lighting)) && !ObjectsStatic.Items.Any(x => x.Lighting))
             {
-                _contextMenuMap.Show(new Point(_lastMouseX, _lastMouseY));
+                if (Map.EditMode)
+                {
+                    _contextMenuMapEdit.Show(new Point(_lastMouseX, _lastMouseY));
+                }
             }
         }
         UpdateLastMouseState();
+    }
+
+    private static void MoveMapOnDeltaScreen(double dx, double dy)
+    {
+        Core.Config.Map.LonX += (dx / GeoMath.TileSize) * GeoMath.GetLenXForOneTile(Core.Config.Map.Zoom + Core.Config.Map.ZoomLocal, Core.Config.Map.LatY, Core.Config.Map.LonX);
+        Core.Config.Map.LatY += (dy / GeoMath.TileSize) * GeoMath.GetLenYForOneTile(Core.Config.Map.Zoom + Core.Config.Map.ZoomLocal, Core.Config.Map.LatY, Core.Config.Map.LonX);
     }
 
     private void PictureBoxMain_MouseMove(object? sender, MouseEventArgs e)
@@ -190,8 +264,7 @@ public sealed partial class FormMap : Form
             _lastMapMove = true;
             var dX = _lastMouseX - e.X;
             var dY = _lastMouseY - e.Y;
-            Core.Config.Map.LonX += (dX / GeoMath.TileSize) * GeoMath.GetLenXForOneTile(Core.Config.Map.Zoom + Core.Config.Map.ZoomLocal, Core.Config.Map.LatY, Core.Config.Map.LonX);
-            Core.Config.Map.LatY += (dY / GeoMath.TileSize) * GeoMath.GetLenYForOneTile(Core.Config.Map.Zoom + Core.Config.Map.ZoomLocal, Core.Config.Map.LatY, Core.Config.Map.LonX);
+            MoveMapOnDeltaScreen(dX, dY);
         }
 
         // Перемещение объектов
@@ -203,16 +276,24 @@ public sealed partial class FormMap : Form
                 var gpsPosNew = GeoMath.ScreenPositionToGps(_dx, e.X, e.Y);
                 if (obj.Selected)
                 {
-                    obj.Coords[0].X = gpsPosNew.X;
-                    obj.Coords[0].Y = gpsPosNew.Y;
+                    if (Map.EditMode)
+                    {
+                        obj.Coords[0].X = gpsPosNew.X;
+                        obj.Coords[0].Y = gpsPosNew.Y;
+                        Map.EditNeedSave = true;
+                    }
                 }
                 else
                 {
                     var vert = obj.Coords.Find(x => x.Selected);
                     if (vert != null)
                     {
-                        vert.X = gpsPosNew.X;
-                        vert.Y = gpsPosNew.Y;
+                        if (Map.EditMode)
+                        {
+                            vert.X = gpsPosNew.X;
+                            vert.Y = gpsPosNew.Y;
+                            Map.EditNeedSave = true;
+                        }
                     }
                 }
             }

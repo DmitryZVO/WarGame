@@ -70,6 +70,7 @@ public class GeoMap
 {
     private readonly Tiles _tiles = new();
     public bool EditMode { get; set; }
+    public bool EditNeedSave { get; set; }
     public bool TestMode { get; set; }
     public int VisibleTilesCountX { get; set; } = 10; // Ширина сетки тайлов для отрисовки на экран
     public int VisibleTilesCountY { get; set; } = 6; // Высота сетки тайлов для отрисовки на экран
