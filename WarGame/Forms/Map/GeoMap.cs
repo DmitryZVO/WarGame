@@ -74,6 +74,20 @@ public class GeoMap
     public bool TestMode { get; set; }
     public int VisibleTilesCountX { get; set; } = 10; // Ширина сетки тайлов для отрисовки на экран
     public int VisibleTilesCountY { get; set; } = 6; // Высота сетки тайлов для отрисовки на экран
+    public ContextMenuStrip? ContextMenuEdit { get; set; } // Контекстное меню при редактировании
+
+    public GeoMap()
+    {
+        ContextMenuEdit = new();
+
+        // Создаем менюшки для карты
+        var item = new ToolStripMenuItem("Добавить");
+        item.DropDownItems.Add("Метка", null, (_, _) => { new StaticObjPoint().Add(FormMap.MousePointLonX, FormMap.MousePointLatY); });
+        item.DropDownItems.Add("Полигон", null, (_, _) => { new StaticObjPoly().Add(FormMap.MousePointLonX, FormMap.MousePointLatY); });
+        item.DropDownItems.Add("Населенный пункт", null, (_, _) => { new StaticObjCity().Add(FormMap.MousePointLonX, FormMap.MousePointLatY); });
+        item.DropDownItems.Add("Антенна", null, (_, _) => { new StaticObjAntenna().Add(FormMap.MousePointLonX, FormMap.MousePointLatY); });
+        ContextMenuEdit.Items.Add(item);
+    }
 
     public void Draw(SharpDx dx)
     {
@@ -113,7 +127,7 @@ public class GeoMap
 
             rect = new RawRectangleF(dx.BaseWidth * 0.870f, dx.BaseHeight * 0.013f, dx.BaseWidth * 0.999f, dx.BaseHeight * 0.023f);
             dx.Rt.FillRectangle(rect, dx.Brushes.RoiNone);
-            var posMouse = GeoMath.ScreenPositionToGps(dx, Control.MousePosition.X, Control.MousePosition.Y);
+            var posMouse = GeoMath.ScreenPositionToGps(dx, Control.MousePosition.X - Core.FrmMap!.Location.X, Control.MousePosition.Y - Core.FrmMap!.Location.Y);
             dx.Rt.DrawText($"{posMouse.Y:0.000000}, {posMouse.X:0.000000}", dx.Brushes.SysText14, rect, dx.Brushes.SysTextBrushYellow);
         }
     }

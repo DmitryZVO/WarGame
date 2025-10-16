@@ -38,7 +38,7 @@ public abstract class SharpDx : IDisposable
     public int BaseWidth;
     public int BaseHeight;
 
-    protected RawMatrix3x2 ZeroTransform = new(1, 0, 0, 1, 0, 0);
+    public RawMatrix3x2 ZeroTransform = new(1, 0, 0, 1, 0, 0);
     private bool _closed;
 
     public virtual void FrameUpdate(Mat frame)
@@ -57,7 +57,7 @@ public abstract class SharpDx : IDisposable
         RenderCallback();
     }
 
-    protected void TransformSet(RawMatrix3x2 matrix)
+    public void TransformSet(RawMatrix3x2 matrix)
     {
         lock (this)
         {
@@ -65,7 +65,7 @@ public abstract class SharpDx : IDisposable
         }
     }
 
-    protected RawMatrix3x2 TransformGet()
+    public RawMatrix3x2 TransformGet()
     {
         lock (this)
         {

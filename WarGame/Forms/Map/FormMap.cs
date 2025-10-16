@@ -1,5 +1,4 @@
 using WarGame.Model;
-using WarGame.Remote;
 using WarGame.Resources;
 
 namespace WarGame.Forms.Map;
@@ -9,36 +8,34 @@ public sealed partial class FormMap : Form
     public static GeoMap Map { get; private set; } = new();
     public static StaticObjects ObjectsStatic { get; private set; } = new();
 
-    private Point _posFromDisplays;
     private readonly SharpDx _dx;
 
-    private int _lastMouseX = 0;
-    private int _lastMouseY = 0;
-    private bool _lastMouseLeft;
-    private bool _lastMouseRight;
-    private bool _lastMapMove;
+    public static float MousePointLonX { get; set; }
+    public static float MousePointLatY { get; set; }
+    public static int MouseLastX { get; set; }
+    public static int MouseLastY { get; set; }
+    public static bool MouseLastLeft { get; set; }
+    public static bool MouseLastRight { get; set; }
+    public static bool MapMove { get; set; }
 
-    private readonly ContextMenuStrip _contextMenuMapEdit = new();
-    private readonly ContextMenuStrip _contextMenuVertexEdit = new();
-    private readonly ContextMenuStrip _contextMenuStaticObjectEdit = new();
-
-    private void UpdateLastMouseState()
+    private static void UpdateLastMouseState()
     {
-        _lastMouseX = MousePosition.X;
-        _lastMouseY = MousePosition.Y;
-        _lastMouseLeft = MouseButtons == MouseButtons.Left;
-        _lastMouseRight = MouseButtons == MouseButtons.Right;
+        if (Core.FrmMap == null) return;
+        MouseLastX = (MousePosition.X - Core.FrmMap!.Location.X);
+        MouseLastY = (MousePosition.Y - Core.FrmMap!.Location.Y);
+        MouseLastLeft = MouseButtons == MouseButtons.Left;
+        MouseLastRight = MouseButtons == MouseButtons.Right;
     }
 
     public FormMap(Point pos, int fps)
     {
         InitializeComponent();
 
-        _posFromDisplays = pos;
+        StartPosition = FormStartPosition.Manual; // Ручная позиция окна
+        Location = pos; // Поместить в нужный монитор
 
         _dx = new SharpDxMap(pictureBoxMain, fps);
 
-        //GlobalPos.Init();
         ObjectsStatic.Init(_dx);
 
         Icon = EmbeddedResources.Get<Icon>("Sprites.WarGame.ico");
@@ -51,50 +48,7 @@ public sealed partial class FormMap : Form
         pictureBoxMain.MouseWheel += PictureBoxMain_MouseWheel;
         buttonEdit.Click += ButtonEdit_Click;
 
-        // Создаем менюшки для карты
-        var item = new ToolStripMenuItem("Добавить");
-        item.DropDownItems.Add("Метка");
-        item.DropDownItems.Add("Полигон");
-        item.DropDownItems.Add("Населенный пункт");
-        _contextMenuMapEdit.Items.Add(item);
-
-        _contextMenuVertexEdit.Items.Add("Добавить вершину", null, (_, _) => { AddVertex(); });
-        _contextMenuVertexEdit.Items.Add("Удалить вершину", null, (_, _) => { DeleteVertex(); });
-
-        _contextMenuStaticObjectEdit.Items.Add("Удалить объект", null, (_, _) => { DeleteStaticObject(); });
-
         UpdateLastMouseState();
-    }
-
-    private static void DeleteStaticObject()
-    {
-        ObjectsStatic.Items.RemoveAll(x => x.Selected);
-        Map.EditNeedSave = true;
-    }
-
-    private static void DeleteVertex()
-    {
-        var poly = ObjectsStatic.Items.Find(x => x.Coords.Any(y => y.Selected));
-        if (poly == null) return;
-        if (poly.Coords.Count <= 3)
-        {
-            MessageBox.Show("Полигон не может содержать менее трех вершин!", "ОШИБКА", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return;
-        }
-        poly.Coords.RemoveAll(x => x.Selected);
-        Map.EditNeedSave = true;
-    }
-
-    private static void AddVertex()
-    {
-        var poly = ObjectsStatic.Items.Find(x => x.Coords.Any(y => y.Selected));
-        if (poly == null) return;
-        var vert = poly.Coords.FindIndex(x => x.Selected);
-        if (vert <0) return;
-        poly.Coords.ForEach(x => x.Selected = false);
-        poly.Coords.ForEach(x => x.Lighting = false);
-        poly.Coords.Insert(vert+1, new StaticObject.Coord() { Selected = true, Lighting = false, X = poly.Coords[vert].X, Y = poly.Coords[vert].Y });
-        Map.EditNeedSave = true;
     }
 
     private async void ButtonEdit_Click(object? sender, EventArgs e)
@@ -128,8 +82,8 @@ public sealed partial class FormMap : Form
     private void PictureBoxMain_MouseWheel(object? sender, MouseEventArgs e)
     {
         var zoom = Core.Config.Map.ZoomLocal + Math.Sign(e.Delta) * 0.2d;
-        var mouseScreenX = MousePosition.X;
-        var mouseScreenY = MousePosition.Y;
+        var mouseScreenX = (MousePosition.X - Core.FrmMap!.Location.X);
+        var mouseScreenY = (MousePosition.Y - Core.FrmMap!.Location.Y);
         var mouseGps = GeoMath.ScreenPositionToGps(_dx, mouseScreenX, mouseScreenY);
         switch (Core.Config.Map.Zoom)
         {
@@ -209,7 +163,7 @@ public sealed partial class FormMap : Form
 
     private void PictureBoxMain_MouseUp(object? sender, MouseEventArgs e)
     {
-        if (_lastMapMove) return; // Было движение карты, игнорируем любые нажатия
+        if (MapMove) return; // Было движение карты, игнорируем любые нажатия
 
         if (e.Button == MouseButtons.Left)
         {
@@ -223,7 +177,7 @@ public sealed partial class FormMap : Form
             {
                 if (Map.EditMode)
                 {
-                    _contextMenuStaticObjectEdit.Show(new Point(_lastMouseX, _lastMouseY));
+                    obj.ContextMenuEdit?.Show(MousePosition);
                 }
                 buttonOk = true;
             }
@@ -234,7 +188,7 @@ public sealed partial class FormMap : Form
             {
                 if (Map.EditMode)
                 {
-                    _contextMenuVertexEdit.Show(new Point(_lastMouseX, _lastMouseY));
+                    vert.ContextMenuEdit?.Show(MousePosition);
                 }
                 buttonOk = true;
             }
@@ -243,7 +197,10 @@ public sealed partial class FormMap : Form
             {
                 if (Map.EditMode)
                 {
-                    _contextMenuMapEdit.Show(new Point(_lastMouseX, _lastMouseY));
+                    var mouseGps = GeoMath.ScreenPositionToGps(_dx, MousePosition.X - Location.X, MousePosition.Y - Location.Y);
+                    MousePointLonX = mouseGps.X;
+                    MousePointLatY = mouseGps.Y;
+                    Map.ContextMenuEdit?.Show(MousePosition);
                 }
             }
         }
@@ -259,11 +216,11 @@ public sealed partial class FormMap : Form
     private void PictureBoxMain_MouseMove(object? sender, MouseEventArgs e)
     {
         // Перемещение карты
-        if (e.Button == MouseButtons.Right && e.Button != MouseButtons.Left && _lastMouseRight) 
+        if (e.Button == MouseButtons.Right && e.Button != MouseButtons.Left && MouseLastRight) 
         {
-            _lastMapMove = true;
-            var dX = _lastMouseX - e.X;
-            var dY = _lastMouseY - e.Y;
+            MapMove = true;
+            var dX = MouseLastX - e.X;
+            var dY = MouseLastY - e.Y;
             MoveMapOnDeltaScreen(dX, dY);
         }
 
@@ -303,7 +260,7 @@ public sealed partial class FormMap : Form
 
     private void PictureBoxMain_MouseDown(object? sender, MouseEventArgs e)
     {
-        _lastMapMove = false;
+        MapMove = false;
         // Левая кнопка мыши
         if (e.Button == MouseButtons.Left)
         {
@@ -338,9 +295,6 @@ public sealed partial class FormMap : Form
 
     private void FormShown(object? sender, EventArgs e)
     {
-        StartPosition = FormStartPosition.Manual; // Ручная позиция окна
-        Location = _posFromDisplays; // Поместить в нужный монитор
-
         _ = _dx.StartAsync(default);
         buttonEdit.BackColor = Color.White;
     }
