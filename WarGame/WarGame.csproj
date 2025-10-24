@@ -36,6 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Forms\Map\FormObjAntennaEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\Telem\FormTelem.cs">
       <SubType>Form</SubType>
     </Compile>

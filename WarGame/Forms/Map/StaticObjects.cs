@@ -1,7 +1,6 @@
 ﻿using OpenCvSharp;
 using SharpDX.Direct2D1;
 using SharpDX.Mathematics.Interop;
-using System.Drawing.Drawing2D;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -66,7 +65,7 @@ public class StaticObjects
             var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             content.Headers.ContentLength = jsonString.Length;
-            using var answ = await web.PostAsync($"SetStaticObjects?id=0", content, ct);
+            using var answ = await web.PostAsync($"SetStaticObjects", content, ct);
             return answ.IsSuccessStatusCode;
         }
         catch
@@ -285,6 +284,7 @@ public class StaticObjPoint : StaticObject // Type=1
     public StaticObjPoint()
     {
         ContextMenuEdit = new();
+        ContextMenuEdit.Items.Add("Изменить", null, (_, _) => { new FormObjEdit().ShowDialog(); });
         ContextMenuEdit.Items.Add("Удалить объект", null, (_, _) => { FormMap.ObjectsStatic.ContextMenuDeleteStaticObj(); });
     }
 
@@ -318,6 +318,7 @@ public class StaticObjCity : StaticObject // Type=0
     public StaticObjCity()
     {
         ContextMenuEdit = new();
+        ContextMenuEdit.Items.Add("Изменить", null, (_, _) => { new FormObjEdit().ShowDialog(); });
         ContextMenuEdit.Items.Add("Удалить объект", null, (_, _) => { FormMap.ObjectsStatic.ContextMenuDeleteStaticObj(); });
     }
 
@@ -411,6 +412,7 @@ public class StaticObjAntenna : StaticObject // Type=2
     public StaticObjAntenna()
     {
         ContextMenuEdit = new();
+        ContextMenuEdit.Items.Add("Изменить", null, (_, _) => { new FormObjAntennaEdit().ShowDialog(); });
         ContextMenuEdit.Items.Add("Удалить объект", null, (_, _) => { FormMap.ObjectsStatic.ContextMenuDeleteStaticObj(); });
     }
 
@@ -436,7 +438,7 @@ public class StaticObjAntenna : StaticObject // Type=2
         var obj = FormMap.ObjectsStatic.Items.Find(x => x.Coords.Any(y => y.Selected));
         if (obj != null) return;
         var id = FormMap.ObjectsStatic.Items.Max(x => x.Id) + 1;
-        FormMap.ObjectsStatic.Items.Add(new StaticObjAntenna { Selected = false, Lighting = false, Name = $"Антенна {id:0}", Type = 2, Id = id, Coords = [new PolyVertex() { X = lonX, Y = latY }] });
+        FormMap.ObjectsStatic.Items.Add(new StaticObjAntenna { Selected = false, Lighting = false, Name = $"Антенна {id:0}", Type = 2, Id = id, Coords = [new PolyVertex() { X = lonX, Y = latY }], Parameters = new Param() { Angle = 0, DrawRadio = true, LenKm = 10, Width = (float)Math.PI/180.0f } });
         FormMap.Map.EditNeedSave = true;
     }
 
