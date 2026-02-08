@@ -27,6 +27,7 @@ public abstract class SharpDx : IDisposable
     protected readonly Texture2D BackBuffer;
     protected readonly RenderTargetView RenderView;
     protected readonly SharpDX.Direct3D11.DeviceContext Context;
+    protected readonly SharpDX.Direct2D1.DeviceContext3 Context3;
     protected readonly SharpDX.DirectWrite.Factory DWf;
     protected readonly PixelFormat PixelFormat;
     protected readonly PictureBox FormTarget;
@@ -177,7 +178,7 @@ public abstract class SharpDx : IDisposable
         FpsTarget = fpsTarget;
         BaseWidth = (int)(surface.Width * scale);
         BaseHeight = (int)(surface.Height * scale);
-        PixelFormat = new PixelFormat(Format.R8G8B8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Ignore);
+        PixelFormat = new PixelFormat(Format.R8G8B8A8_UNorm, SharpDX.Direct2D1.AlphaMode.Premultiplied);
 
         ////////////////// Инициализация Direct3D
         var bufferDescription = new ModeDescription()
@@ -212,6 +213,12 @@ public abstract class SharpDx : IDisposable
         D2DFactory = SwapChain.GetParent<SharpDX.DXGI.Factory>();
         D2DFactory.MakeWindowAssociation(surface.Handle, WindowAssociationFlags.IgnoreAll);
         D2dSurface = BackBuffer.QueryInterface<Surface>();
+
+        var d2dFactory4 = D2dFactory.QueryInterface<SharpDX.Direct2D1.Factory4>();
+        var dxgiDevice = Device.QueryInterface<SharpDX.DXGI.Device>();
+        var d2dDevice3 = new SharpDX.Direct2D1.Device3(d2dFactory4, dxgiDevice);
+        Context3 = new SharpDX.Direct2D1.DeviceContext3(d2dDevice3, DeviceContextOptions.None);
+
         Rt = new RenderTarget(D2dFactory, D2dSurface,
             new RenderTargetProperties
             {
