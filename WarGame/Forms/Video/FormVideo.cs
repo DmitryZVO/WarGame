@@ -32,7 +32,7 @@ public sealed partial class FormVideo : Form
     {
         while (!ct.IsCancellationRequested)
         {
-            await Task.Delay(1000);
+            await Task.Delay(1000, ct);
 
             using var mat0 = GetCameraAsync(0, ct).Result ?? new(); // PTZ
             lock (_dx)
@@ -42,8 +42,8 @@ public sealed partial class FormVideo : Form
             }
 
             using var mat1 = GetCameraAsync(1, ct).Result ?? new(); // Forward
-            Point2f[] srcPoints1 = { new Point2f(0, 100), new Point2f(1280, 100), new Point2f(0, 720), new Point2f(1280, 720) };
-            Point2f[] dstPoints1 = { new Point2f(0, 0), new Point2f(1280, 0), new Point2f(500, 720), new Point2f(780, 720) };
+            Point2f[] srcPoints1 = [new Point2f(0, 100), new Point2f(1280, 100), new Point2f(0, 720), new Point2f(1280, 720)];
+            Point2f[] dstPoints1 = [new Point2f(0, 0), new Point2f(1280, 0), new Point2f(500, 720), new Point2f(780, 720)];
             var matAff1 = Cv2.GetPerspectiveTransform(srcPoints1, dstPoints1);
             using var mat11 = new Mat();
             Cv2.WarpPerspective(mat1, mat11, matAff1, mat11.Size());
@@ -71,8 +71,8 @@ public sealed partial class FormVideo : Form
             }
 
             using var mat4 = GetCameraAsync(4, ct).Result ?? new();
-            Point2f[] srcPoints4 = { new Point2f(0, 100), new Point2f(1280, 100), new Point2f(0, 720), new Point2f(1280, 720) };
-            Point2f[] dstPoints4 = { new Point2f(0, 0), new Point2f(1280, 0), new Point2f(500, 720), new Point2f(780, 720) };
+            Point2f[] srcPoints4 = [new Point2f(0, 100), new Point2f(1280, 100), new Point2f(0, 720), new Point2f(1280, 720)];
+            Point2f[] dstPoints4 = [new Point2f(0, 0), new Point2f(1280, 0), new Point2f(500, 720), new Point2f(780, 720)];
             var matAff4 = Cv2.GetPerspectiveTransform(srcPoints4, dstPoints4);
             using var mat44 = new Mat();
             Cv2.WarpPerspective(mat4, mat44, matAff4, new OpenCvSharp.Size(1280, 720));

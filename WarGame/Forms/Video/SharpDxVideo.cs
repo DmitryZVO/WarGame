@@ -85,7 +85,7 @@ internal class SharpDxVideo(PictureBox surfacePtr, int fpsTarget) : SharpDx(surf
         try
         {
             // 2. Create DataStream
-            DataStream dataStream = new DataStream(
+            DataStream dataStream = new(
                 bitmapData.Scan0,
                 bitmapData.Stride * bitmap.Height, // Total size in bytes
                 true, // Can read
@@ -93,7 +93,7 @@ internal class SharpDxVideo(PictureBox surfacePtr, int fpsTarget) : SharpDx(surf
             );
 
             // 3. Create Texture2D Description
-            Texture2DDescription textureDesc = new Texture2DDescription
+            Texture2DDescription textureDesc = new()
             {
                 Width = bitmap.Width,
                 Height = bitmap.Height,
@@ -108,7 +108,7 @@ internal class SharpDxVideo(PictureBox surfacePtr, int fpsTarget) : SharpDx(surf
             };
 
             // 4. Create Texture2D
-            Texture2D texture = new Texture2D(Device, textureDesc, new DataRectangle(dataStream.DataPointer, bitmapData.Stride));
+            Texture2D texture = new(Device, textureDesc, new DataRectangle(dataStream.DataPointer, bitmapData.Stride));
 
             return texture;
         }

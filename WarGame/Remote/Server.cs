@@ -9,7 +9,7 @@ public class Server
     public long TimeStampStaticObjects { get; private set; }
     public bool Alive { get; private set; }
 
-    public async void Init(CancellationToken ct = default)
+    public async void StartAsync(CancellationToken ct = default)
     {
         var cycles = 999;
         while (!ct.IsCancellationRequested)

@@ -125,7 +125,7 @@ public abstract class StaticObject : IDrawing
     public int Id { get; set; } // Номер (id) объекта
     public string Name { get; set; } = string.Empty; // Текстовое имя объекта
     public List<PolyVertex> Coords { get; set; } = []; // Список координат объекта
-    public bool Lighting { get; set; } // объект выбран
+    public bool Lighting { get; set; } // объект подсвечен
     public bool Selected { get; set; } // объект выбран
     public string ParamsJsonString { get; set; } = string.Empty; // Дополнительные параметры объекта в JSON
 
