@@ -61,19 +61,19 @@ public class RadiomasterTx12
         foreach (var vals in datas)
         {
             var value = NormalizeStickToFloat(vals.Value);
-            if (vals.Offset == JoystickOffset.X && Math.Abs(Channels[0] - value) > StickTolerance) // Левый стик Y
+            if (vals.Offset == JoystickOffset.X && Math.Abs(Channels[2] - value) > StickTolerance) // Левый стик Y
+            {
+                Channels[2] = value;
+                continue;
+            }
+            if (vals.Offset == JoystickOffset.Y && Math.Abs(Channels[0] - value) > StickTolerance) // Правый стик Х
             {
                 Channels[0] = value;
                 continue;
             }
-            if (vals.Offset == JoystickOffset.Y && Math.Abs(Channels[1] - value) > StickTolerance) // Правый стик Х
+            if (vals.Offset == JoystickOffset.Z && Math.Abs(Channels[1] - value) > StickTolerance) // Правый стик Y
             {
                 Channels[1] = value;
-                continue;
-            }
-            if (vals.Offset == JoystickOffset.Z && Math.Abs(Channels[2] - value) > StickTolerance) // Правый стик Y
-            {
-                Channels[2] = value;
                 continue;
             }
             if (vals.Offset == JoystickOffset.RotationX && Math.Abs(Channels[3] - value) > StickTolerance) // Левый стик X
@@ -130,8 +130,7 @@ public class RadiomasterTx12
         {
             using var web = new HttpClient();
             web.BaseAddress = new Uri(Core.Config.ServerUrl);
-            var ch = new JoyChannels();
-            ch.Channels = Core.Joystick.Channels;
+            var ch = new JoyChannels {Channels = Core.Joystick.Channels};
             var jsonString = JsonSerializer.Serialize(ch);
             var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");

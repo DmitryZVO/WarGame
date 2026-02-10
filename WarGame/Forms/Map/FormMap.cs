@@ -7,6 +7,7 @@ public sealed partial class FormMap : Form
 {
     public static GeoMap Map { get; private set; } = new();
     public static StaticObjects ObjectsStatic { get; private set; } = new();
+    public static GameObjects ObjectsGame { get; private set; } = new();
 
     private readonly SharpDx _dx;
 
@@ -37,6 +38,7 @@ public sealed partial class FormMap : Form
         _dx = new SharpDxMap(pictureBoxMain, fps);
 
         ObjectsStatic.Init(_dx);
+        ObjectsGame.Init(_dx);
 
         Icon = EmbeddedResources.Get<Icon>("Sprites.WarGame.ico");
 
@@ -171,7 +173,7 @@ public sealed partial class FormMap : Form
         else if (e.Button == MouseButtons.Right)
         {
             var buttonOk = false;
-            // Есть выделенный объект
+            // Есть выделенный статический объект
             var obj = ObjectsStatic.Items.Find(x => x.Selected);
             if (!buttonOk && obj != null && obj.Lighting)
             {
@@ -181,6 +183,17 @@ public sealed partial class FormMap : Form
                 }
                 buttonOk = true;
             }
+            // Есть выделенный игровой объект
+            var objG = ObjectsGame.Items.Find(x => x.Selected);
+            if (!buttonOk && objG != null && objG.Lighting)
+            {
+                if (Map.EditMode)
+                {
+                    objG.ContextMenuEdit?.Show(MousePosition);
+                }
+                buttonOk = true;
+            }
+
             obj = ObjectsStatic.Items.Find(x => x.Coords.Any(y => y.Selected));
             var vert = obj?.Coords.Find(x => x.Selected);
             //Есть выделенная вершина
@@ -193,7 +206,7 @@ public sealed partial class FormMap : Form
                 buttonOk = true;
             }
             //Нет выделенных объектов
-            if (!buttonOk && !ObjectsStatic.Items.Any(x => x.Coords.Any(y => y.Lighting)) && !ObjectsStatic.Items.Any(x => x.Lighting))
+            if (!buttonOk && !ObjectsStatic.Items.Any(x => x.Coords.Any(y => y.Lighting)) && !ObjectsStatic.Items.Any(x => x.Lighting) && !ObjectsGame.Items.Any(x => x.Lighting))
             {
                 if (Map.EditMode)
                 {
@@ -265,7 +278,15 @@ public sealed partial class FormMap : Form
         if (e.Button == MouseButtons.Left)
         {
             var selected = false;
-            // Выделение и выбор объектов
+            // Выделение и выбор игровых объектов
+            ObjectsGame.Items.ForEach(x => x.Selected = false);
+            if (!selected && ObjectsGame.Items.Any(x => x.Lighting))
+            {
+                ObjectsGame.Items.Find(x => x.Lighting)!.Selected = true;
+                selected = true;
+            }
+
+            // Выделение и выбор статических объектов
             ObjectsStatic.Items.ForEach(x => x.Selected = false);
             if (!selected && ObjectsStatic.Items.Any(x => x.Lighting))
             {

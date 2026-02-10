@@ -8,6 +8,11 @@ public class GeoMath
 {
     public static double TileSize { get; set; } = 256.0d;
 
+    public static float GradToRad(float grad)
+    {
+        return (float)(grad / 180.0f * Math.PI);
+    }
+
     public static RawVector2 GpsPositionToScreen(SharpDx dx, double LonX, double LatY)
     {
         var tileSize = (int)(TileSize + Core.Config.Map.ZoomLocal * TileSize);

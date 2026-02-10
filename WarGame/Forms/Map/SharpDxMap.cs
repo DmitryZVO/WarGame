@@ -18,6 +18,7 @@ internal class SharpDxMap : SharpDx
         {
             FormMap.Map.Draw(this);
             FormMap.ObjectsStatic.Draw(this);
+            FormMap.ObjectsGame.Draw(this);
         }
     }
 
