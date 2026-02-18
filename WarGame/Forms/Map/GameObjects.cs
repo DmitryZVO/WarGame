@@ -147,6 +147,9 @@ public abstract class GameObject : IDrawing
     {
         public float[] Servos { get; set; } = new float[8]; // Значения сервоприводов
         public float[] RcChannels { get; set; } = new float[16]; // Значения каналов управления
+        public float MBitObjectIn { get; set; } // Прием данных от сервера в мегабитах (на объекте)
+        public float MBitServerIn { get; set; } // Прием данных на сервер в мегабитах (на сервере)
+        public int MBitServerInBytesCounter { get; set; } // Счетчик приема данных в байтах
     }
     public class RcChannelsForWrite
     {
