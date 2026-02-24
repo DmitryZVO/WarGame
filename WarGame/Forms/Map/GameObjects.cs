@@ -134,6 +134,7 @@ public class GameObjects
 public abstract class GameObject : IDrawing
 {
     [JsonIgnore] public ContextMenuStrip? ContextMenuEdit { get; set; }
+    public int Id { get; set; } // Уникальный номер объекта (4 байта)
     public int Type { get; set; } // Тип объекта
     public string Name { get; set; } = string.Empty; // Текстовое имя объекта
     public float LonX { get; set; } // Позиция по X
@@ -163,6 +164,7 @@ public abstract class GameObject : IDrawing
             1 => new GameObjTank()
             {
                 Type = o.Type,
+                Id = o.Id,
                 Name = o.Name,
                 LonX = o.LonX,
                 LatY = o.LatY,
@@ -173,6 +175,7 @@ public abstract class GameObject : IDrawing
             },
             _ => new GameObjJson()
             {
+                Id = o.Id,
                 Type = o.Type,
                 Name = o.Name,
                 Lighting = o.Lighting,

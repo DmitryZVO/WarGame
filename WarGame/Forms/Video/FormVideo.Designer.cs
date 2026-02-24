@@ -29,9 +29,12 @@ partial class FormVideo
     private void InitializeComponent()
     {
         pictureBoxMain = new PictureBox();
-        button360 = new Button();
-        buttonFrwd = new Button();
+        buttonBack = new Button();
+        buttonForward = new Button();
         buttonPtz = new Button();
+        buttonLeft = new Button();
+        buttonRight = new Button();
+        buttonWarm = new Button();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMain).BeginInit();
         SuspendLayout();
         // 
@@ -44,32 +47,59 @@ partial class FormVideo
         pictureBoxMain.TabIndex = 0;
         pictureBoxMain.TabStop = false;
         // 
-        // button360
+        // buttonBack
         // 
-        button360.Location = new Point(2473, 12);
-        button360.Name = "button360";
-        button360.Size = new Size(75, 23);
-        button360.TabIndex = 1;
-        button360.Text = "ОБЗОР 360";
-        button360.UseVisualStyleBackColor = true;
+        buttonBack.Location = new Point(2473, 99);
+        buttonBack.Name = "buttonBack";
+        buttonBack.Size = new Size(75, 23);
+        buttonBack.TabIndex = 1;
+        buttonBack.Text = "КОРМА";
+        buttonBack.UseVisualStyleBackColor = true;
         // 
-        // buttonFrwd
+        // buttonForward
         // 
-        buttonFrwd.Location = new Point(2392, 12);
-        buttonFrwd.Name = "buttonFrwd";
-        buttonFrwd.Size = new Size(75, 23);
-        buttonFrwd.TabIndex = 2;
-        buttonFrwd.Text = "КУРСОВАЯ";
-        buttonFrwd.UseVisualStyleBackColor = true;
+        buttonForward.Location = new Point(2473, 70);
+        buttonForward.Name = "buttonForward";
+        buttonForward.Size = new Size(75, 23);
+        buttonForward.TabIndex = 2;
+        buttonForward.Text = "КУРСОВАЯ";
+        buttonForward.UseVisualStyleBackColor = true;
         // 
         // buttonPtz
         // 
-        buttonPtz.Location = new Point(2311, 12);
+        buttonPtz.Location = new Point(2473, 12);
         buttonPtz.Name = "buttonPtz";
         buttonPtz.Size = new Size(75, 23);
         buttonPtz.TabIndex = 3;
         buttonPtz.Text = "PTZ";
         buttonPtz.UseVisualStyleBackColor = true;
+        // 
+        // buttonLeft
+        // 
+        buttonLeft.Location = new Point(2473, 128);
+        buttonLeft.Name = "buttonLeft";
+        buttonLeft.Size = new Size(75, 23);
+        buttonLeft.TabIndex = 4;
+        buttonLeft.Text = "Л БОРТ";
+        buttonLeft.UseVisualStyleBackColor = true;
+        // 
+        // buttonRight
+        // 
+        buttonRight.Location = new Point(2473, 157);
+        buttonRight.Name = "buttonRight";
+        buttonRight.Size = new Size(75, 23);
+        buttonRight.TabIndex = 5;
+        buttonRight.Text = "П БОРТ";
+        buttonRight.UseVisualStyleBackColor = true;
+        // 
+        // buttonWarm
+        // 
+        buttonWarm.Location = new Point(2473, 41);
+        buttonWarm.Name = "buttonWarm";
+        buttonWarm.Size = new Size(75, 23);
+        buttonWarm.TabIndex = 6;
+        buttonWarm.Text = "ТЕПЛО";
+        buttonWarm.UseVisualStyleBackColor = true;
         // 
         // FormVideo
         // 
@@ -77,9 +107,12 @@ partial class FormVideo
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(2560, 1440);
         ControlBox = false;
+        Controls.Add(buttonWarm);
+        Controls.Add(buttonRight);
+        Controls.Add(buttonLeft);
         Controls.Add(buttonPtz);
-        Controls.Add(buttonFrwd);
-        Controls.Add(button360);
+        Controls.Add(buttonForward);
+        Controls.Add(buttonBack);
         Controls.Add(pictureBoxMain);
         FormBorderStyle = FormBorderStyle.None;
         MaximizeBox = false;
@@ -96,7 +129,10 @@ partial class FormVideo
     #endregion
 
     private PictureBox pictureBoxMain;
-    private Button button360;
-    private Button buttonFrwd;
+    private Button buttonBack;
+    private Button buttonForward;
     private Button buttonPtz;
+    private Button buttonLeft;
+    private Button buttonRight;
+    private Button buttonWarm;
 }
