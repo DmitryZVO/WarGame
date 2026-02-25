@@ -21,6 +21,7 @@ internal class SharpDxTelem(PictureBox surfacePtr, int fpsTarget) : SharpDx(surf
             {
                 joyColor = Core.Joystick.Alive ? Brushes.RoiGreen03 : joyColor;
             }
+            Core.FrmTelem!.ButtonVisibleChange(obj);
             var yLine = (joyRect.Bottom - joyRect.Top) / Core.Joystick.Channels.Length;
             var xLine = joyRect.Right - joyRect.Left;
             int i;
@@ -43,6 +44,7 @@ internal class SharpDxTelem(PictureBox surfacePtr, int fpsTarget) : SharpDx(surf
 
                 Rt?.DrawText($"OBJ_IN: {obj.Telem.MBitObjectIn:0.000000} Mbit", Brushes.SysText20, new RawRectangleF(joyRect.Left + xLine * 0.06f, BaseHeight * 0.90f, BaseWidth, BaseHeight), Brushes.SysTextBrushRed);
                 Rt?.DrawText($"SERV_IN: {obj.Telem.MBitServerIn:0.000000} Mbit", Brushes.SysText20, new RawRectangleF(joyRect.Left + xLine * 0.01f, BaseHeight * 0.92f, BaseWidth, BaseHeight), Brushes.SysTextBrushYellow);
+                Rt?.DrawText($"PING<>UDP: {obj.Telem.PingToServer:0.00} ms", Brushes.SysText20, new RawRectangleF(joyRect.Left + xLine * 0.06f, BaseHeight * 0.94f, BaseWidth, BaseHeight), Brushes.SysTextBrushWhite);
             }
 
             Rt?.DrawText(Core.ClientName, Brushes.SysText20, new RawRectangleF(joyRect.Left + xLine * 0.10f, BaseHeight * 0.98f, BaseWidth, BaseHeight), Brushes.SysTextBrushDarkGreen);

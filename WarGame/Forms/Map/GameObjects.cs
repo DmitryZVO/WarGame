@@ -81,6 +81,21 @@ public class GameObjects
         return true;
     }
 
+    public async Task<bool> UpdatePtzAsync(GameObject obj, byte ptzState, CancellationToken ct = default)
+    {
+        try
+        {
+            using var web = new HttpClient();
+            web.BaseAddress = new Uri(Core.Config.ServerUrl);
+            using var answ = await web.GetAsync($"SetGameObjectPtz?name={obj.Name}&ptz={ptzState:0}", ct);
+            return answ.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     public async Task<bool> RewriteRcAsync(GameObject obj, CancellationToken ct = default)
     {
         if (!Core.Joystick.Alive) return false;
@@ -95,6 +110,25 @@ public class GameObjects
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             content.Headers.ContentLength = jsonString.Length;
             using var answ = await web.PostAsync($"SetGameObjectRcChannels?name={obj.Name}", content, ct);
+            return answ.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> RewriteRelayAsync(GameObject obj, RelaysForWrite relays, CancellationToken ct = default)
+    {
+        try
+        {
+            using var web = new HttpClient();
+            web.BaseAddress = new Uri(Core.Config.ServerUrl);
+            var jsonString = JsonSerializer.Serialize(relays);
+            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            content.Headers.ContentLength = jsonString.Length;
+            using var answ = await web.PostAsync($"SetGameObjectRelay?name={obj.Name}", content, ct);
             return answ.IsSuccessStatusCode;
         }
         catch
@@ -150,11 +184,18 @@ public abstract class GameObject : IDrawing
         public float[] RcChannels { get; set; } = new float[16]; // Значения каналов управления
         public float MBitObjectIn { get; set; } // Прием данных от сервера в мегабитах (на объекте)
         public float MBitServerIn { get; set; } // Прием данных на сервер в мегабитах (на сервере)
+        public float PingToServer { get; set; } // Ping UDP до сервера и обратно
         public int MBitServerInBytesCounter { get; set; } // Счетчик приема данных в байтах
+        public float[] Relay { get; set; } = new float[8]; // Значения каналов реле
     }
     public class RcChannelsForWrite
     {
         public float[] Values { get; set; } = new float[16]; // Значения каналов управления
+    }
+
+    public class RelaysForWrite
+    {
+        public float[] Values { get; set; } = new float[8]; // Значения каналов реле
     }
 
     public static GameObject CreateFactory(GameObject o)

@@ -30,11 +30,17 @@ partial class FormVideo
     {
         pictureBoxMain = new PictureBox();
         buttonBack = new Button();
-        buttonForward = new Button();
+        buttonFrwd = new Button();
         buttonPtz = new Button();
         buttonLeft = new Button();
         buttonRight = new Button();
         buttonWarm = new Button();
+        buttonPtzUp = new Button();
+        buttonPtzDown = new Button();
+        buttonPtzLeft = new Button();
+        buttonPtzRight = new Button();
+        buttonPtzZoomIn = new Button();
+        buttonPtzZoomOut = new Button();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMain).BeginInit();
         SuspendLayout();
         // 
@@ -56,14 +62,14 @@ partial class FormVideo
         buttonBack.Text = "КОРМА";
         buttonBack.UseVisualStyleBackColor = true;
         // 
-        // buttonForward
+        // buttonFrwd
         // 
-        buttonForward.Location = new Point(2473, 70);
-        buttonForward.Name = "buttonForward";
-        buttonForward.Size = new Size(75, 23);
-        buttonForward.TabIndex = 2;
-        buttonForward.Text = "КУРСОВАЯ";
-        buttonForward.UseVisualStyleBackColor = true;
+        buttonFrwd.Location = new Point(2473, 70);
+        buttonFrwd.Name = "buttonFrwd";
+        buttonFrwd.Size = new Size(75, 23);
+        buttonFrwd.TabIndex = 2;
+        buttonFrwd.Text = "КУРСОВАЯ";
+        buttonFrwd.UseVisualStyleBackColor = true;
         // 
         // buttonPtz
         // 
@@ -101,17 +107,77 @@ partial class FormVideo
         buttonWarm.Text = "ТЕПЛО";
         buttonWarm.UseVisualStyleBackColor = true;
         // 
+        // buttonPtzUp
+        // 
+        buttonPtzUp.Location = new Point(1360, 12);
+        buttonPtzUp.Name = "buttonPtzUp";
+        buttonPtzUp.Size = new Size(75, 23);
+        buttonPtzUp.TabIndex = 7;
+        buttonPtzUp.Text = "/\\";
+        buttonPtzUp.UseVisualStyleBackColor = true;
+        // 
+        // buttonPtzDown
+        // 
+        buttonPtzDown.Location = new Point(1360, 41);
+        buttonPtzDown.Name = "buttonPtzDown";
+        buttonPtzDown.Size = new Size(75, 23);
+        buttonPtzDown.TabIndex = 8;
+        buttonPtzDown.Text = "\\/";
+        buttonPtzDown.UseVisualStyleBackColor = true;
+        // 
+        // buttonPtzLeft
+        // 
+        buttonPtzLeft.Location = new Point(1279, 12);
+        buttonPtzLeft.Name = "buttonPtzLeft";
+        buttonPtzLeft.Size = new Size(75, 23);
+        buttonPtzLeft.TabIndex = 9;
+        buttonPtzLeft.Text = "<";
+        buttonPtzLeft.UseVisualStyleBackColor = true;
+        // 
+        // buttonPtzRight
+        // 
+        buttonPtzRight.Location = new Point(1441, 12);
+        buttonPtzRight.Name = "buttonPtzRight";
+        buttonPtzRight.Size = new Size(75, 23);
+        buttonPtzRight.TabIndex = 10;
+        buttonPtzRight.Text = ">";
+        buttonPtzRight.UseVisualStyleBackColor = true;
+        // 
+        // buttonPtzZoomIn
+        // 
+        buttonPtzZoomIn.Location = new Point(1279, 41);
+        buttonPtzZoomIn.Name = "buttonPtzZoomIn";
+        buttonPtzZoomIn.Size = new Size(75, 23);
+        buttonPtzZoomIn.TabIndex = 11;
+        buttonPtzZoomIn.Text = "Z+";
+        buttonPtzZoomIn.UseVisualStyleBackColor = true;
+        // 
+        // buttonPtzZoomOut
+        // 
+        buttonPtzZoomOut.Location = new Point(1441, 41);
+        buttonPtzZoomOut.Name = "buttonPtzZoomOut";
+        buttonPtzZoomOut.Size = new Size(75, 23);
+        buttonPtzZoomOut.TabIndex = 12;
+        buttonPtzZoomOut.Text = "Z-";
+        buttonPtzZoomOut.UseVisualStyleBackColor = true;
+        // 
         // FormVideo
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(2560, 1440);
         ControlBox = false;
+        Controls.Add(buttonPtzZoomOut);
+        Controls.Add(buttonPtzZoomIn);
+        Controls.Add(buttonPtzRight);
+        Controls.Add(buttonPtzLeft);
+        Controls.Add(buttonPtzDown);
+        Controls.Add(buttonPtzUp);
         Controls.Add(buttonWarm);
         Controls.Add(buttonRight);
         Controls.Add(buttonLeft);
         Controls.Add(buttonPtz);
-        Controls.Add(buttonForward);
+        Controls.Add(buttonFrwd);
         Controls.Add(buttonBack);
         Controls.Add(pictureBoxMain);
         FormBorderStyle = FormBorderStyle.None;
@@ -130,9 +196,15 @@ partial class FormVideo
 
     private PictureBox pictureBoxMain;
     private Button buttonBack;
-    private Button buttonForward;
+    private Button buttonFrwd;
     private Button buttonPtz;
     private Button buttonLeft;
     private Button buttonRight;
     private Button buttonWarm;
+    private Button buttonPtzUp;
+    private Button buttonPtzDown;
+    private Button buttonPtzLeft;
+    private Button buttonPtzRight;
+    private Button buttonPtzZoomIn;
+    private Button buttonPtzZoomOut;
 }
