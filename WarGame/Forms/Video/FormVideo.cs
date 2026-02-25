@@ -30,14 +30,14 @@ public sealed partial class FormVideo : Form
         buttonPtzRight.MouseUp += ButtonPtzStop;
         buttonPtzLeft.MouseDown += ButtonPtzLeft_MouseDown;
         buttonPtzLeft.MouseUp += ButtonPtzStop;
-        buttonPtzZoomIn.MouseDown += ButtonPtzZoomIn_MouseDown;
-        buttonPtzZoomIn.MouseUp += ButtonPtzStop;
-        buttonPtzZoomOut.MouseDown += ButtonPtzZoomOut_MouseDown;
-        buttonPtzZoomOut.MouseUp += ButtonPtzStop;
         buttonPtzUp.MouseDown += ButtonPtzUp_MouseDown;
         buttonPtzUp.MouseUp += ButtonPtzStop;
         buttonPtzDown.MouseDown += ButtonPtzDown_MouseDown;
         buttonPtzDown.MouseUp += ButtonPtzStop;
+        buttonPtzZoomIn.MouseDown += ButtonPtzZoomIn_MouseDown;
+        buttonPtzZoomIn.MouseUp += ButtonPtzStop;
+        buttonPtzZoomOut.MouseDown += ButtonPtzZoomOut_MouseDown;
+        buttonPtzZoomOut.MouseUp += ButtonPtzStop;
     }
 
     private async void ButtonPtzRight_MouseDown(object? sender, MouseEventArgs e)
