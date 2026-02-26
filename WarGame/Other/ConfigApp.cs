@@ -13,7 +13,7 @@ public struct ConfigApp
     };
 
     public bool TestMode { get; set; } = false;
-    public string ServerUrl { get; set; } = "http://212.12.7.116:1111";
+    public string ServerUrl { get; set; } = "http://10.0.3.79:1111";
     public FormPos FormMap { get; set; } = new FormPos() { Enable = true };
     public FormPos FormRls { get; set; } = new FormPos();
     public FormPos FormVideo { get; set; } = new FormPos();
