@@ -1,4 +1,5 @@
 using OpenCvSharp;
+using System.Text.Json;
 using WarGame.Forms.Map;
 using WarGame.Model;
 using WarGame.Resources;
@@ -113,6 +114,7 @@ public sealed partial class FormVideo : Form
             using var mat0 = GetCameraAsync(obj.Id, _dx.CameraType, ct).Result ?? new();
             lock (_dx)
             {
+                if (mat0.Height <= 0 | mat0.Width <= 0) continue;
                 _dx.CameraFrame?.Dispose();
                 _dx.CameraFrame = _dx.CreateDxBitmap(mat0);
             }
@@ -184,7 +186,8 @@ public sealed partial class FormVideo : Form
             using var web = new HttpClient();
             web.BaseAddress = new Uri(Core.Config.ServerUrl);
             using var answ = web.GetAsync($"GetCamera?id={id:0}&number={number:0}", ct).Result;
-            return !answ.IsSuccessStatusCode ? null : Cv2.ImDecode(Convert.FromBase64String(await answ.Content.ReadAsStringAsync(ct)), ImreadModes.Unchanged);
+            var deserializedArray = JsonSerializer.Deserialize<byte[]>(await answ.Content.ReadAsStringAsync(ct));
+            return !answ.IsSuccessStatusCode ? null : Cv2.ImDecode(deserializedArray!, ImreadModes.Unchanged);
         }
         catch
         {

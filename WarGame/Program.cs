@@ -4,9 +4,23 @@ namespace WarGame;
 
 internal static class Program
 {
+    public static string ConfigName { get; set; } = "_global.ini";
+
     [STAThread]
-    static void Main()
+    static void Main(string[] args)
     {
+        try
+        {
+            if (args.Length > 0)
+            {
+                ConfigName = args[0];
+            }
+        }
+        catch
+        {
+            //
+        }
+
         ApplicationConfiguration.Initialize();
 
         using var mutex = new Mutex(true, "WAR_GAME", out var createdNew);

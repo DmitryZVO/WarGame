@@ -20,51 +20,14 @@ internal class SharpDxVideo(PictureBox surfacePtr, int fpsTarget) : SharpDx(surf
     {
         lock (this)
         {
+            if (CameraFrame == null) return;
             Rt?.Clear(new RawColor4(0.0f, 0, 0, 1));
             var fs = new RawRectangleF(0, 0, BaseWidth, BaseHeight);
-
-            //var rect = new RawRectangleF(BaseWidth * 0.33f, BaseHeight * 0.505f, BaseWidth * 0.763f, BaseHeight * 0.565f);
-            //Rt?.DrawText($"ИЗОБРАЖЕНИЕ С КАМЕРЫ", Brushes.SysText74, rect, Brushes.RoiYellow03);
             switch (CameraType)
             {
                 case -1:
                     break;
                 default:
-                    /*
-                case 0:// Вид 360
-                    if (Camera1 == null) break;
-                    //if (Camera2 == null) break;
-                    //if (Camera3 == null) break;
-                    if (Camera4 == null) break;
-
-                    var fu = new RawRectangleF(BaseWidth * 0.25f, BaseHeight * 0.00f, BaseWidth * 0.75f, BaseHeight * 0.40f);
-                    Rt?.DrawBitmap(Camera1, fu, 1.0f, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
-                    //Rt?.DrawRectangle(fu, Brushes.SysTextBrushWhite);
-                    var fd = new RawRectangleF(BaseWidth * 0.25f, BaseHeight * 0.60f, BaseWidth * 0.75f, BaseHeight * 1.00f);
-                    Rt?.DrawBitmap(Camera4, fd, 1.0f, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
-                    //Rt?.DrawRectangle(fd, Brushes.SysTextBrushWhite);
-                    var fu = new RawRectangleF(BaseWidth * 0.25f, BaseHeight * 0.00f, BaseWidth * 0.75f, BaseHeight * 0.25f);
-                    var fl = new RawRectangleF(BaseWidth * 0.25f, BaseHeight * 0.25f, BaseWidth * 0.50f, BaseHeight * 0.75f);
-                    var fr = new RawRectangleF(BaseWidth * 0.50f, BaseHeight * 0.25f, BaseWidth * 0.75f, BaseHeight * 0.75f);
-                    var fd = new RawRectangleF(BaseWidth * 0.25f, BaseHeight * 0.75f, BaseWidth * 0.75f, BaseHeight * 1.00f);
-                    Rt?.DrawBitmap(Camera1, fu, 1.0f, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
-                    Rt?.DrawRectangle(fu, Brushes.SysTextBrushWhite);
-                    Rt?.DrawBitmap(Camera4, fd, 1.0f, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
-                    Rt?.DrawRectangle(fd, Brushes.SysTextBrushWhite);
-                    Rt?.DrawBitmap(Camera2, fl, 1.0f, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
-                    Rt?.DrawRectangle(fl, Brushes.SysTextBrushWhite);
-                    Rt?.DrawBitmap(Camera3, fr, 1.0f, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
-                    Rt?.DrawRectangle(fr, Brushes.SysTextBrushWhite);
-                    break;
-                case 1:// Курс
-                    if (Camera1 == null) break;
-                    Rt?.DrawBitmap(Camera1, fs, 1.0f, SharpDX.Direct2D1.BitmapInterpolationMode.Linear);
-                    Rt?.DrawLine(new RawVector2(BaseWidth / 2, 0), new RawVector2(BaseWidth / 2, BaseHeight), Brushes.SysTextBrushYellow, 3);
-                    Rt?.DrawLine(new RawVector2(0, BaseHeight / 2), new RawVector2(BaseWidth, BaseHeight / 2), Brushes.SysTextBrushYellow, 3);
-                    break;
-                    */
-                //case 2:// PTZ
-                    if (CameraFrame == null) break;
                     Rt?.DrawBitmap(CameraFrame, fs, 1.0f, BitmapInterpolationMode.Linear);
                     break;
             }

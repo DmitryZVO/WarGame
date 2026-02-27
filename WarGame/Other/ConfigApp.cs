@@ -28,7 +28,7 @@ public struct ConfigApp
     {
         try
         {
-            using var sr = new StreamReader(new FileStream(AppDomain.CurrentDomain.BaseDirectory + "_global.ini", FileMode.Open));
+            using var sr = new StreamReader(new FileStream(AppDomain.CurrentDomain.BaseDirectory + Program.ConfigName, FileMode.Open));
             this = JsonSerializer.Deserialize<ConfigApp>(sr.ReadToEnd());
         }
         catch
@@ -42,7 +42,7 @@ public struct ConfigApp
     {
         try
         {
-            using var sw = new StreamWriter(new FileStream(AppDomain.CurrentDomain.BaseDirectory + "_global.ini", FileMode.Create, FileAccess.Write));
+            using var sw = new StreamWriter(new FileStream(AppDomain.CurrentDomain.BaseDirectory + Program.ConfigName, FileMode.Create, FileAccess.Write));
             sw.WriteLine(JsonSerializer.Serialize(this,
                 _options));
         }

@@ -1,8 +1,4 @@
 ﻿using SharpDX.DirectInput;
-using System.Text;
-using System.Text.Json;
-using System.Xml.Linq;
-using WarGame.Model;
 
 namespace WarGame.Other;
 
@@ -40,7 +36,6 @@ public class RadiomasterTx12
             }
 
             ReadJoystick(); // Читаем данные с джойстика
-            await SendJoystickToServerAsync(); // Отправляем данные на сервер
             Alive = (DateTime.Now - _lastUpdate).TotalMilliseconds < 1000;
         }
     }
@@ -121,26 +116,6 @@ public class RadiomasterTx12
         for (var i = 0; i < Channels.Length; i++)
         {
             Channels[i] = 0.0f;
-        }
-    }
-
-    private async Task<bool> SendJoystickToServerAsync()
-    {
-        try
-        {
-            using var web = new HttpClient();
-            web.BaseAddress = new Uri(Core.Config.ServerUrl);
-            var ch = new JoyChannels {Channels = Core.Joystick.Channels};
-            var jsonString = JsonSerializer.Serialize(ch);
-            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            content.Headers.ContentLength = jsonString.Length;
-            using var answ = await web.PostAsync($"SetClientJoyChannels?name={Core.ClientName}", content, _ct);
-            return answ.IsSuccessStatusCode;
-        }
-        catch
-        {
-            return false;
         }
     }
 

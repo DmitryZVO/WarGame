@@ -69,7 +69,7 @@ public class GameObjects
         {
             using var web = new HttpClient();
             web.BaseAddress = new Uri(Core.Config.ServerUrl);
-            using var answ = await web.GetAsync($"GetGameObjectTelem?name={obj.Name}", ct);
+            using var answ = await web.GetAsync($"GetGameObjectTelem?id={obj.Id:0}", ct);
             var ret = !answ.IsSuccessStatusCode ? null : JsonSerializer.Deserialize<GameObject.GameObjectTelem>(await answ.Content.ReadAsStringAsync(ct));
             if (ret == null) return false;
             obj.Telem = ret; // Перезаписываем телеметрию
@@ -87,7 +87,7 @@ public class GameObjects
         {
             using var web = new HttpClient();
             web.BaseAddress = new Uri(Core.Config.ServerUrl);
-            using var answ = await web.GetAsync($"SetGameObjectPtz?name={obj.Name}&ptz={ptzState:0}", ct);
+            using var answ = await web.GetAsync($"SetGameObjectPtz?id={obj.Id:0}&ptz={ptzState:0}", ct);
             return answ.IsSuccessStatusCode;
         }
         catch
@@ -109,7 +109,7 @@ public class GameObjects
             var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             content.Headers.ContentLength = jsonString.Length;
-            using var answ = await web.PostAsync($"SetGameObjectRcChannels?name={obj.Name}", content, ct);
+            using var answ = await web.PostAsync($"SetGameObjectRcChannels?id={obj.Id:0}", content, ct);
             return answ.IsSuccessStatusCode;
         }
         catch
@@ -128,7 +128,7 @@ public class GameObjects
             var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             content.Headers.ContentLength = jsonString.Length;
-            using var answ = await web.PostAsync($"SetGameObjectRelay?name={obj.Name}", content, ct);
+            using var answ = await web.PostAsync($"SetGameObjectRelay?id={obj.Id:0}", content, ct);
             return answ.IsSuccessStatusCode;
         }
         catch
