@@ -49,13 +49,13 @@ partial class FormVideo
         pictureBoxMain.BackColor = Color.Black;
         pictureBoxMain.Location = new Point(0, -1);
         pictureBoxMain.Name = "pictureBoxMain";
-        pictureBoxMain.Size = new Size(2560, 1440);
+        pictureBoxMain.Size = new Size(1920, 1080);
         pictureBoxMain.TabIndex = 0;
         pictureBoxMain.TabStop = false;
         // 
         // buttonBack
         // 
-        buttonBack.Location = new Point(2473, 99);
+        buttonBack.Location = new Point(1833, 99);
         buttonBack.Name = "buttonBack";
         buttonBack.Size = new Size(75, 23);
         buttonBack.TabIndex = 1;
@@ -64,7 +64,7 @@ partial class FormVideo
         // 
         // buttonFrwd
         // 
-        buttonFrwd.Location = new Point(2473, 70);
+        buttonFrwd.Location = new Point(1833, 70);
         buttonFrwd.Name = "buttonFrwd";
         buttonFrwd.Size = new Size(75, 23);
         buttonFrwd.TabIndex = 2;
@@ -73,7 +73,7 @@ partial class FormVideo
         // 
         // buttonPtz
         // 
-        buttonPtz.Location = new Point(2473, 12);
+        buttonPtz.Location = new Point(1833, 12);
         buttonPtz.Name = "buttonPtz";
         buttonPtz.Size = new Size(75, 23);
         buttonPtz.TabIndex = 3;
@@ -82,7 +82,7 @@ partial class FormVideo
         // 
         // buttonLeft
         // 
-        buttonLeft.Location = new Point(2473, 128);
+        buttonLeft.Location = new Point(1833, 128);
         buttonLeft.Name = "buttonLeft";
         buttonLeft.Size = new Size(75, 23);
         buttonLeft.TabIndex = 4;
@@ -91,7 +91,7 @@ partial class FormVideo
         // 
         // buttonRight
         // 
-        buttonRight.Location = new Point(2473, 157);
+        buttonRight.Location = new Point(1833, 157);
         buttonRight.Name = "buttonRight";
         buttonRight.Size = new Size(75, 23);
         buttonRight.TabIndex = 5;
@@ -100,7 +100,7 @@ partial class FormVideo
         // 
         // buttonWarm
         // 
-        buttonWarm.Location = new Point(2473, 41);
+        buttonWarm.Location = new Point(1833, 41);
         buttonWarm.Name = "buttonWarm";
         buttonWarm.Size = new Size(75, 23);
         buttonWarm.TabIndex = 6;
@@ -109,7 +109,7 @@ partial class FormVideo
         // 
         // buttonPtzUp
         // 
-        buttonPtzUp.Location = new Point(1360, 12);
+        buttonPtzUp.Location = new Point(860, 12);
         buttonPtzUp.Name = "buttonPtzUp";
         buttonPtzUp.Size = new Size(75, 23);
         buttonPtzUp.TabIndex = 7;
@@ -118,7 +118,7 @@ partial class FormVideo
         // 
         // buttonPtzDown
         // 
-        buttonPtzDown.Location = new Point(1360, 41);
+        buttonPtzDown.Location = new Point(860, 41);
         buttonPtzDown.Name = "buttonPtzDown";
         buttonPtzDown.Size = new Size(75, 23);
         buttonPtzDown.TabIndex = 8;
@@ -127,7 +127,7 @@ partial class FormVideo
         // 
         // buttonPtzLeft
         // 
-        buttonPtzLeft.Location = new Point(1279, 12);
+        buttonPtzLeft.Location = new Point(779, 12);
         buttonPtzLeft.Name = "buttonPtzLeft";
         buttonPtzLeft.Size = new Size(75, 23);
         buttonPtzLeft.TabIndex = 9;
@@ -136,7 +136,7 @@ partial class FormVideo
         // 
         // buttonPtzRight
         // 
-        buttonPtzRight.Location = new Point(1441, 12);
+        buttonPtzRight.Location = new Point(941, 12);
         buttonPtzRight.Name = "buttonPtzRight";
         buttonPtzRight.Size = new Size(75, 23);
         buttonPtzRight.TabIndex = 10;
@@ -145,7 +145,7 @@ partial class FormVideo
         // 
         // buttonPtzZoomIn
         // 
-        buttonPtzZoomIn.Location = new Point(1279, 41);
+        buttonPtzZoomIn.Location = new Point(779, 41);
         buttonPtzZoomIn.Name = "buttonPtzZoomIn";
         buttonPtzZoomIn.Size = new Size(75, 23);
         buttonPtzZoomIn.TabIndex = 11;
@@ -154,7 +154,7 @@ partial class FormVideo
         // 
         // buttonPtzZoomOut
         // 
-        buttonPtzZoomOut.Location = new Point(1441, 41);
+        buttonPtzZoomOut.Location = new Point(941, 41);
         buttonPtzZoomOut.Name = "buttonPtzZoomOut";
         buttonPtzZoomOut.Size = new Size(75, 23);
         buttonPtzZoomOut.TabIndex = 12;
@@ -165,7 +165,7 @@ partial class FormVideo
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(2560, 1440);
+        ClientSize = new Size(1920, 1080);
         ControlBox = false;
         Controls.Add(buttonPtzZoomOut);
         Controls.Add(buttonPtzZoomIn);

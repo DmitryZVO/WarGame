@@ -3,7 +3,7 @@ using WarGame.Resources;
 
 namespace WarGame.Forms.Rls;
 
-internal class SharpDxRls(PictureBox surfacePtr, int fpsTarget) : SharpDx(surfacePtr, fpsTarget, new Sprites(), 2560)
+internal class SharpDxRls(PictureBox surfacePtr, int fpsTarget) : SharpDx(surfacePtr, fpsTarget, new Sprites(), 1920)
 {
     public bool NotActive { get; set; }
 

@@ -10,7 +10,7 @@ using WarGame.Resources;
 
 namespace WarGame.Forms.Video;
 
-internal class SharpDxVideo(PictureBox surfacePtr, int fpsTarget) : SharpDx(surfacePtr, fpsTarget, new Sprites(), 2560)
+internal class SharpDxVideo(PictureBox surfacePtr, int fpsTarget) : SharpDx(surfacePtr, fpsTarget, new Sprites(), 1920)
 {
     public bool NotActive { get; set; }
     public int CameraType { get; set; } = 0;

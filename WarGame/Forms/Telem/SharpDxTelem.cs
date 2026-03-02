@@ -5,7 +5,7 @@ using WarGame.Resources;
 
 namespace WarGame.Forms.Telem;
 
-internal class SharpDxTelem(PictureBox surfacePtr, int fpsTarget) : SharpDx(surfacePtr, fpsTarget, new Sprites(), 2560)
+internal class SharpDxTelem(PictureBox surfacePtr, int fpsTarget) : SharpDx(surfacePtr, fpsTarget, new Sprites(), 1920)
 {
     public bool NotActive { get; set; }
 

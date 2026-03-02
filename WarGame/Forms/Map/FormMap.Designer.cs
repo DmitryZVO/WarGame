@@ -39,7 +39,7 @@ partial class FormMap
         pictureBoxMain.Dock = DockStyle.Fill;
         pictureBoxMain.Location = new Point(0, 0);
         pictureBoxMain.Name = "pictureBoxMain";
-        pictureBoxMain.Size = new Size(2560, 1440);
+        pictureBoxMain.Size = new Size(1920, 1080);
         pictureBoxMain.TabIndex = 0;
         pictureBoxMain.TabStop = false;
         // 
@@ -57,7 +57,7 @@ partial class FormMap
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(2560, 1440);
+        ClientSize = new Size(1920, 1080);
         ControlBox = false;
         Controls.Add(buttonEdit);
         Controls.Add(pictureBoxMain);
