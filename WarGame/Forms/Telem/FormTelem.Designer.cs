@@ -56,7 +56,7 @@ partial class FormTelem
         buttonRelay1.Name = "buttonRelay1";
         buttonRelay1.Size = new Size(125, 23);
         buttonRelay1.TabIndex = 1;
-        buttonRelay1.Text = "РЕЛЕ 1";
+        buttonRelay1.Text = "СТОП";
         buttonRelay1.UseVisualStyleBackColor = true;
         // 
         // buttonRelay2
@@ -65,7 +65,7 @@ partial class FormTelem
         buttonRelay2.Name = "buttonRelay2";
         buttonRelay2.Size = new Size(125, 23);
         buttonRelay2.TabIndex = 2;
-        buttonRelay2.Text = "РЕЛЕ 2";
+        buttonRelay2.Text = "ЗАЖИГАНИЕ";
         buttonRelay2.UseVisualStyleBackColor = true;
         // 
         // buttonRelay3
@@ -74,7 +74,7 @@ partial class FormTelem
         buttonRelay3.Name = "buttonRelay3";
         buttonRelay3.Size = new Size(125, 23);
         buttonRelay3.TabIndex = 3;
-        buttonRelay3.Text = "РЕЛЕ 3";
+        buttonRelay3.Text = "СТАРТЕР";
         buttonRelay3.UseVisualStyleBackColor = true;
         // 
         // buttonRelay4
@@ -83,7 +83,7 @@ partial class FormTelem
         buttonRelay4.Name = "buttonRelay4";
         buttonRelay4.Size = new Size(125, 23);
         buttonRelay4.TabIndex = 4;
-        buttonRelay4.Text = "РЕЛЕ 4";
+        buttonRelay4.Text = "";
         buttonRelay4.UseVisualStyleBackColor = true;
         // 
         // buttonRelay5
@@ -92,7 +92,7 @@ partial class FormTelem
         buttonRelay5.Name = "buttonRelay5";
         buttonRelay5.Size = new Size(125, 23);
         buttonRelay5.TabIndex = 5;
-        buttonRelay5.Text = "РЕЛЕ 5";
+        buttonRelay5.Text = "ДВИГАТЕЛЬ ВНИЗ";
         buttonRelay5.UseVisualStyleBackColor = true;
         // 
         // buttonRelay6
@@ -101,7 +101,7 @@ partial class FormTelem
         buttonRelay6.Name = "buttonRelay6";
         buttonRelay6.Size = new Size(125, 23);
         buttonRelay6.TabIndex = 6;
-        buttonRelay6.Text = "РЕЛЕ 6";
+        buttonRelay6.Text = "ДВИГАТЕЛЬ ВВЕРХ";
         buttonRelay6.UseVisualStyleBackColor = true;
         // 
         // buttonRelay7
@@ -110,7 +110,7 @@ partial class FormTelem
         buttonRelay7.Name = "buttonRelay7";
         buttonRelay7.Size = new Size(125, 23);
         buttonRelay7.TabIndex = 7;
-        buttonRelay7.Text = "РЕЛЕ 7";
+        buttonRelay7.Text = "";
         buttonRelay7.UseVisualStyleBackColor = true;
         // 
         // buttonRelay8
@@ -119,7 +119,7 @@ partial class FormTelem
         buttonRelay8.Name = "buttonRelay8";
         buttonRelay8.Size = new Size(125, 23);
         buttonRelay8.TabIndex = 8;
-        buttonRelay8.Text = "РЕЛЕ 8";
+        buttonRelay8.Text = "";
         buttonRelay8.UseVisualStyleBackColor = true;
         // 
         // FormTelem

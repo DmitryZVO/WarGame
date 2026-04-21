@@ -94,9 +94,12 @@ public sealed partial class FormVideo : Form
 
     private async Task Timer100StartAsync(CancellationToken ct)
     {
+        var count = 0;
+        var fps = 0;
+        var time = DateTime.Now;
         while (!ct.IsCancellationRequested)
         {
-            await Task.Delay(100, ct);
+            await Task.Delay(20, ct);
 
             var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
             if (obj == null)
@@ -111,10 +114,24 @@ public sealed partial class FormVideo : Form
                 ButtonCheck();
             }
 
-            using var mat0 = GetCameraAsync(obj.Id, _dx.CameraType, ct).Result ?? new();
+            var start = DateTime.Now;
+            using var mat0 = await GetCameraAsync(obj.Id, _dx.CameraType, ct) ?? new();
+            var ms = (DateTime.Now - start).TotalMilliseconds;
             lock (_dx)
             {
                 if (mat0.Height <= 0 | mat0.Width <= 0) continue;
+                count++;
+                //mat0.Rectangle(new OpenCvSharp.Point(0, 30), new OpenCvSharp.Point((int)(mat0.Width * 0.24), (int)(mat0.Height  * 0.025+30)), Scalar.Gray, -1);
+                //mat0.PutText($"CAM{obj.Id:0} FPS={fps:0}, ms={ms:0.00}", new OpenCvSharp.Point(5, (int)(mat0.Height * 0.02 + 30)), HersheyFonts.HersheyComplexSmall, 0.8d, Scalar.White);
+
+                var curr = DateTime.Now;
+                if ((curr - time).TotalMilliseconds > 1000)
+                {
+                    time = curr;
+                    fps = count;
+                    count = 0;
+                }
+
                 _dx.CameraFrame?.Dispose();
                 _dx.CameraFrame = _dx.CreateDxBitmap(mat0);
             }
@@ -183,10 +200,15 @@ public sealed partial class FormVideo : Form
     {
         try
         {
+            var start0 = DateTime.Now;
             using var web = new HttpClient();
             web.BaseAddress = new Uri(Core.Config.ServerUrl);
             using var answ = web.GetAsync($"GetCamera?id={id:0}&number={number:0}", ct).Result;
+            var s0 = (DateTime.Now - start0).TotalMilliseconds; //210ms
+            var start1 = DateTime.Now;
             var deserializedArray = JsonSerializer.Deserialize<byte[]>(await answ.Content.ReadAsStringAsync(ct));
+            //var ret = 
+            var s1 = (DateTime.Now - start1).TotalMilliseconds; //10ms
             return !answ.IsSuccessStatusCode ? null : Cv2.ImDecode(deserializedArray!, ImreadModes.Unchanged);
         }
         catch

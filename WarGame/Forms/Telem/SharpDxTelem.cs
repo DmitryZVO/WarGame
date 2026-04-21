@@ -37,12 +37,12 @@ internal class SharpDxTelem(PictureBox surfacePtr, int fpsTarget) : SharpDx(surf
                     var rectLine = new RawRectangleF(joyRect.Left, joyRect.Top + (i * yLine) + 0.0f, joyRect.Right, joyRect.Top + +((i + 1) * yLine));
                     Rt?.FillRectangle(new RawRectangleF(rectLine.Left, rectLine.Top, rectLine.Left + xLine * (obj.Telem.Servos[i - 16]), rectLine.Bottom), Brushes.RoiYellow03);
                     Rt?.DrawRectangle(rectLine, Brushes.RoiYellow03, 3.0f);
-                    Rt?.DrawText($"SERVO {i - 15:00}", Brushes.SysText20, new RawRectangleF(rectLine.Left + xLine * 0.30f, rectLine.Top + yLine * 0.3f, rectLine.Right, rectLine.Bottom), Brushes.SysTextBrushYellow);
+                    Rt?.DrawText($"SERVO {i - 15:00}", Brushes.SysText20, new RawRectangleF(rectLine.Left + xLine * 0.26f, rectLine.Top + yLine * 0.3f, rectLine.Right, rectLine.Bottom), Brushes.SysTextBrushYellow);
                 }
 
-                Rt?.DrawText($"OBJ_IN: {obj.Telem.MBitObjectIn:0.000000} Mbit", Brushes.SysText20, new RawRectangleF(joyRect.Left + xLine * 0.06f, BaseHeight * 0.90f, BaseWidth, BaseHeight), Brushes.SysTextBrushRed);
-                Rt?.DrawText($"SERV_IN: {obj.Telem.MBitServerIn:0.000000} Mbit", Brushes.SysText20, new RawRectangleF(joyRect.Left + xLine * 0.01f, BaseHeight * 0.92f, BaseWidth, BaseHeight), Brushes.SysTextBrushYellow);
-                Rt?.DrawText($"PING<>UDP: {obj.Telem.PingToServer:0.00} ms", Brushes.SysText20, new RawRectangleF(joyRect.Left + xLine * 0.06f, BaseHeight * 0.94f, BaseWidth, BaseHeight), Brushes.SysTextBrushWhite);
+                Rt?.DrawText($"OBJ_IN: {obj.Telem.MBitObjectIn:0.000000} Mbit", Brushes.SysText14, new RawRectangleF(joyRect.Left + xLine * 0.06f, BaseHeight * 0.90f, BaseWidth, BaseHeight), Brushes.SysTextBrushRed);
+                Rt?.DrawText($"SERV_IN: {obj.Telem.MBitServerIn:0.000000} Mbit", Brushes.SysText14, new RawRectangleF(joyRect.Left + xLine * 0.01f, BaseHeight * 0.92f, BaseWidth, BaseHeight), Brushes.SysTextBrushYellow);
+                Rt?.DrawText($"PING<>UDP: {obj.Telem.PingToServer:0.00} ms", Brushes.SysText14, new RawRectangleF(joyRect.Left + xLine * 0.06f, BaseHeight * 0.94f, BaseWidth, BaseHeight), Brushes.SysTextBrushWhite);
             }
             else // Объект не выбран, отображаем статус джойстика текущий
 
@@ -55,7 +55,7 @@ internal class SharpDxTelem(PictureBox surfacePtr, int fpsTarget) : SharpDx(surf
                     Rt?.DrawText($"CH{i + 1:00}", Brushes.SysText20, new RawRectangleF(rectLine.Left + xLine * 0.40f, rectLine.Top + yLine * 0.3f, rectLine.Right, rectLine.Bottom), Brushes.SysTextBrushYellow);
                 }
             }
-            Rt?.DrawText(Core.ClientName, Brushes.SysText20, new RawRectangleF(joyRect.Left + xLine * 0.10f, BaseHeight * 0.98f, BaseWidth, BaseHeight), Brushes.SysTextBrushDarkGreen);
+            Rt?.DrawText(Core.ClientName, Brushes.SysText14, new RawRectangleF(joyRect.Left + xLine * 0.08f, BaseHeight * 0.97f, BaseWidth, BaseHeight), Brushes.SysTextBrushDarkGreen);
         }
     }
 

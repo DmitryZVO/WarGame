@@ -120,12 +120,12 @@ public class GeoMap
             }
             dx.Rt.DrawLine(new RawVector2(dx.BaseWidth / 2.0f, dx.BaseHeight / 2.0f - 6.0f), new RawVector2(dx.BaseWidth / 2.0f, dx.BaseHeight / 2.0f + 6.0f), dx.Brushes.SysTextBrushYellow);
             dx.Rt.DrawLine(new RawVector2(dx.BaseWidth / 2.0f - 6.0f, dx.BaseHeight / 2.0f), new RawVector2(dx.BaseWidth / 2.0f + 6.0f, dx.BaseHeight / 2.0f), dx.Brushes.SysTextBrushYellow);
-            var rect = new RawRectangleF(dx.BaseWidth * 0.870f, dx.BaseHeight * 0.003f, dx.BaseWidth * 0.999f, dx.BaseHeight * 0.013f);
+            var rect = new RawRectangleF(dx.BaseWidth * 0.855f, dx.BaseHeight * 0.003f, dx.BaseWidth * 0.999f, dx.BaseHeight * 0.018f);
             dx.Rt.FillRectangle(rect, dx.Brushes.RoiNone);
             dx.Rt.DrawText($"{Core.Config.Map.LatY:0.000000}, {Core.Config.Map.LonX:0.000000}, {Core.Config.Map.Zoom+ Core.Config.Map.ZoomLocal:0.00}/{x0:0}/{y0:0}",
             dx.Brushes.SysText14, rect,dx.Brushes.SysTextBrushYellow);
 
-            rect = new RawRectangleF(dx.BaseWidth * 0.870f, dx.BaseHeight * 0.013f, dx.BaseWidth * 0.999f, dx.BaseHeight * 0.023f);
+            rect = new RawRectangleF(dx.BaseWidth * 0.855f, dx.BaseHeight * 0.018f, dx.BaseWidth * 0.999f, dx.BaseHeight * 0.033f);
             dx.Rt.FillRectangle(rect, dx.Brushes.RoiNone);
             var posMouse = GeoMath.ScreenPositionToGps(dx, Control.MousePosition.X - Core.FrmMap!.Location.X, Control.MousePosition.Y - Core.FrmMap!.Location.Y);
             dx.Rt.DrawText($"{posMouse.Y:0.000000}, {posMouse.X:0.000000}", dx.Brushes.SysText14, rect, dx.Brushes.SysTextBrushYellow);
