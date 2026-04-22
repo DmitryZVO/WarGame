@@ -29,7 +29,7 @@ internal class SharpDxTelem(PictureBox surfacePtr, int fpsTarget) : SharpDx(surf
                     var rectLine = new RawRectangleF(joyRect.Left, joyRect.Top + (i * yLine) + 0.0f, joyRect.Right, joyRect.Top + +((i + 1) * yLine));
                     Rt?.FillRectangle(new RawRectangleF(rectLine.Left, rectLine.Top, rectLine.Left + xLine * 0.5f * (obj.Telem.RcChannels[i] + 1.0f), rectLine.Bottom), joyColor);
                     Rt?.DrawRectangle(rectLine, joyColor, 3.0f);
-                    Rt?.DrawText($"CH{i + 1:00}", Brushes.SysText20, new RawRectangleF(rectLine.Left + xLine * 0.40f, rectLine.Top + yLine * 0.3f, rectLine.Right, rectLine.Bottom), Brushes.SysTextBrushYellow);
+                    Rt?.DrawText($"CH{i + 1:00} [{obj.Telem.RcChannels[i]*500+1500:0000}]", Brushes.SysText20, new RawRectangleF(rectLine.Left + xLine * 0.22f, rectLine.Top + yLine * 0.3f, rectLine.Right, rectLine.Bottom), Brushes.SysTextBrushYellow);
                 }
 
                 for (i = 16; i < obj.Telem.Servos.Length + 16; i++)

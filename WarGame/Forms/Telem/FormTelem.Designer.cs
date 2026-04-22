@@ -37,6 +37,10 @@ partial class FormTelem
         buttonRelay6 = new Button();
         buttonRelay7 = new Button();
         buttonRelay8 = new Button();
+        buttonRelayF2 = new Button();
+        buttonRelayF1 = new Button();
+        buttonRelayF3 = new Button();
+        buttonRelayF4 = new Button();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMain).BeginInit();
         SuspendLayout();
         // 
@@ -83,7 +87,6 @@ partial class FormTelem
         buttonRelay4.Name = "buttonRelay4";
         buttonRelay4.Size = new Size(125, 23);
         buttonRelay4.TabIndex = 4;
-        buttonRelay4.Text = "";
         buttonRelay4.UseVisualStyleBackColor = true;
         // 
         // buttonRelay5
@@ -110,7 +113,6 @@ partial class FormTelem
         buttonRelay7.Name = "buttonRelay7";
         buttonRelay7.Size = new Size(125, 23);
         buttonRelay7.TabIndex = 7;
-        buttonRelay7.Text = "";
         buttonRelay7.UseVisualStyleBackColor = true;
         // 
         // buttonRelay8
@@ -119,8 +121,39 @@ partial class FormTelem
         buttonRelay8.Name = "buttonRelay8";
         buttonRelay8.Size = new Size(125, 23);
         buttonRelay8.TabIndex = 8;
-        buttonRelay8.Text = "";
         buttonRelay8.UseVisualStyleBackColor = true;
+        // 
+        // buttonRelayF2
+        // 
+        buttonRelayF2.Location = new Point(12, 302);
+        buttonRelayF2.Name = "buttonRelayF2";
+        buttonRelayF2.Size = new Size(125, 23);
+        buttonRelayF2.TabIndex = 9;
+        buttonRelayF2.UseVisualStyleBackColor = true;
+        // 
+        // buttonRelayF1
+        // 
+        buttonRelayF1.Location = new Point(12, 273);
+        buttonRelayF1.Name = "buttonRelayF1";
+        buttonRelayF1.Size = new Size(125, 23);
+        buttonRelayF1.TabIndex = 10;
+        buttonRelayF1.UseVisualStyleBackColor = true;
+        // 
+        // buttonRelayF3
+        // 
+        buttonRelayF3.Location = new Point(12, 331);
+        buttonRelayF3.Name = "buttonRelayF3";
+        buttonRelayF3.Size = new Size(125, 23);
+        buttonRelayF3.TabIndex = 11;
+        buttonRelayF3.UseVisualStyleBackColor = true;
+        // 
+        // buttonRelayF4
+        // 
+        buttonRelayF4.Location = new Point(12, 360);
+        buttonRelayF4.Name = "buttonRelayF4";
+        buttonRelayF4.Size = new Size(125, 23);
+        buttonRelayF4.TabIndex = 12;
+        buttonRelayF4.UseVisualStyleBackColor = true;
         // 
         // FormTelem
         // 
@@ -128,6 +161,10 @@ partial class FormTelem
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1920, 1080);
         ControlBox = false;
+        Controls.Add(buttonRelayF4);
+        Controls.Add(buttonRelayF3);
+        Controls.Add(buttonRelayF1);
+        Controls.Add(buttonRelayF2);
         Controls.Add(buttonRelay8);
         Controls.Add(buttonRelay7);
         Controls.Add(buttonRelay6);
@@ -160,4 +197,8 @@ partial class FormTelem
     private Button buttonRelay6;
     private Button buttonRelay7;
     private Button buttonRelay8;
+    private Button buttonRelayF2;
+    private Button buttonRelayF1;
+    private Button buttonRelayF3;
+    private Button buttonRelayF4;
 }

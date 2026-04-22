@@ -27,6 +27,10 @@ public sealed partial class FormVideo : Form
         buttonRight.Click += ButtonRight_Click;
         buttonPtz.Click += ButtonPtz_Click;
         buttonWarm.Click += ButtonWarm_Click;
+        buttonFpv1.Click += ButtonFpv1_Click;
+        buttonFpv2.Click += ButtonFpv2_Click;
+        buttonFpv3.Click += ButtonFpv3_Click;
+        buttonFpv4.Click += ButtonFpv4_Click;
         buttonPtzRight.MouseDown += ButtonPtzRight_MouseDown;
         buttonPtzRight.MouseUp += ButtonPtzStop;
         buttonPtzLeft.MouseDown += ButtonPtzLeft_MouseDown;
@@ -169,6 +173,26 @@ public sealed partial class FormVideo : Form
         _dx.CameraType = 5;
         ButtonCheck();
     }
+    private void ButtonFpv1_Click(object? sender, EventArgs e)
+    {
+        _dx.CameraType = 6;
+        ButtonCheck();
+    }
+    private void ButtonFpv2_Click(object? sender, EventArgs e)
+    {
+        _dx.CameraType = 7;
+        ButtonCheck();
+    }
+    private void ButtonFpv3_Click(object? sender, EventArgs e)
+    {
+        _dx.CameraType = 8;
+        ButtonCheck();
+    }
+    private void ButtonFpv4_Click(object? sender, EventArgs e)
+    {
+        _dx.CameraType = 9;
+        ButtonCheck();
+    }
 
     private void FormOnClosing(object? sender, EventArgs e)
     {
@@ -194,6 +218,10 @@ public sealed partial class FormVideo : Form
         buttonBack.BackColor = _dx.CameraType == 3 ? Color.LightGreen : Color.White;
         buttonLeft.BackColor = _dx.CameraType == 4 ? Color.LightGreen : Color.White;
         buttonRight.BackColor = _dx.CameraType == 5 ? Color.LightGreen : Color.White;
+        buttonFpv1.BackColor = _dx.CameraType == 6 ? Color.LightGreen : Color.White;
+        buttonFpv2.BackColor = _dx.CameraType == 7 ? Color.LightGreen : Color.White;
+        buttonFpv3.BackColor = _dx.CameraType == 8 ? Color.LightGreen : Color.White;
+        buttonFpv4.BackColor = _dx.CameraType == 9 ? Color.LightGreen : Color.White;
     }
 
     public static async Task<Mat?> GetCameraAsync(int id, int number, CancellationToken ct = default)

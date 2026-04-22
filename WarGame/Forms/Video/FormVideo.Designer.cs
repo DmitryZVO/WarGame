@@ -41,6 +41,10 @@ partial class FormVideo
         buttonPtzRight = new Button();
         buttonPtzZoomIn = new Button();
         buttonPtzZoomOut = new Button();
+        buttonFpv1 = new Button();
+        buttonFpv2 = new Button();
+        buttonFpv3 = new Button();
+        buttonFpv4 = new Button();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMain).BeginInit();
         SuspendLayout();
         // 
@@ -161,12 +165,52 @@ partial class FormVideo
         buttonPtzZoomOut.Text = "Z-";
         buttonPtzZoomOut.UseVisualStyleBackColor = true;
         // 
+        // buttonFpv1
+        // 
+        buttonFpv1.Location = new Point(1833, 186);
+        buttonFpv1.Name = "buttonFpv1";
+        buttonFpv1.Size = new Size(75, 23);
+        buttonFpv1.TabIndex = 13;
+        buttonFpv1.Text = "БПЛА 1";
+        buttonFpv1.UseVisualStyleBackColor = true;
+        // 
+        // buttonFpv2
+        // 
+        buttonFpv2.Location = new Point(1833, 215);
+        buttonFpv2.Name = "buttonFpv2";
+        buttonFpv2.Size = new Size(75, 23);
+        buttonFpv2.TabIndex = 14;
+        buttonFpv2.Text = "БПЛА 2";
+        buttonFpv2.UseVisualStyleBackColor = true;
+        // 
+        // buttonFpv3
+        // 
+        buttonFpv3.Location = new Point(1833, 244);
+        buttonFpv3.Name = "buttonFpv3";
+        buttonFpv3.Size = new Size(75, 23);
+        buttonFpv3.TabIndex = 15;
+        buttonFpv3.Text = "БПЛА 3";
+        buttonFpv3.UseVisualStyleBackColor = true;
+        // 
+        // buttonFpv4
+        // 
+        buttonFpv4.Location = new Point(1833, 273);
+        buttonFpv4.Name = "buttonFpv4";
+        buttonFpv4.Size = new Size(75, 23);
+        buttonFpv4.TabIndex = 16;
+        buttonFpv4.Text = "БПЛА 4";
+        buttonFpv4.UseVisualStyleBackColor = true;
+        // 
         // FormVideo
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1920, 1080);
         ControlBox = false;
+        Controls.Add(buttonFpv4);
+        Controls.Add(buttonFpv3);
+        Controls.Add(buttonFpv2);
+        Controls.Add(buttonFpv1);
         Controls.Add(buttonPtzZoomOut);
         Controls.Add(buttonPtzZoomIn);
         Controls.Add(buttonPtzRight);
@@ -207,4 +251,8 @@ partial class FormVideo
     private Button buttonPtzRight;
     private Button buttonPtzZoomIn;
     private Button buttonPtzZoomOut;
+    private Button buttonFpv1;
+    private Button buttonFpv2;
+    private Button buttonFpv3;
+    private Button buttonFpv4;
 }

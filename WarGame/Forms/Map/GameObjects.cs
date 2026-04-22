@@ -187,6 +187,7 @@ public abstract class GameObject : IDrawing
         public float PingToServer { get; set; } // Ping UDP до сервера и обратно
         public int MBitServerInBytesCounter { get; set; } // Счетчик приема данных в байтах
         public float[] Relay { get; set; } = new float[8]; // Значения каналов реле
+        public float[] RelayFrw { get; set; } = new float[4]; // Значения каналов реле на носу
     }
     public class RcChannelsForWrite
     {
@@ -196,6 +197,7 @@ public abstract class GameObject : IDrawing
     public class RelaysForWrite
     {
         public float[] Values { get; set; } = new float[8]; // Значения каналов реле
+        public float[] ValuesFrw { get; set; } = new float[8]; // Значения каналов реле на носу
     }
 
     public static GameObject CreateFactory(GameObject o)
