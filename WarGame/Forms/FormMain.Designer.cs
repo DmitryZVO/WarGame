@@ -1,6 +1,6 @@
-﻿namespace WarGame.Forms.Rls;
+﻿namespace WarGame.Forms;
 
-partial class FormRls
+partial class FormMain
 {
     /// <summary>
     ///  Required designer variable.

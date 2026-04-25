@@ -7,7 +7,7 @@ internal static class Program
     public static string ConfigName { get; set; } = "_global.ini";
 
     [STAThread]
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
         try
         {
@@ -31,7 +31,7 @@ internal static class Program
         }
 
         Core.Init();
-        Application.Run(Core.FrmMap!);
+        Application.Run(Core.FrmMain);
         Core.DeInit();
     }
 }

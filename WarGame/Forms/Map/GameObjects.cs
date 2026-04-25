@@ -73,12 +73,13 @@ public class GameObjects
         {
             if (BitmapTank == null)
             {
-                var ret = await Files.GetSpriteAsync("Sprites", "Tank.png", ct);
+                var ret = await Files.GetSpriteAsync("Sprites", "Ship.png", ct);
                 if (ret != null) BitmapTank = dx.CreateDxBitmap(ret);
             }
 
             await UpdateAsync(ct);
             await Task.Delay(100, ct);
+            Items.First().Selected = (Core.FrmMap!.Visible == false && Items.Count > 0);
             var obj = Items.Find(x => x.Selected);
             if (obj != null)
             {

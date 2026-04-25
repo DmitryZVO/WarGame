@@ -13,12 +13,12 @@ public struct ConfigApp
     };
 
     public bool TestMode { get; set; } = false;
-    public string ServerUrl { get; set; } = "http://10.0.3.79:1111";
-    public FormPos FormMap { get; set; } = new FormPos() { Enable = true };
-    public FormPos FormRls { get; set; } = new FormPos();
-    public FormPos FormVideo { get; set; } = new FormPos();
-    public FormPos FormTelem { get; set; } = new FormPos();
-    public MapPos Map { get; set; } = new MapPos();
+    public string ServerUrl { get; set; } = "http://10.0.2.14:1111";
+    public FormPos FormMap { get; set; } = new();
+    public FormPos FormRls { get; set; } = new();
+    public FormPos FormVideo { get; set; } = new();
+    public FormPos FormTelem { get; set; } = new();
+    public MapPos Map { get; set; } = new();
 
     public ConfigApp()
     {

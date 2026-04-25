@@ -1,6 +1,6 @@
 ﻿using System.Net.NetworkInformation;
+using WarGame.Forms;
 using WarGame.Forms.Map;
-using WarGame.Forms.Rls;
 using WarGame.Forms.Telem;
 using WarGame.Forms.Video;
 using WarGame.Other;
@@ -11,8 +11,8 @@ namespace WarGame.Model;
 public static class Core
 {
     // Рабочие формы (экраны)
+    public static FormMain FrmMain { get; } = new();
     public static FormMap? FrmMap { get; private set; }
-    public static FormRls? FrmRls { get; private set; }
     public static FormVideo? FrmVideo { get; private set; }
     public static FormTelem? FrmTelem { get; private set; }
 
@@ -46,13 +46,13 @@ public static class Core
 
         Config = Config.Load();
 
-        FrmMap = new(new Point(Config.FormMap.PosX, Config.FormMap.PosY), Config.FormMap.Fps);
-        FrmRls = new(new Point(Config.FormRls.PosX, Config.FormRls.PosY), Config.FormRls.Fps);
-        FrmVideo = new(new Point(Config.FormVideo.PosX, Config.FormVideo.PosY), Config.FormVideo.Fps);
-        FrmTelem = new(new Point(Config.FormTelem.PosX, Config.FormTelem.PosY), Config.FormTelem.Fps);
+        FrmMap = new FormMap(new Point(Config.FormMap.PosX, Config.FormMap.PosY), Config.FormMap.Fps);
+        FrmVideo = new FormVideo(new Point(Config.FormVideo.PosX, Config.FormVideo.PosY), Config.FormVideo.Fps);
+        FrmTelem = new FormTelem(new Point(Config.FormTelem.PosX, Config.FormTelem.PosY), Config.FormTelem.Fps);
 
+        FrmMain.Visible = false;
         if (Config.FormMap.Enable) FrmMap.Show();
-        if (Config.FormRls.Enable) FrmRls.Show();
+        //if (Config.FormRls.Enable) FrmRls.Show();
         if (Config.FormVideo.Enable) FrmVideo.Show();
         if (Config.FormTelem.Enable) FrmTelem.Show();
 

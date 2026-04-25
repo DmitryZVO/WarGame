@@ -46,9 +46,13 @@
     <Compile Update="Forms\Video\FormVideo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\Rls\FormRls.cs">
+    <Compile Update="Forms\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Forms\Rls\" />
   </ItemGroup>
 
 </Project>
