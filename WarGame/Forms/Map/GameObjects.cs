@@ -3,6 +3,7 @@ using SharpDX.Mathematics.Interop;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using WarGame.Forms.Video;
 using WarGame.Model;
 using WarGame.Remote;
 using static WarGame.Forms.Map.GameObject;
@@ -54,6 +55,7 @@ public class GameObjects
                 x.LatY = i.LatY;
                 x.LonX = i.LonX;
                 x.Z = i.Z;
+                x.VideoQuality = i.VideoQuality;
             }
         }
         catch
@@ -83,6 +85,8 @@ public class GameObjects
 
     public async Task<bool> UpdatePtzAsync(GameObject obj, byte ptzState, CancellationToken ct = default)
     {
+        return false;
+        /*
         try
         {
             using var web = new HttpClient();
@@ -94,9 +98,10 @@ public class GameObjects
         {
             return false;
         }
+        */
     }
 
-    public async Task<bool> RewriteRcAsync(GameObject obj, CancellationToken ct = default)
+    public async Task<bool> RewriteRcAsync(GameObject obj, int number, CancellationToken ct = default)
     {
         if (!Core.Joystick.Alive) return false;
         try
@@ -109,7 +114,7 @@ public class GameObjects
             var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             content.Headers.ContentLength = jsonString.Length;
-            using var answ = await web.PostAsync($"SetGameObjectRcChannels?id={obj.Id:0}", content, ct);
+            using var answ = await web.PostAsync($"SetGameObjectRcChannels?id={obj.Id:0}&number={number:0}", content, ct);
             return answ.IsSuccessStatusCode;
         }
         catch
@@ -137,8 +142,52 @@ public class GameObjects
         }
     }
 
+    public async Task<bool> SendCommandAsync(GameObject obj, int command, CancellationToken ct = default)
+    {
+        // Список команд для объекта
+        //0x0Fx00x00x00 - вернуть чеку на взрыватель
+        //0x0Fx00x00x01 - снять чеку со взрывателя
+        //0x0Fx00x00xFF - подрыв (только со снятой чекой)
+        //0x11x0Nx00x00 - закрыть крышку N блока (нумерация с 0)
+        //0x11x0Nx00x01 - открыть крышку N блока (нумерация с 0)
+        //0x11x0Nx00x02 - остановить крышку N блока (нумерация с 0)
+        //0x11x0Nx00x10 - выключить птицу N блока (нумерация с 0)
+        //0x11x0Nx00x11 - включить птицу N блока (нумерация с 0)
+        //0x22x0Nx00x00 - выключить мосфет N (нумерация с 0)
+        //0x22x0Nx00x01 - включить мосфет N (нумерация с 0)
+
+        try
+        {
+            using var web = new HttpClient();
+            web.BaseAddress = new Uri(Core.Config.ServerUrl);
+            using var answ = await web.GetAsync($"GameObjectCommand?id={obj.Id:0}&command={command:0}", ct);
+            return answ.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> SetQualityVideo(GameObject obj, int quality, CancellationToken ct = default)
+    {
+        try
+        {
+            using var web = new HttpClient();
+            web.BaseAddress = new Uri(Core.Config.ServerUrl);
+            using var answ = await web.GetAsync($"SetQualityVideo?id={obj.Id:0}&quality={quality:0}", ct);
+            return answ.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     public async void Init(SharpDx dx, CancellationToken ct = default)
     {
+        RcSendAsync(ct);
+
         while (!ct.IsCancellationRequested)
         {
             if (BitmapTank == null)
@@ -153,7 +202,48 @@ public class GameObjects
             if (obj != null)
             {
                 await UpdateTelemAsync(obj, ct);
-                await RewriteRcAsync(obj, ct);
+            }
+        }
+    }
+
+    public async void RcSendAsync(CancellationToken ct)
+    {
+        while (!ct.IsCancellationRequested)
+        {
+            await Task.Delay(50, ct); // 20гЦ
+
+            var obj = Items.Find(x => x.Selected);
+            if (obj != null)
+            {
+                var number = 0; // По умолчанию идет управление лодкой
+                int camSel = Core.FrmVideo?.SelectedCamera ?? -1;
+                switch (camSel)
+                {
+                    case -1: // Объект не выбран, проброс не нужен
+                        continue;
+                    case 0: // Камера PTZ
+                        number = 1;
+                        break;
+                    case 1: // Камера PTZ
+                        number = 1;
+                        break;
+                    case 6: // Камера BOX1
+                        number = 2;
+                        break;
+                    case 7: // Камера BOX2
+                        number = 3;
+                        break;
+                    case 8: // Камера BOX3
+                        number = 4;
+                        break;
+                    case 9: // Камера BOX4
+                        number = 5;
+                        break;
+                    default:
+                        number = 0;
+                        break;
+                }
+                await RewriteRcAsync(obj, number, ct);
             }
         }
     }
@@ -177,6 +267,7 @@ public abstract class GameObject : IDrawing
     public float Angle { get; set; } // Угол поворота
     public bool Lighting { get; set; } // объект подсвечен
     public bool Selected { get; set; } // объект выбран
+    public byte VideoQuality { get; set; } // Качество видео с камер (0->5)
     [JsonIgnore] public GameObjectTelem Telem { get; set; } = new(); // Телеметрия объекта
     public class GameObjectTelem // Параметры телеметрии
     {
@@ -188,6 +279,7 @@ public abstract class GameObject : IDrawing
         public int MBitServerInBytesCounter { get; set; } // Счетчик приема данных в байтах
         public float[] Relay { get; set; } = new float[8]; // Значения каналов реле
         public float[] RelayFrw { get; set; } = new float[4]; // Значения каналов реле на носу
+        public int CommandCount { get; set; } // Количество команд под исполнение
     }
     public class RcChannelsForWrite
     {
@@ -215,6 +307,7 @@ public abstract class GameObject : IDrawing
                 Angle = o.Angle,
                 Lighting = o.Lighting,
                 Selected = o.Selected,
+                VideoQuality = o.VideoQuality,
             },
             _ => new GameObjJson()
             {
@@ -227,6 +320,7 @@ public abstract class GameObject : IDrawing
                 LatY = o.LatY,
                 Z = o.Z,
                 Angle = o.Angle,
+                VideoQuality = o.VideoQuality,
             }
 
         };

@@ -10,6 +10,8 @@ public sealed partial class FormVideo : Form
 
     private System.Drawing.Point _posFromDisplays;
     private readonly SharpDxVideo _dx;
+    public int SelectedCamera => _dx.CameraType;
+
     public FormVideo(System.Drawing.Point pos, int fps)
     {
         InitializeComponent();
@@ -31,6 +33,10 @@ public sealed partial class FormVideo : Form
         buttonFpv2.Click += ButtonFpv2_Click;
         buttonFpv3.Click += ButtonFpv3_Click;
         buttonFpv4.Click += ButtonFpv4_Click;
+        buttonVideoQH.Click += ButtonVideoQH_Click;
+        buttonVideoQM.Click += ButtonVideoQM_Click;
+        buttonVideoQL.Click += ButtonVideoQL_Click;
+        buttonVideoQEL.Click += ButtonVideoQEL_Click;
         buttonPtzRight.MouseDown += ButtonPtzRight_MouseDown;
         buttonPtzRight.MouseUp += ButtonPtzStop;
         buttonPtzLeft.MouseDown += ButtonPtzLeft_MouseDown;
@@ -43,6 +49,34 @@ public sealed partial class FormVideo : Form
         buttonPtzZoomIn.MouseUp += ButtonPtzStop;
         buttonPtzZoomOut.MouseDown += ButtonPtzZoomOut_MouseDown;
         buttonPtzZoomOut.MouseUp += ButtonPtzStop;
+    }
+
+    private static async void ButtonVideoQH_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SetQualityVideo(obj, 3);
+    }
+
+    private static async void ButtonVideoQM_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SetQualityVideo(obj, 2);
+    }
+
+    private static async void ButtonVideoQL_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SetQualityVideo(obj, 1);
+    }
+
+    private static async void ButtonVideoQEL_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SetQualityVideo(obj, 0);
     }
 
     private async void ButtonPtzRight_MouseDown(object? sender, MouseEventArgs e)
@@ -105,17 +139,17 @@ public sealed partial class FormVideo : Form
         {
             await Task.Delay(20, ct);
 
+            ButtonCheck();
+
             var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
             if (obj == null)
             {
                 _dx.CameraType = -1;
-                ButtonCheck();
                 continue;
             }
             if (_dx.CameraType == -1)
             {
-                _dx.CameraType = 0;
-                ButtonCheck();
+                _dx.CameraType = 2;
             }
 
             var start = DateTime.Now;
@@ -222,6 +256,19 @@ public sealed partial class FormVideo : Form
         buttonFpv2.BackColor = _dx.CameraType == 7 ? Color.LightGreen : Color.White;
         buttonFpv3.BackColor = _dx.CameraType == 8 ? Color.LightGreen : Color.White;
         buttonFpv4.BackColor = _dx.CameraType == 9 ? Color.LightGreen : Color.White;
+        buttonPtzDown.Visible = _dx.CameraType < 2;
+        buttonPtzUp.Visible = _dx.CameraType < 2;
+        buttonPtzLeft.Visible = _dx.CameraType < 2;
+        buttonPtzRight.Visible = _dx.CameraType < 2;
+        buttonPtzZoomIn.Visible = _dx.CameraType < 2;
+        buttonPtzZoomOut.Visible = _dx.CameraType < 2;
+
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+
+        buttonVideoQH.BackColor = obj == null ? Color.White : obj.VideoQuality == 3 ? Color.LightGreen : Color.White;
+        buttonVideoQM.BackColor = obj == null ? Color.White : obj.VideoQuality == 2 ? Color.LightGreen : Color.White;
+        buttonVideoQL.BackColor = obj == null ? Color.White : obj.VideoQuality == 1 ? Color.LightGreen : Color.White;
+        buttonVideoQEL.BackColor = obj == null ? Color.White : obj.VideoQuality == 0 ? Color.LightGreen : Color.White;
     }
 
     public static async Task<Mat?> GetCameraAsync(int id, int number, CancellationToken ct = default)

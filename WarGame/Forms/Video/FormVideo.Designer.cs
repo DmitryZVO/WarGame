@@ -45,6 +45,10 @@ partial class FormVideo
         buttonFpv2 = new Button();
         buttonFpv3 = new Button();
         buttonFpv4 = new Button();
+        buttonVideoQH = new Button();
+        buttonVideoQM = new Button();
+        buttonVideoQL = new Button();
+        buttonVideoQEL = new Button();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMain).BeginInit();
         SuspendLayout();
         // 
@@ -68,7 +72,7 @@ partial class FormVideo
         // 
         // buttonFrwd
         // 
-        buttonFrwd.Location = new Point(1833, 70);
+        buttonFrwd.Location = new Point(1833, 12);
         buttonFrwd.Name = "buttonFrwd";
         buttonFrwd.Size = new Size(75, 23);
         buttonFrwd.TabIndex = 2;
@@ -77,7 +81,7 @@ partial class FormVideo
         // 
         // buttonPtz
         // 
-        buttonPtz.Location = new Point(1833, 12);
+        buttonPtz.Location = new Point(1833, 41);
         buttonPtz.Name = "buttonPtz";
         buttonPtz.Size = new Size(75, 23);
         buttonPtz.TabIndex = 3;
@@ -104,7 +108,7 @@ partial class FormVideo
         // 
         // buttonWarm
         // 
-        buttonWarm.Location = new Point(1833, 41);
+        buttonWarm.Location = new Point(1833, 70);
         buttonWarm.Name = "buttonWarm";
         buttonWarm.Size = new Size(75, 23);
         buttonWarm.TabIndex = 6;
@@ -167,7 +171,7 @@ partial class FormVideo
         // 
         // buttonFpv1
         // 
-        buttonFpv1.Location = new Point(1833, 186);
+        buttonFpv1.Location = new Point(1833, 215);
         buttonFpv1.Name = "buttonFpv1";
         buttonFpv1.Size = new Size(75, 23);
         buttonFpv1.TabIndex = 13;
@@ -176,7 +180,7 @@ partial class FormVideo
         // 
         // buttonFpv2
         // 
-        buttonFpv2.Location = new Point(1833, 215);
+        buttonFpv2.Location = new Point(1833, 244);
         buttonFpv2.Name = "buttonFpv2";
         buttonFpv2.Size = new Size(75, 23);
         buttonFpv2.TabIndex = 14;
@@ -185,7 +189,7 @@ partial class FormVideo
         // 
         // buttonFpv3
         // 
-        buttonFpv3.Location = new Point(1833, 244);
+        buttonFpv3.Location = new Point(1833, 273);
         buttonFpv3.Name = "buttonFpv3";
         buttonFpv3.Size = new Size(75, 23);
         buttonFpv3.TabIndex = 15;
@@ -194,12 +198,48 @@ partial class FormVideo
         // 
         // buttonFpv4
         // 
-        buttonFpv4.Location = new Point(1833, 273);
+        buttonFpv4.Location = new Point(1833, 302);
         buttonFpv4.Name = "buttonFpv4";
         buttonFpv4.Size = new Size(75, 23);
         buttonFpv4.TabIndex = 16;
         buttonFpv4.Text = "БПЛА 4";
         buttonFpv4.UseVisualStyleBackColor = true;
+        // 
+        // buttonVideoQH
+        // 
+        buttonVideoQH.Location = new Point(1833, 440);
+        buttonVideoQH.Name = "buttonVideoQH";
+        buttonVideoQH.Size = new Size(75, 23);
+        buttonVideoQH.TabIndex = 18;
+        buttonVideoQH.Text = "HIGH";
+        buttonVideoQH.UseVisualStyleBackColor = true;
+        // 
+        // buttonVideoQM
+        // 
+        buttonVideoQM.Location = new Point(1833, 469);
+        buttonVideoQM.Name = "buttonVideoQM";
+        buttonVideoQM.Size = new Size(75, 23);
+        buttonVideoQM.TabIndex = 19;
+        buttonVideoQM.Text = "MEDIUM";
+        buttonVideoQM.UseVisualStyleBackColor = true;
+        // 
+        // buttonVideoQL
+        // 
+        buttonVideoQL.Location = new Point(1833, 498);
+        buttonVideoQL.Name = "buttonVideoQL";
+        buttonVideoQL.Size = new Size(75, 23);
+        buttonVideoQL.TabIndex = 20;
+        buttonVideoQL.Text = "LOW";
+        buttonVideoQL.UseVisualStyleBackColor = true;
+        // 
+        // buttonVideoQEL
+        // 
+        buttonVideoQEL.Location = new Point(1833, 527);
+        buttonVideoQEL.Name = "buttonVideoQEL";
+        buttonVideoQEL.Size = new Size(75, 23);
+        buttonVideoQEL.TabIndex = 21;
+        buttonVideoQEL.Text = "EXT_LOW";
+        buttonVideoQEL.UseVisualStyleBackColor = true;
         // 
         // FormVideo
         // 
@@ -207,6 +247,10 @@ partial class FormVideo
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1920, 1080);
         ControlBox = false;
+        Controls.Add(buttonVideoQEL);
+        Controls.Add(buttonVideoQL);
+        Controls.Add(buttonVideoQM);
+        Controls.Add(buttonVideoQH);
         Controls.Add(buttonFpv4);
         Controls.Add(buttonFpv3);
         Controls.Add(buttonFpv2);
@@ -255,4 +299,8 @@ partial class FormVideo
     private Button buttonFpv2;
     private Button buttonFpv3;
     private Button buttonFpv4;
+    private Button buttonVideoQH;
+    private Button buttonVideoQM;
+    private Button buttonVideoQL;
+    private Button buttonVideoQEL;
 }

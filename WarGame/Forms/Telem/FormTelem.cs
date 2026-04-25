@@ -29,19 +29,62 @@ public sealed partial class FormTelem : Form
 
     public void ButtonVisibleChange(GameObject? obj)
     {
-        buttonRelay1.Visible = (obj != null);
-        buttonRelay2.Visible = (obj != null);
-        buttonRelay3.Visible = (obj != null);
-        buttonRelay4.Visible = (obj != null);
-        buttonRelay5.Visible = (obj != null);
-        buttonRelay6.Visible = (obj != null);
-        buttonRelay7.Visible = (obj != null);
-        buttonRelay8.Visible = (obj != null);
-        buttonRelayF1.Visible = (obj != null);
-        buttonRelayF2.Visible = (obj != null);
-        buttonRelayF3.Visible = (obj != null);
-        buttonRelayF4.Visible = (obj != null);
-        if (obj == null) return;
+        var visible = (obj != null);
+
+        buttonRelay1.Visible = visible;
+        buttonRelay2.Visible = visible;
+        buttonRelay3.Visible = visible;
+        buttonRelay4.Visible = visible;
+        buttonRelay5.Visible = visible;
+        buttonRelay6.Visible = visible;
+        buttonRelay7.Visible = visible;
+        buttonRelay8.Visible = visible;
+        buttonRelayF1.Visible = visible;
+        buttonRelayF2.Visible = visible;
+        buttonRelayF3.Visible = visible;
+        buttonRelayF4.Visible = visible;
+
+        buttonBoomCheck.Visible = visible;
+        buttonBoom.Visible = visible;
+
+        buttonPower1On.Visible = visible;
+        buttonPower1Off.Visible = visible;
+        buttonPower2On.Visible = visible;
+        buttonPower2Off.Visible = visible;
+        buttonPower3On.Visible = visible;
+        buttonPower3Off.Visible = visible;
+        buttonPower4On.Visible = visible;
+        buttonPower4Off.Visible = visible;
+
+        buttonFpv1Open.Visible = visible;
+        buttonFpv1Close.Visible = visible;
+        buttonFpv1Stop.Visible = visible;
+        buttonFpv1On.Visible = visible;
+        buttonFpv1Off.Visible = visible;
+        buttonFpv2Open.Visible = visible;
+        buttonFpv2Close.Visible = visible;
+        buttonFpv2Stop.Visible = visible;
+        buttonFpv2On.Visible = visible;
+        buttonFpv2Off.Visible = visible;
+        buttonFpv3Open.Visible = visible;
+        buttonFpv3Close.Visible = visible;
+        buttonFpv3Stop.Visible = visible;
+        buttonFpv3On.Visible = visible;
+        buttonFpv3Off.Visible = visible;
+        buttonFpv4Open.Visible = visible;
+        buttonFpv4Close.Visible = visible;
+        buttonFpv4Stop.Visible = visible;
+        buttonFpv4On.Visible = visible;
+        buttonFpv4Off.Visible = visible;
+        buttonBoom.Enabled = !(buttonBoomCheck.BackColor == Color.White);
+        buttonBoom.BackColor = buttonBoomCheck.BackColor == Color.White ? Color.LightGray : Color.White;
+
+        if (obj == null)
+        {
+            buttonBoomCheck.BackColor = Color.White;
+            return;
+        }
+
         buttonRelay1.BackColor = obj.Telem.Relay[0] == 0 ? Color.White : obj.Telem.Relay[0] == 1 ? Color.LightGreen : Color.LightGray;
         buttonRelay2.BackColor = obj.Telem.Relay[1] == 0 ? Color.White : obj.Telem.Relay[1] == 1 ? Color.LightGreen : Color.LightGray;
         buttonRelay3.BackColor = obj.Telem.Relay[2] == 0 ? Color.White : obj.Telem.Relay[2] == 1 ? Color.LightGreen : Color.LightGray;
@@ -74,8 +117,239 @@ public sealed partial class FormTelem : Form
         buttonRelayF3.Click += ButtonRelayF3_Click;
         buttonRelayF4.Click += ButtonRelayF4_Click;
 
+        buttonFpv1Open.Click += ButtonFpv1Open_Click;
+        buttonFpv1Close.Click += ButtonFpv1Close_Click;
+        buttonFpv1Stop.Click += ButtonFpv1Stop_Click;
+        buttonFpv1On.Click += ButtonFpv1On_Click;
+        buttonFpv1Off.Click += ButtonFpv1Off_Click;
+        buttonFpv2Open.Click += ButtonFpv2Open_Click;
+        buttonFpv2Close.Click += ButtonFpv2Close_Click;
+        buttonFpv2Stop.Click += ButtonFpv2Stop_Click;
+        buttonFpv2On.Click += ButtonFpv2On_Click;
+        buttonFpv2Off.Click += ButtonFpv2Off_Click;
+        buttonFpv3Open.Click += ButtonFpv3Open_Click;
+        buttonFpv3Close.Click += ButtonFpv3Close_Click;
+        buttonFpv3Stop.Click += ButtonFpv3Stop_Click;
+        buttonFpv3On.Click += ButtonFpv3On_Click;
+        buttonFpv3Off.Click += ButtonFpv3Off_Click;
+        buttonFpv4Open.Click += ButtonFpv4Open_Click;
+        buttonFpv4Close.Click += ButtonFpv4Close_Click;
+        buttonFpv4Stop.Click += ButtonFpv4Stop_Click;
+        buttonFpv4On.Click += ButtonFpv4On_Click;
+        buttonFpv4Off.Click += ButtonFpv4Off_Click;
+
+        buttonPower1Off.Click += ButtonPower1Off_Click;
+        buttonPower1On.Click += ButtonPower1On_Click;
+        buttonPower2Off.Click += ButtonPower2Off_Click;
+        buttonPower2On.Click += ButtonPower2On_Click;
+        buttonPower3Off.Click += ButtonPower3Off_Click;
+        buttonPower3On.Click += ButtonPower3On_Click;
+        buttonPower4Off.Click += ButtonPower4Off_Click;
+        buttonPower4On.Click += ButtonPower4On_Click;
+
+        buttonBoomCheck.Click += ButtonBoomCheck_Click;
+        buttonBoom.Click += ButtonBoom_Click;
+
+        buttonBoomCheck.BackColor = Color.White;
+        buttonBoom.Enabled = !(buttonBoomCheck.BackColor == Color.White);
+        buttonBoom.BackColor = buttonBoomCheck.BackColor == Color.White ? Color.LightGray : Color.White;
+
         _ = _dx.StartAsync(default);
     }
+
+    private async void ButtonBoom_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x0F0000FF);
+    }
+
+    private async void ButtonBoomCheck_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+
+        if (buttonBoomCheck.BackColor == Color.White)
+        {
+            await FormMap.ObjectsGame.SendCommandAsync(obj, 0x0F000001);
+            buttonBoomCheck.BackColor = Color.LightPink;
+            return;
+        }
+
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x0F000000);
+        buttonBoomCheck.BackColor = Color.White;
+    }
+
+    private async void ButtonPower1Off_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x22000000);
+    }
+    private async void ButtonPower1On_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x22000001);
+    }
+    private async void ButtonPower2Off_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x22010000);
+    }
+    private async void ButtonPower2On_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x22010001);
+    }
+    private async void ButtonPower3Off_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x22020000);
+    }
+    private async void ButtonPower3On_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x22020001);
+    }
+    private async void ButtonPower4Off_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x22030000);
+    }
+    private async void ButtonPower4On_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x22030001);
+    }
+
+    private async void ButtonFpv1Open_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11000001);
+    }
+    private async void ButtonFpv1Close_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11000000);
+    }
+    private async void ButtonFpv1Stop_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11000002);
+    }
+    private async void ButtonFpv1Off_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11000010);
+    }
+    private async void ButtonFpv1On_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11000011);
+    }
+    private async void ButtonFpv2Open_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11010001);
+    }
+    private async void ButtonFpv2Close_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11010000);
+    }
+    private async void ButtonFpv2Stop_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11010002);
+    }
+    private async void ButtonFpv2Off_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11010010);
+    }
+    private async void ButtonFpv2On_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11010011);
+    }
+    private async void ButtonFpv3Open_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11020001);
+    }
+    private async void ButtonFpv3Close_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11020000);
+    }
+    private async void ButtonFpv3Stop_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11020002);
+    }
+    private async void ButtonFpv3Off_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11020010);
+    }
+    private async void ButtonFpv3On_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11020011);
+    }
+    private async void ButtonFpv4Open_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11030001);
+    }
+    private async void ButtonFpv4Close_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11030000);
+    }
+    private async void ButtonFpv4Stop_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11030002);
+    }
+    private async void ButtonFpv4Off_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11030010);
+    }
+    private async void ButtonFpv4On_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await FormMap.ObjectsGame.SendCommandAsync(obj, 0x11030011);
+    }
+
     private async void ButtonRelay1_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
