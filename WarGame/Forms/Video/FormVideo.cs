@@ -8,7 +8,7 @@ namespace WarGame.Forms.Video;
 public sealed partial class FormVideo : Form
 {
 
-    private System.Drawing.Point _posFromDisplays;
+    private readonly System.Drawing.Point _posFromDisplays;
     private readonly SharpDxVideo _dx;
     public int SelectedCamera => _dx.CameraType;
 
@@ -51,32 +51,44 @@ public sealed partial class FormVideo : Form
         buttonPtzZoomOut.MouseUp += ButtonPtzStop;
     }
 
-    private static async void ButtonVideoQH_Click(object? sender, EventArgs e)
+    private async void ButtonVideoQH_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
         if (obj == null) return;
         await FormMap.ObjectsGame.SetQualityVideo(obj, 3);
+        buttonVideoQH.Enabled = false;
+        await Task.Delay(1000);
+        buttonVideoQH.Enabled = true;
     }
 
-    private static async void ButtonVideoQM_Click(object? sender, EventArgs e)
+    private async void ButtonVideoQM_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
         if (obj == null) return;
         await FormMap.ObjectsGame.SetQualityVideo(obj, 2);
+        buttonVideoQM.Enabled = false;
+        await Task.Delay(1000);
+        buttonVideoQM.Enabled = true;
     }
 
-    private static async void ButtonVideoQL_Click(object? sender, EventArgs e)
+    private async void ButtonVideoQL_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
         if (obj == null) return;
         await FormMap.ObjectsGame.SetQualityVideo(obj, 1);
+        buttonVideoQL.Enabled = false;
+        await Task.Delay(1000);
+        buttonVideoQL.Enabled = true;
     }
 
-    private static async void ButtonVideoQEL_Click(object? sender, EventArgs e)
+    private async void ButtonVideoQEL_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
         if (obj == null) return;
         await FormMap.ObjectsGame.SetQualityVideo(obj, 0);
+        buttonVideoQEL.Enabled = false;
+        await Task.Delay(1000);
+        buttonVideoQEL.Enabled = true;
     }
 
     private async void ButtonPtzRight_MouseDown(object? sender, MouseEventArgs e)
@@ -176,56 +188,86 @@ public sealed partial class FormVideo : Form
         }
     }
 
-    private void ButtonPtz_Click(object? sender, EventArgs e)
+    private async void ButtonPtz_Click(object? sender, EventArgs e)
     {
         _dx.CameraType = 0;
         ButtonCheck();
+        buttonPtz.Enabled = false;
+        await Task.Delay(1000);
+        buttonPtz.Enabled = true;
     }
-    private void ButtonWarm_Click(object? sender, EventArgs e)
+    private async void ButtonWarm_Click(object? sender, EventArgs e)
     {
         _dx.CameraType = 1;
         ButtonCheck();
+        buttonWarm.Enabled = false;
+        await Task.Delay(1000);
+        buttonWarm.Enabled = true;
     }
-    private void ButtonFrwd_Click(object? sender, EventArgs e)
+    private async void ButtonFrwd_Click(object? sender, EventArgs e)
     {
         _dx.CameraType = 2;
         ButtonCheck();
+        buttonFrwd.Enabled = false;
+        await Task.Delay(1000);
+        buttonFrwd.Enabled = true;
     }
 
-    private void ButtonBack_Click(object? sender, EventArgs e)
+    private async void ButtonBack_Click(object? sender, EventArgs e)
     {
         _dx.CameraType = 3;
         ButtonCheck();
+        buttonBack.Enabled = false;
+        await Task.Delay(1000);
+        buttonBack.Enabled = true;
     }
-    private void ButtonLeft_Click(object? sender, EventArgs e)
+    private async void ButtonLeft_Click(object? sender, EventArgs e)
     {
         _dx.CameraType = 4;
         ButtonCheck();
+        buttonLeft.Enabled = false;
+        await Task.Delay(1000);
+        buttonLeft.Enabled = true;
     }
-    private void ButtonRight_Click(object? sender, EventArgs e)
+    private async void ButtonRight_Click(object? sender, EventArgs e)
     {
         _dx.CameraType = 5;
         ButtonCheck();
+        buttonRight.Enabled = false;
+        await Task.Delay(1000);
+        buttonRight.Enabled = true;
     }
-    private void ButtonFpv1_Click(object? sender, EventArgs e)
+    private async void ButtonFpv1_Click(object? sender, EventArgs e)
     {
         _dx.CameraType = 6;
         ButtonCheck();
+        buttonFpv1.Enabled = false;
+        await Task.Delay(1000);
+        buttonFpv1.Enabled = true;
     }
-    private void ButtonFpv2_Click(object? sender, EventArgs e)
+    private async void ButtonFpv2_Click(object? sender, EventArgs e)
     {
         _dx.CameraType = 7;
         ButtonCheck();
+        buttonFpv2.Enabled = false;
+        await Task.Delay(1000);
+        buttonFpv2.Enabled = true;
     }
-    private void ButtonFpv3_Click(object? sender, EventArgs e)
+    private async void ButtonFpv3_Click(object? sender, EventArgs e)
     {
         _dx.CameraType = 8;
         ButtonCheck();
+        buttonFpv3.Enabled = false;
+        await Task.Delay(1000);
+        buttonFpv3.Enabled = true;
     }
-    private void ButtonFpv4_Click(object? sender, EventArgs e)
+    private async void ButtonFpv4_Click(object? sender, EventArgs e)
     {
         _dx.CameraType = 9;
         ButtonCheck();
+        buttonFpv4.Enabled = false;
+        await Task.Delay(1000);
+        buttonFpv4.Enabled = true;
     }
 
     private void FormOnClosing(object? sender, EventArgs e)
