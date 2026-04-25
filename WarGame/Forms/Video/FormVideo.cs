@@ -37,25 +37,13 @@ public sealed partial class FormVideo : Form
         buttonVideoQM.Click += ButtonVideoQM_Click;
         buttonVideoQL.Click += ButtonVideoQL_Click;
         buttonVideoQEL.Click += ButtonVideoQEL_Click;
-        buttonPtzRight.MouseDown += ButtonPtzRight_MouseDown;
-        buttonPtzRight.MouseUp += ButtonPtzStop;
-        buttonPtzLeft.MouseDown += ButtonPtzLeft_MouseDown;
-        buttonPtzLeft.MouseUp += ButtonPtzStop;
-        buttonPtzUp.MouseDown += ButtonPtzUp_MouseDown;
-        buttonPtzUp.MouseUp += ButtonPtzStop;
-        buttonPtzDown.MouseDown += ButtonPtzDown_MouseDown;
-        buttonPtzDown.MouseUp += ButtonPtzStop;
-        buttonPtzZoomIn.MouseDown += ButtonPtzZoomIn_MouseDown;
-        buttonPtzZoomIn.MouseUp += ButtonPtzStop;
-        buttonPtzZoomOut.MouseDown += ButtonPtzZoomOut_MouseDown;
-        buttonPtzZoomOut.MouseUp += ButtonPtzStop;
     }
 
     private async void ButtonVideoQH_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
         if (obj == null) return;
-        await FormMap.ObjectsGame.SetQualityVideo(obj, 3);
+        await obj.SetQualityVideo(3);
         buttonVideoQH.Enabled = false;
         await Task.Delay(1000);
         buttonVideoQH.Enabled = true;
@@ -65,7 +53,7 @@ public sealed partial class FormVideo : Form
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
         if (obj == null) return;
-        await FormMap.ObjectsGame.SetQualityVideo(obj, 2);
+        await obj.SetQualityVideo(2);
         buttonVideoQM.Enabled = false;
         await Task.Delay(1000);
         buttonVideoQM.Enabled = true;
@@ -75,7 +63,7 @@ public sealed partial class FormVideo : Form
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
         if (obj == null) return;
-        await FormMap.ObjectsGame.SetQualityVideo(obj, 1);
+        await obj.SetQualityVideo(1);
         buttonVideoQL.Enabled = false;
         await Task.Delay(1000);
         buttonVideoQL.Enabled = true;
@@ -85,61 +73,10 @@ public sealed partial class FormVideo : Form
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
         if (obj == null) return;
-        await FormMap.ObjectsGame.SetQualityVideo(obj, 0);
+        await obj.SetQualityVideo(0);
         buttonVideoQEL.Enabled = false;
         await Task.Delay(1000);
         buttonVideoQEL.Enabled = true;
-    }
-
-    private async void ButtonPtzRight_MouseDown(object? sender, MouseEventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
-        if (obj == null) return;
-
-        await FormMap.ObjectsGame.UpdatePtzAsync(obj, 1);
-    }
-    private async void ButtonPtzLeft_MouseDown(object? sender, MouseEventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
-        if (obj == null) return;
-
-        await FormMap.ObjectsGame.UpdatePtzAsync(obj, 2);
-    }
-    private async void ButtonPtzUp_MouseDown(object? sender, MouseEventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
-        if (obj == null) return;
-
-        await FormMap.ObjectsGame.UpdatePtzAsync(obj, 4);
-    }
-    private async void ButtonPtzDown_MouseDown(object? sender, MouseEventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
-        if (obj == null) return;
-
-        await FormMap.ObjectsGame.UpdatePtzAsync(obj, 8);
-    }
-    private async void ButtonPtzZoomIn_MouseDown(object? sender, MouseEventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
-        if (obj == null) return;
-
-        await FormMap.ObjectsGame.UpdatePtzAsync(obj, 16);
-    }
-    private async void ButtonPtzZoomOut_MouseDown(object? sender, MouseEventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
-        if (obj == null) return;
-
-        await FormMap.ObjectsGame.UpdatePtzAsync(obj, 32);
-    }
-
-    private async void ButtonPtzStop(object? sender, MouseEventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
-        if (obj == null) return;
-
-        await FormMap.ObjectsGame.UpdatePtzAsync(obj, 0);
     }
 
     private async Task Timer100StartAsync(CancellationToken ct)
@@ -298,12 +235,6 @@ public sealed partial class FormVideo : Form
         buttonFpv2.BackColor = _dx.CameraType == 7 ? Color.LightGreen : Color.White;
         buttonFpv3.BackColor = _dx.CameraType == 8 ? Color.LightGreen : Color.White;
         buttonFpv4.BackColor = _dx.CameraType == 9 ? Color.LightGreen : Color.White;
-        buttonPtzDown.Visible = _dx.CameraType < 2;
-        buttonPtzUp.Visible = _dx.CameraType < 2;
-        buttonPtzLeft.Visible = _dx.CameraType < 2;
-        buttonPtzRight.Visible = _dx.CameraType < 2;
-        buttonPtzZoomIn.Visible = _dx.CameraType < 2;
-        buttonPtzZoomOut.Visible = _dx.CameraType < 2;
 
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
 

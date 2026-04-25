@@ -35,12 +35,6 @@ partial class FormVideo
         buttonLeft = new Button();
         buttonRight = new Button();
         buttonWarm = new Button();
-        buttonPtzUp = new Button();
-        buttonPtzDown = new Button();
-        buttonPtzLeft = new Button();
-        buttonPtzRight = new Button();
-        buttonPtzZoomIn = new Button();
-        buttonPtzZoomOut = new Button();
         buttonFpv1 = new Button();
         buttonFpv2 = new Button();
         buttonFpv3 = new Button();
@@ -114,60 +108,6 @@ partial class FormVideo
         buttonWarm.TabIndex = 6;
         buttonWarm.Text = "ТЕПЛО";
         buttonWarm.UseVisualStyleBackColor = true;
-        // 
-        // buttonPtzUp
-        // 
-        buttonPtzUp.Location = new Point(860, 12);
-        buttonPtzUp.Name = "buttonPtzUp";
-        buttonPtzUp.Size = new Size(75, 23);
-        buttonPtzUp.TabIndex = 7;
-        buttonPtzUp.Text = "/\\";
-        buttonPtzUp.UseVisualStyleBackColor = true;
-        // 
-        // buttonPtzDown
-        // 
-        buttonPtzDown.Location = new Point(860, 41);
-        buttonPtzDown.Name = "buttonPtzDown";
-        buttonPtzDown.Size = new Size(75, 23);
-        buttonPtzDown.TabIndex = 8;
-        buttonPtzDown.Text = "\\/";
-        buttonPtzDown.UseVisualStyleBackColor = true;
-        // 
-        // buttonPtzLeft
-        // 
-        buttonPtzLeft.Location = new Point(779, 12);
-        buttonPtzLeft.Name = "buttonPtzLeft";
-        buttonPtzLeft.Size = new Size(75, 23);
-        buttonPtzLeft.TabIndex = 9;
-        buttonPtzLeft.Text = "<";
-        buttonPtzLeft.UseVisualStyleBackColor = true;
-        // 
-        // buttonPtzRight
-        // 
-        buttonPtzRight.Location = new Point(941, 12);
-        buttonPtzRight.Name = "buttonPtzRight";
-        buttonPtzRight.Size = new Size(75, 23);
-        buttonPtzRight.TabIndex = 10;
-        buttonPtzRight.Text = ">";
-        buttonPtzRight.UseVisualStyleBackColor = true;
-        // 
-        // buttonPtzZoomIn
-        // 
-        buttonPtzZoomIn.Location = new Point(779, 41);
-        buttonPtzZoomIn.Name = "buttonPtzZoomIn";
-        buttonPtzZoomIn.Size = new Size(75, 23);
-        buttonPtzZoomIn.TabIndex = 11;
-        buttonPtzZoomIn.Text = "Z+";
-        buttonPtzZoomIn.UseVisualStyleBackColor = true;
-        // 
-        // buttonPtzZoomOut
-        // 
-        buttonPtzZoomOut.Location = new Point(941, 41);
-        buttonPtzZoomOut.Name = "buttonPtzZoomOut";
-        buttonPtzZoomOut.Size = new Size(75, 23);
-        buttonPtzZoomOut.TabIndex = 12;
-        buttonPtzZoomOut.Text = "Z-";
-        buttonPtzZoomOut.UseVisualStyleBackColor = true;
         // 
         // buttonFpv1
         // 
@@ -255,12 +195,6 @@ partial class FormVideo
         Controls.Add(buttonFpv3);
         Controls.Add(buttonFpv2);
         Controls.Add(buttonFpv1);
-        Controls.Add(buttonPtzZoomOut);
-        Controls.Add(buttonPtzZoomIn);
-        Controls.Add(buttonPtzRight);
-        Controls.Add(buttonPtzLeft);
-        Controls.Add(buttonPtzDown);
-        Controls.Add(buttonPtzUp);
         Controls.Add(buttonWarm);
         Controls.Add(buttonRight);
         Controls.Add(buttonLeft);
@@ -289,12 +223,6 @@ partial class FormVideo
     private Button buttonLeft;
     private Button buttonRight;
     private Button buttonWarm;
-    private Button buttonPtzUp;
-    private Button buttonPtzDown;
-    private Button buttonPtzLeft;
-    private Button buttonPtzRight;
-    private Button buttonPtzZoomIn;
-    private Button buttonPtzZoomOut;
     private Button buttonFpv1;
     private Button buttonFpv2;
     private Button buttonFpv3;

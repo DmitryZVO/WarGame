@@ -65,125 +65,6 @@ public class GameObjects
         return true;
     }
 
-    public async Task<bool> UpdateTelemAsync(GameObject obj, CancellationToken ct = default)
-    {
-        try
-        {
-            using var web = new HttpClient();
-            web.BaseAddress = new Uri(Core.Config.ServerUrl);
-            using var answ = await web.GetAsync($"GetGameObjectTelem?id={obj.Id:0}", ct);
-            var ret = !answ.IsSuccessStatusCode ? null : JsonSerializer.Deserialize<GameObject.GameObjectTelem>(await answ.Content.ReadAsStringAsync(ct));
-            if (ret == null) return false;
-            obj.Telem = ret; // Перезаписываем телеметрию
-        }
-        catch
-        {
-            return false;
-        }
-        return true;
-    }
-
-    public async Task<bool> UpdatePtzAsync(GameObject obj, byte ptzState, CancellationToken ct = default)
-    {
-        return false;
-        /*
-        try
-        {
-            using var web = new HttpClient();
-            web.BaseAddress = new Uri(Core.Config.ServerUrl);
-            using var answ = await web.GetAsync($"SetGameObjectPtz?id={obj.Id:0}&ptz={ptzState:0}", ct);
-            return answ.IsSuccessStatusCode;
-        }
-        catch
-        {
-            return false;
-        }
-        */
-    }
-
-    public async Task<bool> RewriteRcAsync(GameObject obj, int number, CancellationToken ct = default)
-    {
-        if (!Core.Joystick.Alive) return false;
-        try
-        {
-            using var web = new HttpClient();
-            web.BaseAddress = new Uri(Core.Config.ServerUrl);
-            var rcNew = new RcChannelsForWrite();
-            rcNew.Values = Core.Joystick.Channels;
-            var jsonString = JsonSerializer.Serialize(rcNew);
-            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            content.Headers.ContentLength = jsonString.Length;
-            using var answ = await web.PostAsync($"SetGameObjectRcChannels?id={obj.Id:0}&number={number:0}", content, ct);
-            return answ.IsSuccessStatusCode;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    public async Task<bool> RewriteRelayAsync(GameObject obj, RelaysForWrite relays, CancellationToken ct = default)
-    {
-        try
-        {
-            using var web = new HttpClient();
-            web.BaseAddress = new Uri(Core.Config.ServerUrl);
-            var jsonString = JsonSerializer.Serialize(relays);
-            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            content.Headers.ContentLength = jsonString.Length;
-            using var answ = await web.PostAsync($"SetGameObjectRelay?id={obj.Id:0}", content, ct);
-            return answ.IsSuccessStatusCode;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    public async Task<bool> SendCommandAsync(GameObject obj, int command, CancellationToken ct = default)
-    {
-        // Список команд для объекта
-        //0x0Fx00x00x00 - вернуть чеку на взрыватель
-        //0x0Fx00x00x01 - снять чеку со взрывателя
-        //0x0Fx00x00xFF - подрыв (только со снятой чекой)
-        //0x11x0Nx00x00 - закрыть крышку N блока (нумерация с 0)
-        //0x11x0Nx00x01 - открыть крышку N блока (нумерация с 0)
-        //0x11x0Nx00x02 - остановить крышку N блока (нумерация с 0)
-        //0x11x0Nx00x10 - выключить птицу N блока (нумерация с 0)
-        //0x11x0Nx00x11 - включить птицу N блока (нумерация с 0)
-        //0x22x0Nx00x00 - выключить мосфет N (нумерация с 0)
-        //0x22x0Nx00x01 - включить мосфет N (нумерация с 0)
-
-        try
-        {
-            using var web = new HttpClient();
-            web.BaseAddress = new Uri(Core.Config.ServerUrl);
-            using var answ = await web.GetAsync($"GameObjectCommand?id={obj.Id:0}&command={command:0}", ct);
-            return answ.IsSuccessStatusCode;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    public async Task<bool> SetQualityVideo(GameObject obj, int quality, CancellationToken ct = default)
-    {
-        try
-        {
-            using var web = new HttpClient();
-            web.BaseAddress = new Uri(Core.Config.ServerUrl);
-            using var answ = await web.GetAsync($"SetQualityVideo?id={obj.Id:0}&quality={quality:0}", ct);
-            return answ.IsSuccessStatusCode;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
     public async void Init(SharpDx dx, CancellationToken ct = default)
     {
         RcSendAsync(ct);
@@ -201,7 +82,7 @@ public class GameObjects
             var obj = Items.Find(x => x.Selected);
             if (obj != null)
             {
-                await UpdateTelemAsync(obj, ct);
+                await obj.UpdateTelemAsync(ct);
             }
         }
     }
@@ -243,7 +124,7 @@ public class GameObjects
                         number = 0;
                         break;
                 }
-                await RewriteRcAsync(obj, number, ct);
+                await obj.RewriteRcAsync(number, ct);
             }
         }
     }
@@ -324,6 +205,109 @@ public abstract class GameObject : IDrawing
             }
 
         };
+    }
+
+    public async Task<bool> SetQualityVideo(int quality, CancellationToken ct = default)
+    {
+        try
+        {
+            using var web = new HttpClient();
+            web.BaseAddress = new Uri(Core.Config.ServerUrl);
+            using var answ = await web.GetAsync($"SetQualityVideo?id={Id:0}&quality={quality:0}", ct);
+            return answ.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> SendCommandAsync(int command, CancellationToken ct = default)
+    {
+        // Список команд для объекта
+        //0x0Fx00x00x00 - вернуть чеку на взрыватель
+        //0x0Fx00x00x01 - снять чеку со взрывателя
+        //0x0Fx00x00xFF - подрыв (только со снятой чекой)
+        //0x11x0Nx00x00 - закрыть крышку N блока (нумерация с 0)
+        //0x11x0Nx00x01 - открыть крышку N блока (нумерация с 0)
+        //0x11x0Nx00x02 - остановить крышку N блока (нумерация с 0)
+        //0x11x0Nx00x10 - выключить птицу N блока (нумерация с 0)
+        //0x11x0Nx00x11 - включить птицу N блока (нумерация с 0)
+        //0x22x0Nx00x00 - выключить мосфет N (нумерация с 0)
+        //0x22x0Nx00x01 - включить мосфет N (нумерация с 0)
+
+        try
+        {
+            using var web = new HttpClient();
+            web.BaseAddress = new Uri(Core.Config.ServerUrl);
+            using var answ = await web.GetAsync($"GameObjectCommand?id={Id:0}&command={command:0}", ct);
+            return answ.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> RewriteRelayAsync(RelaysForWrite relays, CancellationToken ct = default)
+    {
+        try
+        {
+            using var web = new HttpClient();
+            web.BaseAddress = new Uri(Core.Config.ServerUrl);
+            var jsonString = JsonSerializer.Serialize(relays);
+            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            content.Headers.ContentLength = jsonString.Length;
+            using var answ = await web.PostAsync($"SetGameObjectRelay?id={Id:0}", content, ct);
+            return answ.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> UpdateTelemAsync(CancellationToken ct = default)
+    {
+        try
+        {
+            using var web = new HttpClient();
+            web.BaseAddress = new Uri(Core.Config.ServerUrl);
+            using var answ = await web.GetAsync($"GetGameObjectTelem?id={Id:0}", ct);
+            var ret = !answ.IsSuccessStatusCode ? null : JsonSerializer.Deserialize<GameObject.GameObjectTelem>(await answ.Content.ReadAsStringAsync(ct));
+            if (ret == null) return false;
+            Telem = ret; // Перезаписываем телеметрию
+        }
+        catch
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public async Task<bool> RewriteRcAsync(int number, CancellationToken ct = default)
+    {
+        if (!Core.Joystick.Alive) return false;
+        try
+        {
+            using var web = new HttpClient();
+            web.BaseAddress = new Uri(Core.Config.ServerUrl);
+            RcChannelsForWrite rcNew = new()
+            {
+                Values = Core.Joystick.Channels
+            };
+            var jsonString = JsonSerializer.Serialize(rcNew);
+            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+            content.Headers.ContentLength = jsonString.Length;
+            using var answ = await web.PostAsync($"SetGameObjectRcChannels?id={Id:0}&number={number:0}", content, ct);
+            return answ.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     public virtual void Draw(SharpDx dx) { } // Отрисовка объекта
