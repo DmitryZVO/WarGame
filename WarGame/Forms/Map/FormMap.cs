@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.Marshalling;
 using WarGame.Model;
 using WarGame.Resources;
 
@@ -10,6 +11,7 @@ public sealed partial class FormMap : Form
     public static GameObjects ObjectsGame { get; private set; } = new();
 
     private readonly SharpDx _dx;
+    public bool ObjectBlocked { get; set; }
 
     public static float MousePointLonX { get; set; }
     public static float MousePointLatY { get; set; }
@@ -49,8 +51,27 @@ public sealed partial class FormMap : Form
         pictureBoxMain.MouseMove += PictureBoxMain_MouseMove;
         pictureBoxMain.MouseWheel += PictureBoxMain_MouseWheel;
         buttonEdit.Click += ButtonEdit_Click;
+        buttonToObject.Click += ButtonToObject_Click;
 
         UpdateLastMouseState();
+    }
+
+    private void ButtonToObject_Click(object? sender, EventArgs e)
+    {
+        if (ObjectBlocked) ObjectToCenter();
+        if (ObjectsGame.Items.Count <= 0) return;
+        var obj = ObjectsGame.Items.First();
+        ObjectBlocked = !ObjectBlocked;
+        obj.Selected = ObjectBlocked;
+        buttonToObject.BackColor = ObjectBlocked ? Color.LightGreen : Color.White;
+    }
+
+    public void ObjectToCenter()
+    {
+        if (ObjectsGame.Items.Count <= 0) return;
+        var obj = ObjectsGame.Items.First();
+        Core.Config.Map.LonX = obj.LonX;
+        Core.Config.Map.LatY = obj.LatY;
     }
 
     private async void ButtonEdit_Click(object? sender, EventArgs e)
@@ -274,6 +295,8 @@ public sealed partial class FormMap : Form
     private void PictureBoxMain_MouseDown(object? sender, MouseEventArgs e)
     {
         MapMove = false;
+        if (ObjectBlocked) return;
+        
         // Левая кнопка мыши
         if (e.Button == MouseButtons.Left)
         {

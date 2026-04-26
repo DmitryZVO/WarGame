@@ -79,10 +79,20 @@ public class GameObjects
 
             await UpdateAsync(ct);
             await Task.Delay(100, ct);
-            Items.First().Selected = (Core.FrmMap!.Visible == false && Items.Count > 0);
+
+            if (Core.FrmMap!.Visible == false && Items.Count > 0) // Принудительное выделение объекта, если нет формы с картой
+            {
+                Items.First().Selected = true;
+            }
+
             var obj = Items.Find(x => x.Selected);
             if (obj != null)
             {
+                if (Core.FrmMap!.ObjectBlocked)
+                {
+                    Core.Config.Map.LonX = obj.LonX;
+                    Core.Config.Map.LatY = obj.LatY;
+                }
                 await obj.UpdateTelemAsync(ct);
             }
         }
@@ -178,7 +188,7 @@ public abstract class GameObject : IDrawing
     {
         return o.Type switch
         {
-            1 => new GameObjTank()
+            0 => new GameObjShip()
             {
                 Type = o.Type,
                 Id = o.Id,
@@ -340,9 +350,9 @@ public class GameObjJson : GameObject // Type=-1 (используется дл�
 }
 
 // Ровер (борщевик)
-public class GameObjTank : GameObject // Type=1 (ровер)
+public class GameObjShip : GameObject // Type=1 (ровер)
 {
-    public GameObjTank()
+    public GameObjShip()
     {
         ContextMenuEdit = new();
         //ContextMenuEdit.Items.Add("Изменить", null, (_, _) => { new FormObjEdit().ShowDialog(); });

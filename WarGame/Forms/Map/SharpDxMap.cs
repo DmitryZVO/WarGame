@@ -1,4 +1,5 @@
-﻿using WarGame.Resources;
+﻿using WarGame.Model;
+using WarGame.Resources;
 
 namespace WarGame.Forms.Map;
 

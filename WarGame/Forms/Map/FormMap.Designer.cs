@@ -30,6 +30,7 @@ partial class FormMap
     {
         pictureBoxMain = new PictureBox();
         buttonEdit = new Button();
+        buttonToObject = new Button();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMain).BeginInit();
         SuspendLayout();
         // 
@@ -53,12 +54,23 @@ partial class FormMap
         buttonEdit.Text = "РЕДАКТИРОВАТЬ";
         buttonEdit.UseVisualStyleBackColor = true;
         // 
+        // buttonToObject
+        // 
+        buttonToObject.FlatStyle = FlatStyle.Flat;
+        buttonToObject.Location = new Point(924, 1043);
+        buttonToObject.Name = "buttonToObject";
+        buttonToObject.Size = new Size(117, 25);
+        buttonToObject.TabIndex = 2;
+        buttonToObject.Text = ">ОБЪЕКТ<";
+        buttonToObject.UseVisualStyleBackColor = true;
+        // 
         // FormMap
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1920, 1080);
         ControlBox = false;
+        Controls.Add(buttonToObject);
         Controls.Add(buttonEdit);
         Controls.Add(pictureBoxMain);
         FormBorderStyle = FormBorderStyle.None;
@@ -77,4 +89,5 @@ partial class FormMap
 
     private PictureBox pictureBoxMain;
     private Button buttonEdit;
+    private Button buttonToObject;
 }
