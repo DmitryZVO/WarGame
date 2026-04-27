@@ -56,6 +56,7 @@ public class GameObjects
                 x.LonX = i.LonX;
                 x.Z = i.Z;
                 x.VideoQuality = i.VideoQuality;
+                x.LogEnable = i.LogEnable;
             }
         }
         catch
@@ -103,6 +104,8 @@ public class GameObjects
         while (!ct.IsCancellationRequested)
         {
             await Task.Delay(50, ct); // 20гЦ
+
+            if (Core.FrmVideo!.ActiveControl == false) continue;
 
             var obj = Items.Find(x => x.Selected);
             if (obj != null)
@@ -160,6 +163,7 @@ public abstract class GameObject : IDrawing
     public bool Lighting { get; set; } // объект подсвечен
     public bool Selected { get; set; } // объект выбран
     public byte VideoQuality { get; set; } // Качество видео с камер (0->5)
+    public bool LogEnable { get; set; } // включено ли логирование
     [JsonIgnore] public GameObjectTelem Telem { get; set; } = new(); // Телеметрия объекта
     public class GameObjectTelem // Параметры телеметрии
     {
@@ -172,6 +176,8 @@ public abstract class GameObject : IDrawing
         public float[] Relay { get; set; } = new float[8]; // Значения каналов реле
         public float[] RelayFrw { get; set; } = new float[4]; // Значения каналов реле на носу
         public int CommandCount { get; set; } // Количество команд под исполнение
+        public byte[] CanEngineBits { get; set; } = new byte[5];  // биты двигателя
+        public int AliveCheck { get; set; } // статусы компонентов устройства
     }
     public class RcChannelsForWrite
     {
@@ -200,6 +206,21 @@ public abstract class GameObject : IDrawing
                 Lighting = o.Lighting,
                 Selected = o.Selected,
                 VideoQuality = o.VideoQuality,
+                LogEnable = o.LogEnable,
+            },
+            1 => new GameObjShip()
+            {
+                Type = o.Type,
+                Id = o.Id,
+                Name = o.Name,
+                LonX = o.LonX,
+                LatY = o.LatY,
+                Z = o.Z,
+                Angle = o.Angle,
+                Lighting = o.Lighting,
+                Selected = o.Selected,
+                VideoQuality = o.VideoQuality,
+                LogEnable = o.LogEnable,
             },
             _ => new GameObjJson()
             {
@@ -213,6 +234,7 @@ public abstract class GameObject : IDrawing
                 Z = o.Z,
                 Angle = o.Angle,
                 VideoQuality = o.VideoQuality,
+                LogEnable = o.LogEnable,
             }
 
         };
@@ -362,8 +384,8 @@ public class GameObjShip : GameObject // Type=1 (ровер)
     public override void Draw(SharpDx dx)
     {
         if (dx.Rt == null) return;
-        if (LonX <= 0) return;
-        if (LatY <= 0) return;
+        //if (LonX <= 0) return;
+        //if (LatY <= 0) return;
         if (!GeoMath.TileIsVisible(Core.Config.Map.Zoom, LonX, LatY)) return;
         var pos = GeoMath.GpsPositionToScreen(dx, LonX, LatY);
         var radius = 20.0f;

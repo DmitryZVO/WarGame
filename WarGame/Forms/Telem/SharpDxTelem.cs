@@ -14,6 +14,7 @@ internal class SharpDxTelem(PictureBox surfacePtr, int fpsTarget) : SharpDx(surf
         lock (this)
         {
             Rt?.Clear(new RawColor4(0, 0, 0, 1));
+            var telemRect = new RawRectangleF(BaseWidth * 0.08f, BaseHeight * 0.01f, BaseWidth*2f, BaseHeight);
             var joyRect = new RawRectangleF(BaseWidth * 0.9f, BaseHeight * 0.003f, BaseWidth * 0.998f, BaseHeight * 0.498f);
             var joyColor = Core.Joystick.Alive ? Brushes.RoiGray03 : Brushes.RoiRed03;
             var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
@@ -21,8 +22,18 @@ internal class SharpDxTelem(PictureBox surfacePtr, int fpsTarget) : SharpDx(surf
             var xLine = joyRect.Right - joyRect.Left;
             int i;
             Core.FrmTelem!.ButtonVisibleChange(obj);
-            if (obj != null) // Объект выбрат
+            if (obj != null) // Объект выбран
             {
+                var sy = 0;
+                var syT = 24.0f;
+                Rt?.DrawText($"ВЕДЕТСЯ ЗАПИСЬ ТЕЛЕМЕТРИИ: {obj.LogEnable}", Brushes.SysText20, new RawRectangleF(telemRect.Left, telemRect.Top + (sy * syT), telemRect.Right, telemRect.Bottom), obj.LogEnable ? Brushes.SysTextBrushGreen : Brushes.SysTextBrushRed); sy++;
+                Rt?.DrawText($"ОБЪЕКТ: {obj.Name}", Brushes.SysText20, new RawRectangleF(telemRect.Left, telemRect.Top + (sy * syT), telemRect.Right, telemRect.Bottom), Brushes.SysTextBrushYellow); sy++;
+                Rt?.DrawText($"GPS LonX: {obj.LonX:0.000000}", Brushes.SysText20, new RawRectangleF(telemRect.Left, telemRect.Top + (sy * syT), telemRect.Right, telemRect.Bottom), Brushes.SysTextBrushYellow); sy++;
+                Rt?.DrawText($"GPS LatY: {obj.LatY:0.000000}", Brushes.SysText20, new RawRectangleF(telemRect.Left, telemRect.Top + (sy * syT), telemRect.Right, telemRect.Bottom), Brushes.SysTextBrushYellow); sy++;
+                Rt?.DrawText($"КОМПАС: {obj.Angle:0.00} град", Brushes.SysText20, new RawRectangleF(telemRect.Left, telemRect.Top + (sy * syT), telemRect.Right, telemRect.Bottom), Brushes.SysTextBrushYellow); sy++;
+                Rt?.DrawText($"БИТЫ CAN_ENGINE: {Convert.ToString(obj.Telem.CanEngineBits[4], 2).PadLeft(8, '0')} {Convert.ToString(obj.Telem.CanEngineBits[3], 2).PadLeft(8, '0')} {Convert.ToString(obj.Telem.CanEngineBits[2], 2).PadLeft(8, '0')} {Convert.ToString(obj.Telem.CanEngineBits[1], 2).PadLeft(8, '0')} {Convert.ToString(obj.Telem.CanEngineBits[0], 2).PadLeft(8, '0')}", Brushes.SysText20, new RawRectangleF(telemRect.Left, telemRect.Top + (sy * syT), telemRect.Right, telemRect.Bottom), Brushes.SysTextBrushYellow); sy++;
+
+
                 joyColor = Core.Joystick.Alive ? Brushes.RoiGreen03 : joyColor;
                 for (i = 0; i < obj.Telem.RcChannels.Length; i++)
                 {
@@ -46,7 +57,6 @@ internal class SharpDxTelem(PictureBox surfacePtr, int fpsTarget) : SharpDx(surf
                 Rt?.DrawText($"COM_QUEUE: {obj.Telem.CommandCount:0}", Brushes.SysText14, new RawRectangleF(joyRect.Left + xLine * 0.15f, BaseHeight * 0.94f, BaseWidth, BaseHeight), Brushes.SysTextBrushOrange);
             }
             else // Объект не выбран, отображаем статус джойстика текущий
-
             {
                 for (i = 0; i < Core.Joystick.Channels.Length; i++)
                 {

@@ -11,6 +11,7 @@ public sealed partial class FormVideo : Form
     private readonly System.Drawing.Point _posFromDisplays;
     private readonly SharpDxVideo _dx;
     public int SelectedCamera => _dx.CameraType;
+    public new bool ActiveControl => (buttonJoystickSend.BackColor == Color.LightGreen);
 
     public FormVideo(System.Drawing.Point pos, int fps)
     {
@@ -23,6 +24,7 @@ public sealed partial class FormVideo : Form
 
         Shown += FormShown;
         Closed += FormOnClosing;
+        buttonCamNone.Click += ButtonCamNone_Click;
         buttonFrwd.Click += ButtonFrwd_Click;
         buttonBack.Click += ButtonBack_Click;
         buttonLeft.Click += ButtonLeft_Click;
@@ -37,6 +39,22 @@ public sealed partial class FormVideo : Form
         buttonVideoQM.Click += ButtonVideoQM_Click;
         buttonVideoQL.Click += ButtonVideoQL_Click;
         buttonVideoQEL.Click += ButtonVideoQEL_Click;
+        buttonJoystickSend.Click += ButtonJoystickSend_Click;
+    }
+
+    private void ButtonJoystickSend_Click(object? sender, EventArgs e)
+    {
+        if (buttonJoystickSend.Enabled == false) return;
+        buttonJoystickSend.BackColor = (buttonJoystickSend.BackColor == Color.White) ? Color.LightGreen : Color.White;
+    }
+
+    private async void ButtonCamNone_Click(object? sender, EventArgs e)
+    {
+        _dx.CameraType = -1;
+        ButtonCheck();
+        buttonCamNone.Enabled = false;
+        await Task.Delay(1000);
+        buttonCamNone.Enabled = true;
     }
 
     private async void ButtonVideoQH_Click(object? sender, EventArgs e)
@@ -95,10 +113,6 @@ public sealed partial class FormVideo : Form
             {
                 _dx.CameraType = -1;
                 continue;
-            }
-            if (_dx.CameraType == -1)
-            {
-                _dx.CameraType = 2;
             }
 
             var start = DateTime.Now;
@@ -225,6 +239,7 @@ public sealed partial class FormVideo : Form
 
     private void ButtonCheck()
     {
+        buttonCamNone.BackColor = _dx.CameraType == -1 ? Color.LightGreen : Color.White;
         buttonPtz.BackColor = _dx.CameraType == 0 ? Color.LightGreen : Color.White;
         buttonWarm.BackColor = _dx.CameraType == 1 ? Color.LightGreen : Color.White;
         buttonFrwd.BackColor = _dx.CameraType == 2 ? Color.LightGreen : Color.White;
@@ -238,6 +253,16 @@ public sealed partial class FormVideo : Form
 
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
 
+        if (obj == null | Core.Joystick.Alive == false)
+        {
+            buttonJoystickSend.Enabled = false;
+            buttonJoystickSend.BackColor = Color.White;
+        }
+        else
+        {
+            buttonJoystickSend.Enabled = true;
+        }
+
         buttonVideoQH.BackColor = obj == null ? Color.White : obj.VideoQuality == 3 ? Color.LightGreen : Color.White;
         buttonVideoQM.BackColor = obj == null ? Color.White : obj.VideoQuality == 2 ? Color.LightGreen : Color.White;
         buttonVideoQL.BackColor = obj == null ? Color.White : obj.VideoQuality == 1 ? Color.LightGreen : Color.White;
@@ -246,6 +271,7 @@ public sealed partial class FormVideo : Form
 
     public static async Task<Mat?> GetCameraAsync(int id, int number, CancellationToken ct = default)
     {
+        if (number < 0) return null;
         try
         {
             var start0 = DateTime.Now;

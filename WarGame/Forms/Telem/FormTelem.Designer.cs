@@ -71,6 +71,38 @@ partial class FormTelem
         buttonFpv3On = new Button();
         buttonFpv4Off = new Button();
         buttonFpv4On = new Button();
+        buttonAliveServer = new Button();
+        buttonAliveCamFrwd = new Button();
+        buttonAliveCamBack = new Button();
+        buttonAliveCamLeft = new Button();
+        buttonAliveCamRight = new Button();
+        buttonAliveCamPtz = new Button();
+        buttonAliveCamWarm = new Button();
+        buttonAliveCamFpv1 = new Button();
+        buttonAliveCamFpv2 = new Button();
+        buttonAliveCamFpv3 = new Button();
+        buttonAliveCamFpv4 = new Button();
+        buttonAliveCompas = new Button();
+        buttonAliveCubic = new Button();
+        buttonAliveGpsF = new Button();
+        buttonAliveGpsB = new Button();
+        buttonAliveRelay = new Button();
+        buttonAliveRelayFrw = new Button();
+        buttonAliveFuel = new Button();
+        buttonAliveInertial = new Button();
+        buttonAliveEngine = new Button();
+        buttonAliveBox1 = new Button();
+        buttonAliveBoxCrsf1 = new Button();
+        buttonAliveBoxCrsf2 = new Button();
+        buttonAliveBox2 = new Button();
+        buttonAliveBoxCrsf3 = new Button();
+        buttonAliveBox3 = new Button();
+        buttonAliveBoxCrsf4 = new Button();
+        buttonAliveBox4 = new Button();
+        buttonAlivePtzRs485 = new Button();
+        buttonAliveMosfets = new Button();
+        buttonAliveBoom = new Button();
+        buttonLogEnable = new Button();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMain).BeginInit();
         SuspendLayout();
         // 
@@ -308,7 +340,7 @@ partial class FormTelem
         // buttonPower1Off
         // 
         buttonPower1Off.BackColor = Color.FromArgb(255, 192, 192);
-        buttonPower1Off.Location = new Point(143, 418);
+        buttonPower1Off.Location = new Point(143, 752);
         buttonPower1Off.Name = "buttonPower1Off";
         buttonPower1Off.Size = new Size(125, 23);
         buttonPower1Off.TabIndex = 25;
@@ -318,7 +350,7 @@ partial class FormTelem
         // buttonPower1On
         // 
         buttonPower1On.BackColor = Color.FromArgb(192, 255, 192);
-        buttonPower1On.Location = new Point(12, 418);
+        buttonPower1On.Location = new Point(12, 752);
         buttonPower1On.Name = "buttonPower1On";
         buttonPower1On.Size = new Size(125, 23);
         buttonPower1On.TabIndex = 26;
@@ -328,7 +360,7 @@ partial class FormTelem
         // buttonPower2On
         // 
         buttonPower2On.BackColor = Color.FromArgb(192, 255, 192);
-        buttonPower2On.Location = new Point(12, 447);
+        buttonPower2On.Location = new Point(12, 781);
         buttonPower2On.Name = "buttonPower2On";
         buttonPower2On.Size = new Size(125, 23);
         buttonPower2On.TabIndex = 28;
@@ -338,7 +370,7 @@ partial class FormTelem
         // buttonPower2Off
         // 
         buttonPower2Off.BackColor = Color.FromArgb(255, 192, 192);
-        buttonPower2Off.Location = new Point(143, 447);
+        buttonPower2Off.Location = new Point(143, 781);
         buttonPower2Off.Name = "buttonPower2Off";
         buttonPower2Off.Size = new Size(125, 23);
         buttonPower2Off.TabIndex = 27;
@@ -348,7 +380,7 @@ partial class FormTelem
         // buttonPower3On
         // 
         buttonPower3On.BackColor = Color.FromArgb(192, 255, 192);
-        buttonPower3On.Location = new Point(12, 476);
+        buttonPower3On.Location = new Point(12, 810);
         buttonPower3On.Name = "buttonPower3On";
         buttonPower3On.Size = new Size(125, 23);
         buttonPower3On.TabIndex = 30;
@@ -358,7 +390,7 @@ partial class FormTelem
         // buttonPower3Off
         // 
         buttonPower3Off.BackColor = Color.FromArgb(255, 192, 192);
-        buttonPower3Off.Location = new Point(143, 476);
+        buttonPower3Off.Location = new Point(143, 810);
         buttonPower3Off.Name = "buttonPower3Off";
         buttonPower3Off.Size = new Size(125, 23);
         buttonPower3Off.TabIndex = 29;
@@ -368,7 +400,7 @@ partial class FormTelem
         // buttonPower4On
         // 
         buttonPower4On.BackColor = Color.FromArgb(192, 255, 192);
-        buttonPower4On.Location = new Point(12, 505);
+        buttonPower4On.Location = new Point(12, 839);
         buttonPower4On.Name = "buttonPower4On";
         buttonPower4On.Size = new Size(125, 23);
         buttonPower4On.TabIndex = 32;
@@ -378,7 +410,7 @@ partial class FormTelem
         // buttonPower4Off
         // 
         buttonPower4Off.BackColor = Color.FromArgb(255, 192, 192);
-        buttonPower4Off.Location = new Point(143, 505);
+        buttonPower4Off.Location = new Point(143, 839);
         buttonPower4Off.Name = "buttonPower4Off";
         buttonPower4Off.Size = new Size(125, 23);
         buttonPower4Off.TabIndex = 31;
@@ -391,7 +423,7 @@ partial class FormTelem
         buttonBoom.Enabled = false;
         buttonBoom.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
         buttonBoom.ForeColor = Color.FromArgb(192, 0, 0);
-        buttonBoom.Location = new Point(143, 563);
+        buttonBoom.Location = new Point(143, 897);
         buttonBoom.Name = "buttonBoom";
         buttonBoom.Size = new Size(125, 23);
         buttonBoom.TabIndex = 33;
@@ -400,7 +432,7 @@ partial class FormTelem
         // 
         // buttonBoomCheck
         // 
-        buttonBoomCheck.Location = new Point(12, 563);
+        buttonBoomCheck.Location = new Point(12, 897);
         buttonBoomCheck.Name = "buttonBoomCheck";
         buttonBoomCheck.Size = new Size(125, 23);
         buttonBoomCheck.TabIndex = 34;
@@ -487,12 +519,363 @@ partial class FormTelem
         buttonFpv4On.Text = "БПЛА 4 ВКЛ";
         buttonFpv4On.UseVisualStyleBackColor = false;
         // 
+        // buttonAliveServer
+        // 
+        buttonAliveServer.Enabled = false;
+        buttonAliveServer.Location = new Point(1582, 12);
+        buttonAliveServer.Name = "buttonAliveServer";
+        buttonAliveServer.Size = new Size(134, 23);
+        buttonAliveServer.TabIndex = 43;
+        buttonAliveServer.Text = "СВЯЗЬ С СЕРВЕРОМ";
+        buttonAliveServer.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveCamFrwd
+        // 
+        buttonAliveCamFrwd.Enabled = false;
+        buttonAliveCamFrwd.Location = new Point(1582, 41);
+        buttonAliveCamFrwd.Name = "buttonAliveCamFrwd";
+        buttonAliveCamFrwd.Size = new Size(134, 23);
+        buttonAliveCamFrwd.TabIndex = 44;
+        buttonAliveCamFrwd.Text = "КАМЕРА КУРСОВАЯ";
+        buttonAliveCamFrwd.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveCamBack
+        // 
+        buttonAliveCamBack.Enabled = false;
+        buttonAliveCamBack.Location = new Point(1582, 70);
+        buttonAliveCamBack.Name = "buttonAliveCamBack";
+        buttonAliveCamBack.Size = new Size(134, 23);
+        buttonAliveCamBack.TabIndex = 45;
+        buttonAliveCamBack.Text = "КАМЕРА КОРМА";
+        buttonAliveCamBack.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveCamLeft
+        // 
+        buttonAliveCamLeft.Enabled = false;
+        buttonAliveCamLeft.Location = new Point(1582, 99);
+        buttonAliveCamLeft.Name = "buttonAliveCamLeft";
+        buttonAliveCamLeft.Size = new Size(134, 23);
+        buttonAliveCamLeft.TabIndex = 46;
+        buttonAliveCamLeft.Text = "КАМЕРА ЛЕВАЯ";
+        buttonAliveCamLeft.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveCamRight
+        // 
+        buttonAliveCamRight.Enabled = false;
+        buttonAliveCamRight.Location = new Point(1582, 128);
+        buttonAliveCamRight.Name = "buttonAliveCamRight";
+        buttonAliveCamRight.Size = new Size(134, 23);
+        buttonAliveCamRight.TabIndex = 47;
+        buttonAliveCamRight.Text = "КАМЕРА ПРАВАЯ";
+        buttonAliveCamRight.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveCamPtz
+        // 
+        buttonAliveCamPtz.Enabled = false;
+        buttonAliveCamPtz.Location = new Point(1582, 157);
+        buttonAliveCamPtz.Name = "buttonAliveCamPtz";
+        buttonAliveCamPtz.Size = new Size(134, 23);
+        buttonAliveCamPtz.TabIndex = 48;
+        buttonAliveCamPtz.Text = "КАМЕРА PTZ";
+        buttonAliveCamPtz.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveCamWarm
+        // 
+        buttonAliveCamWarm.Enabled = false;
+        buttonAliveCamWarm.Location = new Point(1582, 186);
+        buttonAliveCamWarm.Name = "buttonAliveCamWarm";
+        buttonAliveCamWarm.Size = new Size(134, 23);
+        buttonAliveCamWarm.TabIndex = 49;
+        buttonAliveCamWarm.Text = "КАМЕРА ТЕПЛО";
+        buttonAliveCamWarm.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveCamFpv1
+        // 
+        buttonAliveCamFpv1.Enabled = false;
+        buttonAliveCamFpv1.Location = new Point(1582, 215);
+        buttonAliveCamFpv1.Name = "buttonAliveCamFpv1";
+        buttonAliveCamFpv1.Size = new Size(134, 23);
+        buttonAliveCamFpv1.TabIndex = 50;
+        buttonAliveCamFpv1.Text = "КАМЕРА БОКС1";
+        buttonAliveCamFpv1.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveCamFpv2
+        // 
+        buttonAliveCamFpv2.Enabled = false;
+        buttonAliveCamFpv2.Location = new Point(1582, 244);
+        buttonAliveCamFpv2.Name = "buttonAliveCamFpv2";
+        buttonAliveCamFpv2.Size = new Size(134, 23);
+        buttonAliveCamFpv2.TabIndex = 51;
+        buttonAliveCamFpv2.Text = "КАМЕРА БОКС2";
+        buttonAliveCamFpv2.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveCamFpv3
+        // 
+        buttonAliveCamFpv3.Enabled = false;
+        buttonAliveCamFpv3.Location = new Point(1582, 273);
+        buttonAliveCamFpv3.Name = "buttonAliveCamFpv3";
+        buttonAliveCamFpv3.Size = new Size(134, 23);
+        buttonAliveCamFpv3.TabIndex = 52;
+        buttonAliveCamFpv3.Text = "КАМЕРА БОКС3";
+        buttonAliveCamFpv3.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveCamFpv4
+        // 
+        buttonAliveCamFpv4.Enabled = false;
+        buttonAliveCamFpv4.Location = new Point(1582, 302);
+        buttonAliveCamFpv4.Name = "buttonAliveCamFpv4";
+        buttonAliveCamFpv4.Size = new Size(134, 23);
+        buttonAliveCamFpv4.TabIndex = 53;
+        buttonAliveCamFpv4.Text = "КАМЕРА БОКС4";
+        buttonAliveCamFpv4.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveCompas
+        // 
+        buttonAliveCompas.Enabled = false;
+        buttonAliveCompas.Location = new Point(1582, 331);
+        buttonAliveCompas.Name = "buttonAliveCompas";
+        buttonAliveCompas.Size = new Size(134, 23);
+        buttonAliveCompas.TabIndex = 54;
+        buttonAliveCompas.Text = "КОМПАС";
+        buttonAliveCompas.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveCubic
+        // 
+        buttonAliveCubic.Enabled = false;
+        buttonAliveCubic.Location = new Point(1582, 360);
+        buttonAliveCubic.Name = "buttonAliveCubic";
+        buttonAliveCubic.Size = new Size(134, 23);
+        buttonAliveCubic.TabIndex = 55;
+        buttonAliveCubic.Text = "КУБИК";
+        buttonAliveCubic.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveGpsF
+        // 
+        buttonAliveGpsF.Enabled = false;
+        buttonAliveGpsF.Location = new Point(1582, 389);
+        buttonAliveGpsF.Name = "buttonAliveGpsF";
+        buttonAliveGpsF.Size = new Size(134, 23);
+        buttonAliveGpsF.TabIndex = 56;
+        buttonAliveGpsF.Text = "GPS КУРСОВОЙ";
+        buttonAliveGpsF.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveGpsB
+        // 
+        buttonAliveGpsB.Enabled = false;
+        buttonAliveGpsB.Location = new Point(1582, 418);
+        buttonAliveGpsB.Name = "buttonAliveGpsB";
+        buttonAliveGpsB.Size = new Size(134, 23);
+        buttonAliveGpsB.TabIndex = 57;
+        buttonAliveGpsB.Text = "GPS КОРМА";
+        buttonAliveGpsB.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveRelay
+        // 
+        buttonAliveRelay.Enabled = false;
+        buttonAliveRelay.Location = new Point(1582, 447);
+        buttonAliveRelay.Name = "buttonAliveRelay";
+        buttonAliveRelay.Size = new Size(134, 23);
+        buttonAliveRelay.TabIndex = 58;
+        buttonAliveRelay.Text = "РЕЛЕ ДВИГАТЕЛЬ (8)";
+        buttonAliveRelay.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveRelayFrw
+        // 
+        buttonAliveRelayFrw.Enabled = false;
+        buttonAliveRelayFrw.Location = new Point(1582, 476);
+        buttonAliveRelayFrw.Name = "buttonAliveRelayFrw";
+        buttonAliveRelayFrw.Size = new Size(134, 23);
+        buttonAliveRelayFrw.TabIndex = 59;
+        buttonAliveRelayFrw.Text = "РЕЛЕ КУРСОВОЕ (4)";
+        buttonAliveRelayFrw.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveFuel
+        // 
+        buttonAliveFuel.Enabled = false;
+        buttonAliveFuel.Location = new Point(1582, 505);
+        buttonAliveFuel.Name = "buttonAliveFuel";
+        buttonAliveFuel.Size = new Size(134, 23);
+        buttonAliveFuel.TabIndex = 60;
+        buttonAliveFuel.Text = "ДАТЧИК ТОПЛИВА";
+        buttonAliveFuel.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveInertial
+        // 
+        buttonAliveInertial.Enabled = false;
+        buttonAliveInertial.Location = new Point(1582, 534);
+        buttonAliveInertial.Name = "buttonAliveInertial";
+        buttonAliveInertial.Size = new Size(134, 23);
+        buttonAliveInertial.TabIndex = 61;
+        buttonAliveInertial.Text = "ИНЕРЦИАЛКА";
+        buttonAliveInertial.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveEngine
+        // 
+        buttonAliveEngine.Enabled = false;
+        buttonAliveEngine.Location = new Point(1582, 563);
+        buttonAliveEngine.Name = "buttonAliveEngine";
+        buttonAliveEngine.Size = new Size(134, 23);
+        buttonAliveEngine.TabIndex = 62;
+        buttonAliveEngine.Text = "CAN ДВИГАТЕЛЬ";
+        buttonAliveEngine.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveBox1
+        // 
+        buttonAliveBox1.Enabled = false;
+        buttonAliveBox1.Location = new Point(1582, 592);
+        buttonAliveBox1.Name = "buttonAliveBox1";
+        buttonAliveBox1.Size = new Size(65, 23);
+        buttonAliveBox1.TabIndex = 63;
+        buttonAliveBox1.Text = "БОКС1";
+        buttonAliveBox1.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveBoxCrsf1
+        // 
+        buttonAliveBoxCrsf1.Enabled = false;
+        buttonAliveBoxCrsf1.Location = new Point(1651, 592);
+        buttonAliveBoxCrsf1.Name = "buttonAliveBoxCrsf1";
+        buttonAliveBoxCrsf1.Size = new Size(65, 23);
+        buttonAliveBoxCrsf1.TabIndex = 64;
+        buttonAliveBoxCrsf1.Text = "CRSF1";
+        buttonAliveBoxCrsf1.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveBoxCrsf2
+        // 
+        buttonAliveBoxCrsf2.Enabled = false;
+        buttonAliveBoxCrsf2.Location = new Point(1651, 621);
+        buttonAliveBoxCrsf2.Name = "buttonAliveBoxCrsf2";
+        buttonAliveBoxCrsf2.Size = new Size(65, 23);
+        buttonAliveBoxCrsf2.TabIndex = 66;
+        buttonAliveBoxCrsf2.Text = "CRSF2";
+        buttonAliveBoxCrsf2.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveBox2
+        // 
+        buttonAliveBox2.Enabled = false;
+        buttonAliveBox2.Location = new Point(1582, 621);
+        buttonAliveBox2.Name = "buttonAliveBox2";
+        buttonAliveBox2.Size = new Size(65, 23);
+        buttonAliveBox2.TabIndex = 65;
+        buttonAliveBox2.Text = "БОКС2";
+        buttonAliveBox2.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveBoxCrsf3
+        // 
+        buttonAliveBoxCrsf3.Enabled = false;
+        buttonAliveBoxCrsf3.Location = new Point(1651, 650);
+        buttonAliveBoxCrsf3.Name = "buttonAliveBoxCrsf3";
+        buttonAliveBoxCrsf3.Size = new Size(65, 23);
+        buttonAliveBoxCrsf3.TabIndex = 68;
+        buttonAliveBoxCrsf3.Text = "CRSF3";
+        buttonAliveBoxCrsf3.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveBox3
+        // 
+        buttonAliveBox3.Enabled = false;
+        buttonAliveBox3.Location = new Point(1582, 650);
+        buttonAliveBox3.Name = "buttonAliveBox3";
+        buttonAliveBox3.Size = new Size(65, 23);
+        buttonAliveBox3.TabIndex = 67;
+        buttonAliveBox3.Text = "БОКС3";
+        buttonAliveBox3.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveBoxCrsf4
+        // 
+        buttonAliveBoxCrsf4.Enabled = false;
+        buttonAliveBoxCrsf4.Location = new Point(1651, 679);
+        buttonAliveBoxCrsf4.Name = "buttonAliveBoxCrsf4";
+        buttonAliveBoxCrsf4.Size = new Size(65, 23);
+        buttonAliveBoxCrsf4.TabIndex = 70;
+        buttonAliveBoxCrsf4.Text = "CRSF4";
+        buttonAliveBoxCrsf4.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveBox4
+        // 
+        buttonAliveBox4.Enabled = false;
+        buttonAliveBox4.Location = new Point(1582, 679);
+        buttonAliveBox4.Name = "buttonAliveBox4";
+        buttonAliveBox4.Size = new Size(65, 23);
+        buttonAliveBox4.TabIndex = 69;
+        buttonAliveBox4.Text = "БОКС4";
+        buttonAliveBox4.UseVisualStyleBackColor = true;
+        // 
+        // buttonAlivePtzRs485
+        // 
+        buttonAlivePtzRs485.Enabled = false;
+        buttonAlivePtzRs485.Location = new Point(1582, 708);
+        buttonAlivePtzRs485.Name = "buttonAlivePtzRs485";
+        buttonAlivePtzRs485.Size = new Size(134, 23);
+        buttonAlivePtzRs485.TabIndex = 71;
+        buttonAlivePtzRs485.Text = "RS485->PTZ";
+        buttonAlivePtzRs485.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveMosfets
+        // 
+        buttonAliveMosfets.Enabled = false;
+        buttonAliveMosfets.Location = new Point(1582, 737);
+        buttonAliveMosfets.Name = "buttonAliveMosfets";
+        buttonAliveMosfets.Size = new Size(134, 23);
+        buttonAliveMosfets.TabIndex = 72;
+        buttonAliveMosfets.Text = "МОСФЕТЫ СВЯЗИ (4)";
+        buttonAliveMosfets.UseVisualStyleBackColor = true;
+        // 
+        // buttonAliveBoom
+        // 
+        buttonAliveBoom.Enabled = false;
+        buttonAliveBoom.Location = new Point(1582, 766);
+        buttonAliveBoom.Name = "buttonAliveBoom";
+        buttonAliveBoom.Size = new Size(134, 23);
+        buttonAliveBoom.TabIndex = 73;
+        buttonAliveBoom.Text = "ЧЕКА ПОДРЫВА";
+        buttonAliveBoom.UseVisualStyleBackColor = true;
+        // 
+        // buttonLogEnable
+        // 
+        buttonLogEnable.Location = new Point(12, 427);
+        buttonLogEnable.Name = "buttonLogEnable";
+        buttonLogEnable.Size = new Size(125, 23);
+        buttonLogEnable.TabIndex = 74;
+        buttonLogEnable.Text = "ПИСАТЬ ЛОГ";
+        buttonLogEnable.UseVisualStyleBackColor = true;
+        // 
         // FormTelem
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1920, 1080);
         ControlBox = false;
+        Controls.Add(buttonLogEnable);
+        Controls.Add(buttonAliveBoom);
+        Controls.Add(buttonAliveMosfets);
+        Controls.Add(buttonAlivePtzRs485);
+        Controls.Add(buttonAliveBoxCrsf4);
+        Controls.Add(buttonAliveBox4);
+        Controls.Add(buttonAliveBoxCrsf3);
+        Controls.Add(buttonAliveBox3);
+        Controls.Add(buttonAliveBoxCrsf2);
+        Controls.Add(buttonAliveBox2);
+        Controls.Add(buttonAliveBoxCrsf1);
+        Controls.Add(buttonAliveBox1);
+        Controls.Add(buttonAliveEngine);
+        Controls.Add(buttonAliveInertial);
+        Controls.Add(buttonAliveFuel);
+        Controls.Add(buttonAliveRelayFrw);
+        Controls.Add(buttonAliveRelay);
+        Controls.Add(buttonAliveGpsB);
+        Controls.Add(buttonAliveGpsF);
+        Controls.Add(buttonAliveCubic);
+        Controls.Add(buttonAliveCompas);
+        Controls.Add(buttonAliveCamFpv4);
+        Controls.Add(buttonAliveCamFpv3);
+        Controls.Add(buttonAliveCamFpv2);
+        Controls.Add(buttonAliveCamFpv1);
+        Controls.Add(buttonAliveCamWarm);
+        Controls.Add(buttonAliveCamPtz);
+        Controls.Add(buttonAliveCamRight);
+        Controls.Add(buttonAliveCamLeft);
+        Controls.Add(buttonAliveCamBack);
+        Controls.Add(buttonAliveCamFrwd);
+        Controls.Add(buttonAliveServer);
         Controls.Add(buttonFpv4Off);
         Controls.Add(buttonFpv4On);
         Controls.Add(buttonFpv3Off);
@@ -593,4 +976,36 @@ partial class FormTelem
     private Button buttonFpv3On;
     private Button buttonFpv4Off;
     private Button buttonFpv4On;
+    private Button buttonAliveServer;
+    private Button buttonAliveCamFrwd;
+    private Button buttonAliveCamBack;
+    private Button buttonAliveCamLeft;
+    private Button buttonAliveCamRight;
+    private Button buttonAliveCamPtz;
+    private Button buttonAliveCamWarm;
+    private Button buttonAliveCamFpv1;
+    private Button buttonAliveCamFpv2;
+    private Button buttonAliveCamFpv3;
+    private Button buttonAliveCamFpv4;
+    private Button buttonAliveCompas;
+    private Button buttonAliveCubic;
+    private Button buttonAliveGpsF;
+    private Button buttonAliveGpsB;
+    private Button buttonAliveRelay;
+    private Button buttonAliveRelayFrw;
+    private Button buttonAliveFuel;
+    private Button buttonAliveInertial;
+    private Button buttonAliveEngine;
+    private Button buttonAliveBox1;
+    private Button buttonAliveBoxCrsf1;
+    private Button buttonAliveBoxCrsf2;
+    private Button buttonAliveBox2;
+    private Button buttonAliveBoxCrsf3;
+    private Button buttonAliveBox3;
+    private Button buttonAliveBoxCrsf4;
+    private Button buttonAliveBox4;
+    private Button buttonAlivePtzRs485;
+    private Button buttonAliveMosfets;
+    private Button buttonAliveBoom;
+    private Button buttonLogEnable;
 }

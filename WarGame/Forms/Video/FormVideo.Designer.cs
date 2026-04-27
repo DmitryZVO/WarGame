@@ -43,6 +43,8 @@ partial class FormVideo
         buttonVideoQM = new Button();
         buttonVideoQL = new Button();
         buttonVideoQEL = new Button();
+        buttonCamNone = new Button();
+        buttonJoystickSend = new Button();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMain).BeginInit();
         SuspendLayout();
         // 
@@ -57,7 +59,7 @@ partial class FormVideo
         // 
         // buttonBack
         // 
-        buttonBack.Location = new Point(1833, 41);
+        buttonBack.Location = new Point(1833, 105);
         buttonBack.Name = "buttonBack";
         buttonBack.Size = new Size(75, 23);
         buttonBack.TabIndex = 1;
@@ -66,7 +68,7 @@ partial class FormVideo
         // 
         // buttonFrwd
         // 
-        buttonFrwd.Location = new Point(1833, 12);
+        buttonFrwd.Location = new Point(1833, 76);
         buttonFrwd.Name = "buttonFrwd";
         buttonFrwd.Size = new Size(75, 23);
         buttonFrwd.TabIndex = 2;
@@ -75,7 +77,7 @@ partial class FormVideo
         // 
         // buttonPtz
         // 
-        buttonPtz.Location = new Point(1833, 164);
+        buttonPtz.Location = new Point(1833, 228);
         buttonPtz.Name = "buttonPtz";
         buttonPtz.Size = new Size(75, 23);
         buttonPtz.TabIndex = 3;
@@ -84,7 +86,7 @@ partial class FormVideo
         // 
         // buttonLeft
         // 
-        buttonLeft.Location = new Point(1833, 70);
+        buttonLeft.Location = new Point(1833, 134);
         buttonLeft.Name = "buttonLeft";
         buttonLeft.Size = new Size(75, 23);
         buttonLeft.TabIndex = 4;
@@ -93,7 +95,7 @@ partial class FormVideo
         // 
         // buttonRight
         // 
-        buttonRight.Location = new Point(1833, 99);
+        buttonRight.Location = new Point(1833, 163);
         buttonRight.Name = "buttonRight";
         buttonRight.Size = new Size(75, 23);
         buttonRight.TabIndex = 5;
@@ -102,7 +104,7 @@ partial class FormVideo
         // 
         // buttonWarm
         // 
-        buttonWarm.Location = new Point(1833, 193);
+        buttonWarm.Location = new Point(1833, 257);
         buttonWarm.Name = "buttonWarm";
         buttonWarm.Size = new Size(75, 23);
         buttonWarm.TabIndex = 6;
@@ -111,7 +113,7 @@ partial class FormVideo
         // 
         // buttonFpv1
         // 
-        buttonFpv1.Location = new Point(1833, 265);
+        buttonFpv1.Location = new Point(1833, 329);
         buttonFpv1.Name = "buttonFpv1";
         buttonFpv1.Size = new Size(75, 23);
         buttonFpv1.TabIndex = 13;
@@ -120,7 +122,7 @@ partial class FormVideo
         // 
         // buttonFpv2
         // 
-        buttonFpv2.Location = new Point(1833, 294);
+        buttonFpv2.Location = new Point(1833, 358);
         buttonFpv2.Name = "buttonFpv2";
         buttonFpv2.Size = new Size(75, 23);
         buttonFpv2.TabIndex = 14;
@@ -129,7 +131,7 @@ partial class FormVideo
         // 
         // buttonFpv3
         // 
-        buttonFpv3.Location = new Point(1833, 323);
+        buttonFpv3.Location = new Point(1833, 387);
         buttonFpv3.Name = "buttonFpv3";
         buttonFpv3.Size = new Size(75, 23);
         buttonFpv3.TabIndex = 15;
@@ -138,7 +140,7 @@ partial class FormVideo
         // 
         // buttonFpv4
         // 
-        buttonFpv4.Location = new Point(1833, 352);
+        buttonFpv4.Location = new Point(1833, 416);
         buttonFpv4.Name = "buttonFpv4";
         buttonFpv4.Size = new Size(75, 23);
         buttonFpv4.TabIndex = 16;
@@ -181,12 +183,33 @@ partial class FormVideo
         buttonVideoQEL.Text = "EXT_LOW";
         buttonVideoQEL.UseVisualStyleBackColor = true;
         // 
+        // buttonCamNone
+        // 
+        buttonCamNone.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+        buttonCamNone.Location = new Point(1833, 12);
+        buttonCamNone.Name = "buttonCamNone";
+        buttonCamNone.Size = new Size(75, 23);
+        buttonCamNone.TabIndex = 22;
+        buttonCamNone.Text = "БЕЗ КАМЕР";
+        buttonCamNone.UseVisualStyleBackColor = true;
+        // 
+        // buttonJoystickSend
+        // 
+        buttonJoystickSend.Location = new Point(730, 1045);
+        buttonJoystickSend.Name = "buttonJoystickSend";
+        buttonJoystickSend.Size = new Size(447, 23);
+        buttonJoystickSend.TabIndex = 23;
+        buttonJoystickSend.Text = "ЗАХВАТИТЬ УПРАВЛЕНИЕ";
+        buttonJoystickSend.UseVisualStyleBackColor = true;
+        // 
         // FormVideo
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1920, 1080);
         ControlBox = false;
+        Controls.Add(buttonJoystickSend);
+        Controls.Add(buttonCamNone);
         Controls.Add(buttonVideoQEL);
         Controls.Add(buttonVideoQL);
         Controls.Add(buttonVideoQM);
@@ -231,4 +254,6 @@ partial class FormVideo
     private Button buttonVideoQM;
     private Button buttonVideoQL;
     private Button buttonVideoQEL;
+    private Button buttonCamNone;
+    private Button buttonJoystickSend;
 }

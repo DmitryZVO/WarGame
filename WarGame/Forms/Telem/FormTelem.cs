@@ -76,6 +76,40 @@ public sealed partial class FormTelem : Form
         buttonFpv4Stop.Visible = visible;
         buttonFpv4On.Visible = visible;
         buttonFpv4Off.Visible = visible;
+        
+        buttonAliveServer.Visible = visible;
+        buttonAliveCamFrwd.Visible = visible;
+        buttonAliveCamBack.Visible = visible;
+        buttonAliveCamLeft.Visible = visible;
+        buttonAliveCamRight.Visible = visible;
+        buttonAliveCamPtz.Visible = visible;
+        buttonAliveCamWarm.Visible = visible;
+        buttonAliveCamFpv1.Visible = visible;
+        buttonAliveCamFpv2.Visible = visible;
+        buttonAliveCamFpv3.Visible = visible;
+        buttonAliveCamFpv4.Visible = visible;
+        buttonAliveCompas.Visible = visible;
+        buttonAliveCubic.Visible = visible;
+        buttonAliveGpsF.Visible = visible;
+        buttonAliveGpsB.Visible = visible;
+        buttonAliveRelay.Visible = visible;
+        buttonAliveRelayFrw.Visible = visible;
+        buttonAliveFuel.Visible = visible;
+        buttonAliveInertial.Visible = visible;
+        buttonAliveEngine.Visible = visible;
+        buttonAliveBox1.Visible = visible;
+        buttonAliveBox2.Visible = visible;
+        buttonAliveBox3.Visible = visible;
+        buttonAliveBox4.Visible = visible;
+        buttonAliveBoxCrsf1.Visible = visible;
+        buttonAliveBoxCrsf2.Visible = visible;
+        buttonAliveBoxCrsf3.Visible = visible;
+        buttonAliveBoxCrsf4.Visible = visible;
+        buttonAlivePtzRs485.Visible = visible;
+        buttonAliveMosfets.Visible = visible;
+        buttonAliveBoom.Visible = visible;
+        buttonLogEnable.Visible = visible;
+
         buttonBoom.Enabled = !(buttonBoomCheck.BackColor == Color.White);
         buttonBoom.BackColor = buttonBoomCheck.BackColor == Color.White ? Color.LightGray : Color.White;
 
@@ -85,6 +119,39 @@ public sealed partial class FormTelem : Form
             return;
         }
 
+        buttonAliveServer.BackColor = ((obj.Telem.AliveCheck &   0b00000000000000000000000000000001) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamFrwd.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000000000000010) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamBack.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000000000000100) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamLeft.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000000000001000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamRight.BackColor = ((obj.Telem.AliveCheck & 0b00000000000000000000000000010000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamPtz.BackColor = ((obj.Telem.AliveCheck &   0b00000000000000000000000000100000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamWarm.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000000001000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamFpv1.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000000010000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamFpv2.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000000100000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamFpv3.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000001000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamFpv4.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000010000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCompas.BackColor = ((obj.Telem.AliveCheck &   0b00000000000000000000100000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCubic.BackColor = ((obj.Telem.AliveCheck &    0b00000000000000000001000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveGpsF.BackColor = ((obj.Telem.AliveCheck &     0b00000000000000000010000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveGpsB.BackColor = ((obj.Telem.AliveCheck &     0b00000000000000000100000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveRelay.BackColor = ((obj.Telem.AliveCheck &    0b00000000000000001000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveRelayFrw.BackColor = ((obj.Telem.AliveCheck & 0b00000000000000010000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveFuel.BackColor = ((obj.Telem.AliveCheck &     0b00000000000000100000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveInertial.BackColor = ((obj.Telem.AliveCheck & 0b00000000000001000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveEngine.BackColor = ((obj.Telem.AliveCheck &   0b00000000000010000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBox1.BackColor = ((obj.Telem.AliveCheck &     0b00000000000100000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBox2.BackColor = ((obj.Telem.AliveCheck &     0b00000000001000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBox3.BackColor = ((obj.Telem.AliveCheck &     0b00000000010000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBox4.BackColor = ((obj.Telem.AliveCheck &     0b00000000100000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBoxCrsf1.BackColor = ((obj.Telem.AliveCheck & 0b00000001000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBoxCrsf2.BackColor = ((obj.Telem.AliveCheck & 0b00000010000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBoxCrsf3.BackColor = ((obj.Telem.AliveCheck & 0b00000100000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBoxCrsf4.BackColor = ((obj.Telem.AliveCheck & 0b00001000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAlivePtzRs485.BackColor = ((obj.Telem.AliveCheck & 0b00010000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveMosfets.BackColor = ((obj.Telem.AliveCheck & 0b00100000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBoom.BackColor = ((obj.Telem.AliveCheck & 0b01000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+
+        buttonLogEnable.BackColor = obj.LogEnable ? Color.Yellow : Color.White;
         buttonRelay1.BackColor = obj.Telem.Relay[0] == 0 ? Color.White : obj.Telem.Relay[0] == 1 ? Color.LightGreen : Color.LightGray;
         buttonRelay2.BackColor = obj.Telem.Relay[1] == 0 ? Color.White : obj.Telem.Relay[1] == 1 ? Color.LightGreen : Color.LightGray;
         buttonRelay3.BackColor = obj.Telem.Relay[2] == 0 ? Color.White : obj.Telem.Relay[2] == 1 ? Color.LightGreen : Color.LightGray;
@@ -149,12 +216,20 @@ public sealed partial class FormTelem : Form
 
         buttonBoomCheck.Click += ButtonBoomCheck_Click;
         buttonBoom.Click += ButtonBoom_Click;
-
+        buttonLogEnable.Click += ButtonLogEnable_Click;
+        
         buttonBoomCheck.BackColor = Color.White;
         buttonBoom.Enabled = !(buttonBoomCheck.BackColor == Color.White);
         buttonBoom.BackColor = buttonBoomCheck.BackColor == Color.White ? Color.LightGray : Color.White;
 
         _ = _dx.StartAsync(default);
+    }
+
+    private async void ButtonLogEnable_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await obj.SendCommandAsync((int)(buttonLogEnable.BackColor == Color.Yellow ? 0xFF000000 : 0xFF000001));
     }
 
     private async void ButtonBoom_Click(object? sender, EventArgs e)
