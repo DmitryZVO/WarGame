@@ -111,8 +111,6 @@ public class GameObjects
                 int camSel = Core.FrmVideo?.SelectedCamera ?? -1;
                 switch (camSel)
                 {
-                    case -1: // Объект не выбран, проброс не нужен
-                        continue;
                     case 0: // Камера PTZ
                         number = 1;
                         break;
@@ -131,6 +129,7 @@ public class GameObjects
                     case 9: // Камера BOX4
                         number = 5;
                         break;
+                    case -1: // Камера не выбрана, управляем лодкой
                     default:
                         number = 0;
                         break;
@@ -216,8 +215,7 @@ public abstract class GameObject : IDrawing
     public async Task<bool> SendCommandAsync(uint command, CancellationToken ct = default)
     {
         // Список команд для объекта
-        //0xFFx00x00x00 - включить логирование
-        //0xFFx00x00x01 - выключить логирование
+        //0xFFx00x00x0e - логирование на БЭКе, e-вкл(01)/выкл(00)
         //0xFEx00x0fx0q - изменить качество видео f-fps, q-качество
         //0x30x01x0nx0e - Управление реле 8каналов n-номер канала(0n), e-вкл(01)/выкл(00)
         //0x30x02x0nx0e - Управление реле 4канала n-номер канала(0n), e-вкл(01)/выкл(00)

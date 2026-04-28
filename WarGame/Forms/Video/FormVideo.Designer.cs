@@ -63,7 +63,7 @@ partial class FormVideo
         // 
         // buttonBack
         // 
-        buttonBack.Location = new Point(1833, 105);
+        buttonBack.Location = new Point(1833, 70);
         buttonBack.Name = "buttonBack";
         buttonBack.Size = new Size(75, 23);
         buttonBack.TabIndex = 1;
@@ -72,7 +72,7 @@ partial class FormVideo
         // 
         // buttonFrwd
         // 
-        buttonFrwd.Location = new Point(1833, 76);
+        buttonFrwd.Location = new Point(1833, 41);
         buttonFrwd.Name = "buttonFrwd";
         buttonFrwd.Size = new Size(75, 23);
         buttonFrwd.TabIndex = 2;
@@ -81,7 +81,7 @@ partial class FormVideo
         // 
         // buttonPtz
         // 
-        buttonPtz.Location = new Point(1833, 228);
+        buttonPtz.Location = new Point(1833, 193);
         buttonPtz.Name = "buttonPtz";
         buttonPtz.Size = new Size(75, 23);
         buttonPtz.TabIndex = 3;
@@ -90,7 +90,7 @@ partial class FormVideo
         // 
         // buttonLeft
         // 
-        buttonLeft.Location = new Point(1833, 134);
+        buttonLeft.Location = new Point(1833, 99);
         buttonLeft.Name = "buttonLeft";
         buttonLeft.Size = new Size(75, 23);
         buttonLeft.TabIndex = 4;
@@ -99,7 +99,7 @@ partial class FormVideo
         // 
         // buttonRight
         // 
-        buttonRight.Location = new Point(1833, 163);
+        buttonRight.Location = new Point(1833, 128);
         buttonRight.Name = "buttonRight";
         buttonRight.Size = new Size(75, 23);
         buttonRight.TabIndex = 5;
@@ -108,7 +108,7 @@ partial class FormVideo
         // 
         // buttonWarm
         // 
-        buttonWarm.Location = new Point(1833, 257);
+        buttonWarm.Location = new Point(1833, 222);
         buttonWarm.Name = "buttonWarm";
         buttonWarm.Size = new Size(75, 23);
         buttonWarm.TabIndex = 6;
@@ -117,7 +117,7 @@ partial class FormVideo
         // 
         // buttonFpv1
         // 
-        buttonFpv1.Location = new Point(1833, 329);
+        buttonFpv1.Location = new Point(1833, 294);
         buttonFpv1.Name = "buttonFpv1";
         buttonFpv1.Size = new Size(75, 23);
         buttonFpv1.TabIndex = 13;
@@ -126,7 +126,7 @@ partial class FormVideo
         // 
         // buttonFpv2
         // 
-        buttonFpv2.Location = new Point(1833, 358);
+        buttonFpv2.Location = new Point(1833, 323);
         buttonFpv2.Name = "buttonFpv2";
         buttonFpv2.Size = new Size(75, 23);
         buttonFpv2.TabIndex = 14;
@@ -135,7 +135,7 @@ partial class FormVideo
         // 
         // buttonFpv3
         // 
-        buttonFpv3.Location = new Point(1833, 387);
+        buttonFpv3.Location = new Point(1833, 352);
         buttonFpv3.Name = "buttonFpv3";
         buttonFpv3.Size = new Size(75, 23);
         buttonFpv3.TabIndex = 15;
@@ -144,7 +144,7 @@ partial class FormVideo
         // 
         // buttonFpv4
         // 
-        buttonFpv4.Location = new Point(1833, 416);
+        buttonFpv4.Location = new Point(1833, 381);
         buttonFpv4.Name = "buttonFpv4";
         buttonFpv4.Size = new Size(75, 23);
         buttonFpv4.TabIndex = 16;
