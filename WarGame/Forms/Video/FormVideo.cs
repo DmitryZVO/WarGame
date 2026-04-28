@@ -40,6 +40,39 @@ public sealed partial class FormVideo : Form
         buttonVideoQL.Click += ButtonVideoQL_Click;
         buttonVideoQEL.Click += ButtonVideoQEL_Click;
         buttonJoystickSend.Click += ButtonJoystickSend_Click;
+
+        buttonCamFps25.Click += ButtonCamFps25_Click;
+        buttonCamFps10.Click += ButtonCamFps10_Click;
+        buttonCamFps5.Click += ButtonCamFps5_Click;
+        buttonCamFps1.Click += ButtonCamFps1_Click;
+    }
+
+    private async void ButtonCamFps1_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await obj.SendCommandAsync((uint)(0xFE000000 + (1 << 8) + obj.Telem.VideoQuality));
+    }
+
+    private async void ButtonCamFps5_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await obj.SendCommandAsync((uint)(0xFE000000 + (5 << 8) + obj.Telem.VideoQuality));
+    }
+
+    private async void ButtonCamFps10_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await obj.SendCommandAsync((uint)(0xFE000000 + (10 << 8) + obj.Telem.VideoQuality));
+    }
+
+    private async void ButtonCamFps25_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        await obj.SendCommandAsync((uint)(0xFE000000 + (25 << 8) + obj.Telem.VideoQuality));
     }
 
     private void ButtonJoystickSend_Click(object? sender, EventArgs e)
@@ -59,42 +92,30 @@ public sealed partial class FormVideo : Form
 
     private async void ButtonVideoQH_Click(object? sender, EventArgs e)
     {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SetQualityVideo(3);
-        buttonVideoQH.Enabled = false;
-        await Task.Delay(1000);
-        buttonVideoQH.Enabled = true;
+        await obj.SendCommandAsync((uint)(0xFE000000 + (obj.Telem.VideoFps << 8) + 3));
     }
 
     private async void ButtonVideoQM_Click(object? sender, EventArgs e)
     {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SetQualityVideo(2);
-        buttonVideoQM.Enabled = false;
-        await Task.Delay(1000);
-        buttonVideoQM.Enabled = true;
+        await obj.SendCommandAsync((uint)(0xFE000000 + (obj.Telem.VideoFps << 8) + 2));
     }
 
     private async void ButtonVideoQL_Click(object? sender, EventArgs e)
     {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SetQualityVideo(1);
-        buttonVideoQL.Enabled = false;
-        await Task.Delay(1000);
-        buttonVideoQL.Enabled = true;
+        await obj.SendCommandAsync((uint)(0xFE000000 + (obj.Telem.VideoFps << 8) + 1));
     }
 
     private async void ButtonVideoQEL_Click(object? sender, EventArgs e)
     {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SetQualityVideo(0);
-        buttonVideoQEL.Enabled = false;
-        await Task.Delay(1000);
-        buttonVideoQEL.Enabled = true;
+        await obj.SendCommandAsync((uint)(0xFE000000 + (obj.Telem.VideoFps << 8) + 0));
     }
 
     private async Task Timer100StartAsync(CancellationToken ct)
@@ -141,6 +162,9 @@ public sealed partial class FormVideo : Form
 
     private async void ButtonPtz_Click(object? sender, EventArgs e)
     {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        if (obj == null) return;
+
         _dx.CameraType = 0;
         ButtonCheck();
         buttonPtz.Enabled = false;
@@ -149,6 +173,9 @@ public sealed partial class FormVideo : Form
     }
     private async void ButtonWarm_Click(object? sender, EventArgs e)
     {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        if (obj == null) return;
+
         _dx.CameraType = 1;
         ButtonCheck();
         buttonWarm.Enabled = false;
@@ -157,6 +184,9 @@ public sealed partial class FormVideo : Form
     }
     private async void ButtonFrwd_Click(object? sender, EventArgs e)
     {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        if (obj == null) return;
+
         _dx.CameraType = 2;
         ButtonCheck();
         buttonFrwd.Enabled = false;
@@ -166,6 +196,9 @@ public sealed partial class FormVideo : Form
 
     private async void ButtonBack_Click(object? sender, EventArgs e)
     {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        if (obj == null) return;
+
         _dx.CameraType = 3;
         ButtonCheck();
         buttonBack.Enabled = false;
@@ -174,6 +207,9 @@ public sealed partial class FormVideo : Form
     }
     private async void ButtonLeft_Click(object? sender, EventArgs e)
     {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        if (obj == null) return;
+
         _dx.CameraType = 4;
         ButtonCheck();
         buttonLeft.Enabled = false;
@@ -182,6 +218,9 @@ public sealed partial class FormVideo : Form
     }
     private async void ButtonRight_Click(object? sender, EventArgs e)
     {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        if (obj == null) return;
+
         _dx.CameraType = 5;
         ButtonCheck();
         buttonRight.Enabled = false;
@@ -190,6 +229,9 @@ public sealed partial class FormVideo : Form
     }
     private async void ButtonFpv1_Click(object? sender, EventArgs e)
     {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        if (obj == null) return;
+
         _dx.CameraType = 6;
         ButtonCheck();
         buttonFpv1.Enabled = false;
@@ -198,6 +240,9 @@ public sealed partial class FormVideo : Form
     }
     private async void ButtonFpv2_Click(object? sender, EventArgs e)
     {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        if (obj == null) return;
+
         _dx.CameraType = 7;
         ButtonCheck();
         buttonFpv2.Enabled = false;
@@ -206,6 +251,9 @@ public sealed partial class FormVideo : Form
     }
     private async void ButtonFpv3_Click(object? sender, EventArgs e)
     {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        if (obj == null) return;
+
         _dx.CameraType = 8;
         ButtonCheck();
         buttonFpv3.Enabled = false;
@@ -214,6 +262,9 @@ public sealed partial class FormVideo : Form
     }
     private async void ButtonFpv4_Click(object? sender, EventArgs e)
     {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected);
+        if (obj == null) return;
+
         _dx.CameraType = 9;
         ButtonCheck();
         buttonFpv4.Enabled = false;
@@ -263,10 +314,14 @@ public sealed partial class FormVideo : Form
             buttonJoystickSend.Enabled = true;
         }
 
-        buttonVideoQH.BackColor = obj == null ? Color.White : obj.VideoQuality == 3 ? Color.LightGreen : Color.White;
-        buttonVideoQM.BackColor = obj == null ? Color.White : obj.VideoQuality == 2 ? Color.LightGreen : Color.White;
-        buttonVideoQL.BackColor = obj == null ? Color.White : obj.VideoQuality == 1 ? Color.LightGreen : Color.White;
-        buttonVideoQEL.BackColor = obj == null ? Color.White : obj.VideoQuality == 0 ? Color.LightGreen : Color.White;
+        buttonCamFps25.BackColor = obj == null ? Color.White : obj.Telem.VideoFps == 25 ? Color.LightGreen : Color.White;
+        buttonCamFps10.BackColor = obj == null ? Color.White : obj.Telem.VideoFps == 10 ? Color.LightGreen : Color.White;
+        buttonCamFps5.BackColor = obj == null ? Color.White : obj.Telem.VideoFps == 5 ? Color.LightGreen : Color.White;
+        buttonCamFps1.BackColor = obj == null ? Color.White : obj.Telem.VideoFps == 1 ? Color.LightGreen : Color.White;
+        buttonVideoQH.BackColor = obj == null ? Color.White : obj.Telem.VideoQuality == 3 ? Color.LightGreen : Color.White;
+        buttonVideoQM.BackColor = obj == null ? Color.White : obj.Telem.VideoQuality == 2 ? Color.LightGreen : Color.White;
+        buttonVideoQL.BackColor = obj == null ? Color.White : obj.Telem.VideoQuality == 1 ? Color.LightGreen : Color.White;
+        buttonVideoQEL.BackColor = obj == null ? Color.White : obj.Telem.VideoQuality == 0 ? Color.LightGreen : Color.White;
     }
 
     public static async Task<Mat?> GetCameraAsync(int id, int number, CancellationToken ct = default)

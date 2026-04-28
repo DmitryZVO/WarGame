@@ -45,13 +45,17 @@ partial class FormVideo
         buttonVideoQEL = new Button();
         buttonCamNone = new Button();
         buttonJoystickSend = new Button();
+        buttonCamFps1 = new Button();
+        buttonCamFps5 = new Button();
+        buttonCamFps10 = new Button();
+        buttonCamFps25 = new Button();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMain).BeginInit();
         SuspendLayout();
         // 
         // pictureBoxMain
         // 
         pictureBoxMain.BackColor = Color.Black;
-        pictureBoxMain.Location = new Point(0, -1);
+        pictureBoxMain.Location = new Point(0, 0);
         pictureBoxMain.Name = "pictureBoxMain";
         pictureBoxMain.Size = new Size(1920, 1080);
         pictureBoxMain.TabIndex = 0;
@@ -202,12 +206,52 @@ partial class FormVideo
         buttonJoystickSend.Text = "ЗАХВАТИТЬ УПРАВЛЕНИЕ";
         buttonJoystickSend.UseVisualStyleBackColor = true;
         // 
+        // buttonCamFps1
+        // 
+        buttonCamFps1.Location = new Point(1752, 1045);
+        buttonCamFps1.Name = "buttonCamFps1";
+        buttonCamFps1.Size = new Size(75, 23);
+        buttonCamFps1.TabIndex = 24;
+        buttonCamFps1.Text = "FPS=1";
+        buttonCamFps1.UseVisualStyleBackColor = true;
+        // 
+        // buttonCamFps5
+        // 
+        buttonCamFps5.Location = new Point(1752, 1016);
+        buttonCamFps5.Name = "buttonCamFps5";
+        buttonCamFps5.Size = new Size(75, 23);
+        buttonCamFps5.TabIndex = 25;
+        buttonCamFps5.Text = "FPS=5";
+        buttonCamFps5.UseVisualStyleBackColor = true;
+        // 
+        // buttonCamFps10
+        // 
+        buttonCamFps10.Location = new Point(1752, 987);
+        buttonCamFps10.Name = "buttonCamFps10";
+        buttonCamFps10.Size = new Size(75, 23);
+        buttonCamFps10.TabIndex = 26;
+        buttonCamFps10.Text = "FPS=10";
+        buttonCamFps10.UseVisualStyleBackColor = true;
+        // 
+        // buttonCamFps25
+        // 
+        buttonCamFps25.Location = new Point(1752, 958);
+        buttonCamFps25.Name = "buttonCamFps25";
+        buttonCamFps25.Size = new Size(75, 23);
+        buttonCamFps25.TabIndex = 27;
+        buttonCamFps25.Text = "FPS=25";
+        buttonCamFps25.UseVisualStyleBackColor = true;
+        // 
         // FormVideo
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1920, 1080);
         ControlBox = false;
+        Controls.Add(buttonCamFps25);
+        Controls.Add(buttonCamFps10);
+        Controls.Add(buttonCamFps5);
+        Controls.Add(buttonCamFps1);
         Controls.Add(buttonJoystickSend);
         Controls.Add(buttonCamNone);
         Controls.Add(buttonVideoQEL);
@@ -256,4 +300,8 @@ partial class FormVideo
     private Button buttonVideoQEL;
     private Button buttonCamNone;
     private Button buttonJoystickSend;
+    private Button buttonCamFps1;
+    private Button buttonCamFps5;
+    private Button buttonCamFps10;
+    private Button buttonCamFps25;
 }

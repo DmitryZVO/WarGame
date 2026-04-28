@@ -20,9 +20,15 @@ internal class SharpDxVideo(PictureBox surfacePtr, int fpsTarget) : SharpDx(surf
     {
         lock (this)
         {
-            if (CameraFrame == null) return;
             Rt?.Clear(new RawColor4(0.0f, 0, 0, 1));
             var fs = new RawRectangleF(0, 0, BaseWidth, BaseHeight);
+            var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+            if (obj == null)
+            {
+                Rt?.DrawText($"ОБЪЕКТ НЕ ВЫБРАН", Brushes.SysText104, new RawRectangleF(BaseWidth * 0.25f, BaseHeight * 0.45f, BaseWidth, BaseHeight), Brushes.RoiGreen03);
+                return;
+            }
+            if (CameraFrame == null) return;
             switch (CameraType)
             {
                 case -1:

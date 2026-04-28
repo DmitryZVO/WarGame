@@ -1,7 +1,6 @@
 using WarGame.Forms.Map;
 using WarGame.Model;
 using WarGame.Resources;
-using static WarGame.Forms.Map.GameObject;
 
 namespace WarGame.Forms.Telem;
 public sealed partial class FormTelem : Form
@@ -109,6 +108,12 @@ public sealed partial class FormTelem : Form
         buttonAliveMosfets.Visible = visible;
         buttonAliveBoom.Visible = visible;
         buttonLogEnable.Visible = visible;
+        buttonWifi58In.Visible = visible;
+        buttonWifi58Out.Visible = visible;
+        buttonWifiMeshIn.Visible = visible;
+        buttonWifiMeshOut.Visible = visible;
+        buttonWifiCbsIn.Visible = visible;
+        buttonWifiCbsOut.Visible = visible;
 
         buttonBoom.Enabled = !(buttonBoomCheck.BackColor == Color.White);
         buttonBoom.BackColor = buttonBoomCheck.BackColor == Color.White ? Color.LightGray : Color.White;
@@ -119,51 +124,57 @@ public sealed partial class FormTelem : Form
             return;
         }
 
-        buttonAliveServer.BackColor = ((obj.Telem.AliveCheck &   0b00000000000000000000000000000001) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveCamFrwd.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000000000000010) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveCamBack.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000000000000100) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveCamLeft.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000000000001000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveCamRight.BackColor = ((obj.Telem.AliveCheck & 0b00000000000000000000000000010000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveCamPtz.BackColor = ((obj.Telem.AliveCheck &   0b00000000000000000000000000100000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveCamWarm.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000000001000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveCamFpv1.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000000010000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveCamFpv2.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000000100000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveCamFpv3.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000001000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveCamFpv4.BackColor = ((obj.Telem.AliveCheck &  0b00000000000000000000010000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveCompas.BackColor = ((obj.Telem.AliveCheck &   0b00000000000000000000100000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveCubic.BackColor = ((obj.Telem.AliveCheck &    0b00000000000000000001000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveGpsF.BackColor = ((obj.Telem.AliveCheck &     0b00000000000000000010000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveGpsB.BackColor = ((obj.Telem.AliveCheck &     0b00000000000000000100000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveRelay.BackColor = ((obj.Telem.AliveCheck &    0b00000000000000001000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveRelayFrw.BackColor = ((obj.Telem.AliveCheck & 0b00000000000000010000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveFuel.BackColor = ((obj.Telem.AliveCheck &     0b00000000000000100000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveInertial.BackColor = ((obj.Telem.AliveCheck & 0b00000000000001000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveEngine.BackColor = ((obj.Telem.AliveCheck &   0b00000000000010000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveBox1.BackColor = ((obj.Telem.AliveCheck &     0b00000000000100000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveBox2.BackColor = ((obj.Telem.AliveCheck &     0b00000000001000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveBox3.BackColor = ((obj.Telem.AliveCheck &     0b00000000010000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveBox4.BackColor = ((obj.Telem.AliveCheck &     0b00000000100000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveBoxCrsf1.BackColor = ((obj.Telem.AliveCheck & 0b00000001000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveBoxCrsf2.BackColor = ((obj.Telem.AliveCheck & 0b00000010000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveBoxCrsf3.BackColor = ((obj.Telem.AliveCheck & 0b00000100000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveBoxCrsf4.BackColor = ((obj.Telem.AliveCheck & 0b00001000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAlivePtzRs485.BackColor = ((obj.Telem.AliveCheck & 0b00010000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveMosfets.BackColor = ((obj.Telem.AliveCheck & 0b00100000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonAliveBoom.BackColor = ((obj.Telem.AliveCheck & 0b01000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveServer.BackColor = ((obj.Telem.AliveCheck &   0b0000000000000000000000000000000000000000000000000000000000000001) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamFrwd.BackColor = ((obj.Telem.AliveCheck &  0b0000000000000000000000000000000000000000000000000000000000000010) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamBack.BackColor = ((obj.Telem.AliveCheck &  0b0000000000000000000000000000000000000000000000000000000000000100) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamLeft.BackColor = ((obj.Telem.AliveCheck &  0b0000000000000000000000000000000000000000000000000000000000001000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamRight.BackColor = ((obj.Telem.AliveCheck & 0b0000000000000000000000000000000000000000000000000000000000010000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamPtz.BackColor = ((obj.Telem.AliveCheck &   0b0000000000000000000000000000000000000000000000000000000000100000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamWarm.BackColor = ((obj.Telem.AliveCheck &  0b0000000000000000000000000000000000000000000000000000000001000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamFpv1.BackColor = ((obj.Telem.AliveCheck &  0b0000000000000000000000000000000000000000000000000000000010000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamFpv2.BackColor = ((obj.Telem.AliveCheck &  0b0000000000000000000000000000000000000000000000000000000100000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamFpv3.BackColor = ((obj.Telem.AliveCheck &  0b0000000000000000000000000000000000000000000000000000001000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCamFpv4.BackColor = ((obj.Telem.AliveCheck &  0b0000000000000000000000000000000000000000000000000000010000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCompas.BackColor = ((obj.Telem.AliveCheck &   0b0000000000000000000000000000000000000000000000000000100000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveCubic.BackColor = ((obj.Telem.AliveCheck &    0b0000000000000000000000000000000000000000000000000001000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveGpsF.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000000000000000000000000010000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveGpsB.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000000000000000000000000100000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveRelay.BackColor = ((obj.Telem.AliveCheck &    0b0000000000000000000000000000000000000000000000001000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveRelayFrw.BackColor = ((obj.Telem.AliveCheck & 0b0000000000000000000000000000000000000000000000010000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveFuel.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000000000000000000000100000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveInertial.BackColor = ((obj.Telem.AliveCheck & 0b0000000000000000000000000000000000000000000001000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveEngine.BackColor = ((obj.Telem.AliveCheck &   0b0000000000000000000000000000000000000000000010000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBox1.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000000000000000000100000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBox2.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000000000000000001000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBox3.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000000000000000010000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBox4.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000000000000000100000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBoxCrsf1.BackColor = ((obj.Telem.AliveCheck & 0b0000000000000000000000000000000000000001000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBoxCrsf2.BackColor = ((obj.Telem.AliveCheck & 0b0000000000000000000000000000000000000010000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBoxCrsf3.BackColor = ((obj.Telem.AliveCheck & 0b0000000000000000000000000000000000000100000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBoxCrsf4.BackColor = ((obj.Telem.AliveCheck & 0b0000000000000000000000000000000000001000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAlivePtzRs485.BackColor = ((obj.Telem.AliveCheck & 0b0000000000000000000000000000000000010000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveMosfets.BackColor = ((obj.Telem.AliveCheck &  0b0000000000000000000000000000000000100000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonAliveBoom.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000000001000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonLogEnable.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000000010000000000000000000000000000000) > 0) ? Color.Yellow : Color.White;
+        buttonWifi58In.BackColor = ((obj.Telem.AliveCheck &      0b0000000000000000000000000000000100000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonWifi58Out.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000001000000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonWifiMeshIn.BackColor = ((obj.Telem.AliveCheck &    0b0000000000000000000000000000010000000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonWifiMeshOut.BackColor = ((obj.Telem.AliveCheck &   0b0000000000000000000000000000100000000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonWifiCbsIn.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000001000000000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonWifiCbsOut.BackColor = ((obj.Telem.AliveCheck &    0b0000000000000000000000000010000000000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
 
-        buttonLogEnable.BackColor = obj.LogEnable ? Color.Yellow : Color.White;
-        buttonRelay1.BackColor = obj.Telem.Relay[0] == 0 ? Color.White : obj.Telem.Relay[0] == 1 ? Color.LightGreen : Color.LightGray;
-        buttonRelay2.BackColor = obj.Telem.Relay[1] == 0 ? Color.White : obj.Telem.Relay[1] == 1 ? Color.LightGreen : Color.LightGray;
-        buttonRelay3.BackColor = obj.Telem.Relay[2] == 0 ? Color.White : obj.Telem.Relay[2] == 1 ? Color.LightGreen : Color.LightGray;
-        buttonRelay4.BackColor = obj.Telem.Relay[3] == 0 ? Color.White : obj.Telem.Relay[3] == 1 ? Color.LightGreen : Color.LightGray;
-        buttonRelay5.BackColor = obj.Telem.Relay[4] == 0 ? Color.White : obj.Telem.Relay[4] == 1 ? Color.LightGreen : Color.LightGray;
-        buttonRelay6.BackColor = obj.Telem.Relay[5] == 0 ? Color.White : obj.Telem.Relay[5] == 1 ? Color.LightGreen : Color.LightGray;
-        buttonRelay7.BackColor = obj.Telem.Relay[6] == 0 ? Color.White : obj.Telem.Relay[6] == 1 ? Color.LightGreen : Color.LightGray;
-        buttonRelay8.BackColor = obj.Telem.Relay[7] == 0 ? Color.White : obj.Telem.Relay[7] == 1 ? Color.LightGreen : Color.LightGray;
-        buttonRelayF1.BackColor = obj.Telem.RelayFrw[0] == 0 ? Color.White : obj.Telem.RelayFrw[0] == 1 ? Color.LightGreen : Color.LightGray;
-        buttonRelayF2.BackColor = obj.Telem.RelayFrw[1] == 0 ? Color.White : obj.Telem.RelayFrw[1] == 1 ? Color.LightGreen : Color.LightGray;
-        buttonRelayF3.BackColor = obj.Telem.RelayFrw[2] == 0 ? Color.White : obj.Telem.RelayFrw[2] == 1 ? Color.LightGreen : Color.LightGray;
-        buttonRelayF4.BackColor = obj.Telem.RelayFrw[3] == 0 ? Color.White : obj.Telem.RelayFrw[3] == 1 ? Color.LightGreen : Color.LightGray;
+        buttonRelay1.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[0] == 0 ? Color.White : Color.LightGreen;
+        buttonRelay2.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[1] == 0 ? Color.White : Color.LightGreen;
+        buttonRelay3.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[2] == 0 ? Color.White : Color.LightGreen;
+        buttonRelay4.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[3] == 0 ? Color.White : Color.LightGreen;
+        buttonRelay5.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[4] == 0 ? Color.White : Color.LightGreen;
+        buttonRelay6.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[5] == 0 ? Color.White : Color.LightGreen;
+        buttonRelay7.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[6] == 0 ? Color.White : Color.LightGreen;
+        buttonRelay8.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[7] == 0 ? Color.White : Color.LightGreen;
+        buttonRelayF1.BackColor = buttonAliveRelayFrw.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.RelayFrw[0] == 0 ? Color.White : Color.LightGreen;
+        buttonRelayF2.BackColor = buttonAliveRelayFrw.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.RelayFrw[1] == 0 ? Color.White : Color.LightGreen;
+        buttonRelayF3.BackColor = buttonAliveRelayFrw.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.RelayFrw[2] == 0 ? Color.White : Color.LightGreen;
+        buttonRelayF4.BackColor = buttonAliveRelayFrw.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.RelayFrw[3] == 0 ? Color.White : Color.LightGreen;
     }
 
     private void FormShown(object? sender, EventArgs e)
@@ -229,7 +240,7 @@ public sealed partial class FormTelem : Form
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SendCommandAsync((int)(buttonLogEnable.BackColor == Color.Yellow ? 0xFF000000 : 0xFF000001));
+        await obj.SendCommandAsync((uint)(buttonLogEnable.BackColor == Color.Yellow ? 0xFF000000 : 0xFF000001));
     }
 
     private async void ButtonBoom_Click(object? sender, EventArgs e)
@@ -429,237 +440,73 @@ public sealed partial class FormTelem : Form
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        var relNew = new RelaysForWrite
-        {
-            Values =
-            {
-                [0] = buttonRelay1.BackColor == Color.LightGreen ? 0.0f : 1.0f,
-                [1] = obj.Telem.Relay[1].Equals(1.0f) ? 1.0f : 0.0f,
-                [2] = obj.Telem.Relay[2].Equals(1.0f) ? 1.0f : 0.0f,
-                [3] = obj.Telem.Relay[3].Equals(1.0f) ? 1.0f : 0.0f,
-                [4] = obj.Telem.Relay[4].Equals(1.0f) ? 1.0f : 0.0f,
-                [5] = obj.Telem.Relay[5].Equals(1.0f) ? 1.0f : 0.0f,
-                [6] = obj.Telem.Relay[6].Equals(1.0f) ? 1.0f : 0.0f,
-                [7] = obj.Telem.Relay[7].Equals(1.0f) ? 1.0f : 0.0f
-            },
-            ValuesFrw =
-            {
-                [0] = obj.Telem.RelayFrw[0].Equals(1.0f) ? 1.0f : 0.0f,
-                [1] = obj.Telem.RelayFrw[1].Equals(1.0f) ? 1.0f : 0.0f,
-                [2] = obj.Telem.RelayFrw[2].Equals(1.0f) ? 1.0f : 0.0f,
-                [3] = obj.Telem.RelayFrw[3].Equals(1.0f) ? 1.0f : 0.0f
-            }
-        };
-        await obj.RewriteRelayAsync(relNew);
+        await obj.SendCommandAsync((uint)(buttonRelay1.BackColor == Color.LightGreen ? 0x30010100 : 0x30010101));
     }
 
     private async void ButtonRelay2_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        var relNew = new RelaysForWrite();
-        relNew.Values[0] = obj.Telem.Relay[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[1] = buttonRelay2.BackColor == Color.LightGreen ? 0.0f : 1.0f;
-        relNew.Values[2] = obj.Telem.Relay[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[3] = obj.Telem.Relay[3] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[4] = obj.Telem.Relay[4] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[5] = obj.Telem.Relay[5] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[6] = obj.Telem.Relay[6] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[7] = obj.Telem.Relay[7] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[0] = obj.Telem.RelayFrw[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[1] = obj.Telem.RelayFrw[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[2] = obj.Telem.RelayFrw[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[3] = obj.Telem.RelayFrw[3] == 1.0f ? 1.0f : 0.0f;
-        await obj.RewriteRelayAsync(relNew);
+        await obj.SendCommandAsync((uint)(buttonRelay2.BackColor == Color.LightGreen ? 0x30010200 : 0x30010201));
     }
     private async void ButtonRelay3_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        var relNew = new RelaysForWrite();
-        relNew.Values[0] = obj.Telem.Relay[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[1] = obj.Telem.Relay[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[2] = buttonRelay3.BackColor == Color.LightGreen ? 0.0f : 1.0f;
-        relNew.Values[3] = obj.Telem.Relay[3] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[4] = obj.Telem.Relay[4] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[5] = obj.Telem.Relay[5] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[6] = obj.Telem.Relay[6] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[7] = obj.Telem.Relay[7] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[0] = obj.Telem.RelayFrw[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[1] = obj.Telem.RelayFrw[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[2] = obj.Telem.RelayFrw[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[3] = obj.Telem.RelayFrw[3] == 1.0f ? 1.0f : 0.0f;
-        await obj.RewriteRelayAsync(relNew);
+        await obj.SendCommandAsync((uint)(buttonRelay3.BackColor == Color.LightGreen ? 0x30010300 : 0x30010301));
     }
     private async void ButtonRelay4_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        var relNew = new RelaysForWrite();
-        relNew.Values[0] = obj.Telem.Relay[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[1] = obj.Telem.Relay[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[2] = obj.Telem.Relay[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[3] = buttonRelay4.BackColor == Color.LightGreen ? 0.0f : 1.0f;
-        relNew.Values[4] = obj.Telem.Relay[4] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[5] = obj.Telem.Relay[5] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[6] = obj.Telem.Relay[6] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[7] = obj.Telem.Relay[7] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[0] = obj.Telem.RelayFrw[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[1] = obj.Telem.RelayFrw[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[2] = obj.Telem.RelayFrw[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[3] = obj.Telem.RelayFrw[3] == 1.0f ? 1.0f : 0.0f;
-        await obj.RewriteRelayAsync(relNew);
+        await obj.SendCommandAsync((uint)(buttonRelay4.BackColor == Color.LightGreen ? 0x30010400 : 0x30010401));
     }
     private async void ButtonRelay5_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        var relNew = new RelaysForWrite();
-        relNew.Values[0] = obj.Telem.Relay[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[1] = obj.Telem.Relay[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[2] = obj.Telem.Relay[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[3] = obj.Telem.Relay[3] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[4] = buttonRelay5.BackColor == Color.LightGreen ? 0.0f : 1.0f;
-        relNew.Values[5] = obj.Telem.Relay[5] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[6] = obj.Telem.Relay[6] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[7] = obj.Telem.Relay[7] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[0] = obj.Telem.RelayFrw[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[1] = obj.Telem.RelayFrw[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[2] = obj.Telem.RelayFrw[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[3] = obj.Telem.RelayFrw[3] == 1.0f ? 1.0f : 0.0f;
-        await obj.RewriteRelayAsync(relNew);
+        await obj.SendCommandAsync((uint)(buttonRelay5.BackColor == Color.LightGreen ? 0x30010500 : 0x30010501));
     }
     private async void ButtonRelay6_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        var relNew = new RelaysForWrite();
-        relNew.Values[0] = obj.Telem.Relay[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[1] = obj.Telem.Relay[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[2] = obj.Telem.Relay[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[3] = obj.Telem.Relay[3] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[4] = obj.Telem.Relay[4] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[5] = buttonRelay6.BackColor == Color.LightGreen ? 0.0f : 1.0f;
-        relNew.Values[6] = obj.Telem.Relay[6] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[7] = obj.Telem.Relay[7] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[0] = obj.Telem.RelayFrw[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[1] = obj.Telem.RelayFrw[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[2] = obj.Telem.RelayFrw[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[3] = obj.Telem.RelayFrw[3] == 1.0f ? 1.0f : 0.0f;
-        await obj.RewriteRelayAsync(relNew);
+        await obj.SendCommandAsync((uint)(buttonRelay6.BackColor == Color.LightGreen ? 0x30010600 : 0x30010601));
     }
     private async void ButtonRelay7_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        var relNew = new RelaysForWrite();
-        relNew.Values[0] = obj.Telem.Relay[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[1] = obj.Telem.Relay[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[2] = obj.Telem.Relay[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[3] = obj.Telem.Relay[3] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[4] = obj.Telem.Relay[4] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[5] = obj.Telem.Relay[5] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[6] = buttonRelay7.BackColor == Color.LightGreen ? 0.0f : 1.0f;
-        relNew.Values[7] = obj.Telem.Relay[7] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[0] = obj.Telem.RelayFrw[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[1] = obj.Telem.RelayFrw[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[2] = obj.Telem.RelayFrw[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[3] = obj.Telem.RelayFrw[3] == 1.0f ? 1.0f : 0.0f;
-        await obj.RewriteRelayAsync(relNew);
+        await obj.SendCommandAsync((uint)(buttonRelay7.BackColor == Color.LightGreen ? 0x30010700 : 0x30010701));
     }
     private async void ButtonRelay8_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        var relNew = new RelaysForWrite();
-        relNew.Values[0] = obj.Telem.Relay[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[1] = obj.Telem.Relay[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[2] = obj.Telem.Relay[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[3] = obj.Telem.Relay[3] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[4] = obj.Telem.Relay[4] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[5] = obj.Telem.Relay[5] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[6] = obj.Telem.Relay[6] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[7] = buttonRelay8.BackColor == Color.LightGreen ? 0.0f : 1.0f;
-        relNew.ValuesFrw[0] = obj.Telem.RelayFrw[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[1] = obj.Telem.RelayFrw[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[2] = obj.Telem.RelayFrw[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[3] = obj.Telem.RelayFrw[3] == 1.0f ? 1.0f : 0.0f;
-        await obj.RewriteRelayAsync(relNew);
+        await obj.SendCommandAsync((uint)(buttonRelay8.BackColor == Color.LightGreen ? 0x30010800 : 0x30010801));
     }
     private async void ButtonRelayF1_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        var relNew = new RelaysForWrite();
-        relNew.Values[0] = obj.Telem.Relay[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[1] = obj.Telem.Relay[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[2] = obj.Telem.Relay[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[3] = obj.Telem.Relay[3] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[4] = obj.Telem.Relay[4] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[5] = obj.Telem.Relay[5] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[6] = obj.Telem.Relay[6] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[7] = obj.Telem.Relay[7] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[0] = buttonRelayF1.BackColor == Color.LightGreen ? 0.0f : 1.0f;
-        relNew.ValuesFrw[1] = obj.Telem.RelayFrw[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[2] = obj.Telem.RelayFrw[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[3] = obj.Telem.RelayFrw[3] == 1.0f ? 1.0f : 0.0f;
-        await obj.RewriteRelayAsync(relNew);
+        await obj.SendCommandAsync((uint)(buttonRelayF1.BackColor == Color.LightGreen ? 0x30020100 : 0x30020101));
     }
     private async void ButtonRelayF2_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        var relNew = new RelaysForWrite();
-        relNew.Values[0] = obj.Telem.Relay[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[1] = obj.Telem.Relay[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[2] = obj.Telem.Relay[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[3] = obj.Telem.Relay[3] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[4] = obj.Telem.Relay[4] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[5] = obj.Telem.Relay[5] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[6] = obj.Telem.Relay[6] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[7] = obj.Telem.Relay[7] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[0] = obj.Telem.RelayFrw[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[1] = buttonRelayF2.BackColor == Color.LightGreen ? 0.0f : 1.0f;
-        relNew.ValuesFrw[2] = obj.Telem.RelayFrw[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[3] = obj.Telem.RelayFrw[3] == 1.0f ? 1.0f : 0.0f;
-        await obj.RewriteRelayAsync(relNew);
+        await obj.SendCommandAsync((uint)(buttonRelayF2.BackColor == Color.LightGreen ? 0x30020200 : 0x30020201));
     }
     private async void ButtonRelayF3_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        var relNew = new RelaysForWrite();
-        relNew.Values[0] = obj.Telem.Relay[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[1] = obj.Telem.Relay[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[2] = obj.Telem.Relay[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[3] = obj.Telem.Relay[3] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[4] = obj.Telem.Relay[4] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[5] = obj.Telem.Relay[5] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[6] = obj.Telem.Relay[6] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[7] = obj.Telem.Relay[7] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[0] = obj.Telem.RelayFrw[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[1] = obj.Telem.RelayFrw[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[2] = buttonRelayF3.BackColor == Color.LightGreen ? 0.0f : 1.0f;
-        relNew.ValuesFrw[3] = obj.Telem.RelayFrw[3] == 1.0f ? 1.0f : 0.0f;
-        await obj.RewriteRelayAsync(relNew);
+        await obj.SendCommandAsync((uint)(buttonRelayF3.BackColor == Color.LightGreen ? 0x30020300 : 0x30020301));
     }
     private async void ButtonRelayF4_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        var relNew = new RelaysForWrite();
-        relNew.Values[0] = obj.Telem.Relay[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[1] = obj.Telem.Relay[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[2] = obj.Telem.Relay[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[3] = obj.Telem.Relay[3] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[4] = obj.Telem.Relay[4] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[5] = obj.Telem.Relay[5] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[6] = obj.Telem.Relay[6] == 1.0f ? 1.0f : 0.0f;
-        relNew.Values[7] = obj.Telem.Relay[7] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[0] = obj.Telem.RelayFrw[0] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[1] = obj.Telem.RelayFrw[1] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[2] = obj.Telem.RelayFrw[2] == 1.0f ? 1.0f : 0.0f;
-        relNew.ValuesFrw[3] = buttonRelayF4.BackColor == Color.LightGreen ? 0.0f : 1.0f;
-        await obj.RewriteRelayAsync(relNew);
+        await obj.SendCommandAsync((uint)(buttonRelayF4.BackColor == Color.LightGreen ? 0x30020400 : 0x30020401));
     }
 }

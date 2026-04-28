@@ -3,10 +3,9 @@ using SharpDX.Mathematics.Interop;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using WarGame.Forms.Video;
+using System.Windows.Markup;
 using WarGame.Model;
 using WarGame.Remote;
-using static WarGame.Forms.Map.GameObject;
 
 namespace WarGame.Forms.Map;
 
@@ -55,8 +54,6 @@ public class GameObjects
                 x.LatY = i.LatY;
                 x.LonX = i.LonX;
                 x.Z = i.Z;
-                x.VideoQuality = i.VideoQuality;
-                x.LogEnable = i.LogEnable;
             }
         }
         catch
@@ -79,7 +76,7 @@ public class GameObjects
             }
 
             await UpdateAsync(ct);
-            await Task.Delay(100, ct);
+            await Task.Delay(50, ct); // 20гц
 
             if (Core.FrmMap!.Visible == false && Items.Count > 0) // Принудительное выделение объекта, если нет формы с картой
             {
@@ -162,39 +159,33 @@ public abstract class GameObject : IDrawing
     public float Angle { get; set; } // Угол поворота
     public bool Lighting { get; set; } // объект подсвечен
     public bool Selected { get; set; } // объект выбран
-    public byte VideoQuality { get; set; } // Качество видео с камер (0->5)
-    public bool LogEnable { get; set; } // включено ли логирование
     [JsonIgnore] public GameObjectTelem Telem { get; set; } = new(); // Телеметрия объекта
     public class GameObjectTelem // Параметры телеметрии
     {
-        public float[] Servos { get; set; } = new float[8]; // Значения сервоприводов
-        public float[] RcChannels { get; set; } = new float[16]; // Значения каналов управления
+        public ushort[] RcChannels { get; set; } = new ushort[8]; // Значения каналов управления
         public float MBitObjectIn { get; set; } // Прием данных от сервера в мегабитах (на объекте)
         public float MBitServerIn { get; set; } // Прием данных на сервер в мегабитах (на сервере)
+        public float MBitObjectOut { get; set; } // Передача данных от объекта в мегабитах (на объекте)
+        public float MBitServerOut { get; set; } // Передача данных от сервера в мегабитах (на сервере)
         public float PingToServer { get; set; } // Ping UDP до сервера и обратно
-        public int MBitServerInBytesCounter { get; set; } // Счетчик приема данных в байтах
-        public float[] Relay { get; set; } = new float[8]; // Значения каналов реле
-        public float[] RelayFrw { get; set; } = new float[4]; // Значения каналов реле на носу
-        public int CommandCount { get; set; } // Количество команд под исполнение
+        public byte[] Relay { get; set; } = new byte[8]; // Значения каналов реле
+        public byte[] RelayFrw { get; set; } = new byte[4]; // Значения каналов реле на носу
+        public byte VideoFps { get; set; } // FPS видео с камер (0->5)
+        public byte VideoQuality { get; set; } // Качество видео с камер (0->5)
+        public byte CommandCount { get; set; } // Количество команд под исполнение
         public byte[] CanEngineBits { get; set; } = new byte[5];  // биты двигателя
-        public int AliveCheck { get; set; } // статусы компонентов устройства
+        public ulong AliveCheck { get; set; } // статусы компонентов устройства
     }
     public class RcChannelsForWrite
     {
-        public float[] Values { get; set; } = new float[16]; // Значения каналов управления
-    }
-
-    public class RelaysForWrite
-    {
-        public float[] Values { get; set; } = new float[8]; // Значения каналов реле
-        public float[] ValuesFrw { get; set; } = new float[8]; // Значения каналов реле на носу
+        public float[] Values { get; set; } = new float[8]; // Значения каналов управления
     }
 
     public static GameObject CreateFactory(GameObject o)
     {
         return o.Type switch
         {
-            0 => new GameObjShip()
+            (0 | 1) => new GameObjShip()
             {
                 Type = o.Type,
                 Id = o.Id,
@@ -205,22 +196,6 @@ public abstract class GameObject : IDrawing
                 Angle = o.Angle,
                 Lighting = o.Lighting,
                 Selected = o.Selected,
-                VideoQuality = o.VideoQuality,
-                LogEnable = o.LogEnable,
-            },
-            1 => new GameObjShip()
-            {
-                Type = o.Type,
-                Id = o.Id,
-                Name = o.Name,
-                LonX = o.LonX,
-                LatY = o.LatY,
-                Z = o.Z,
-                Angle = o.Angle,
-                Lighting = o.Lighting,
-                Selected = o.Selected,
-                VideoQuality = o.VideoQuality,
-                LogEnable = o.LogEnable,
             },
             _ => new GameObjJson()
             {
@@ -233,31 +208,19 @@ public abstract class GameObject : IDrawing
                 LatY = o.LatY,
                 Z = o.Z,
                 Angle = o.Angle,
-                VideoQuality = o.VideoQuality,
-                LogEnable = o.LogEnable,
             }
 
         };
     }
 
-    public async Task<bool> SetQualityVideo(int quality, CancellationToken ct = default)
-    {
-        try
-        {
-            using var web = new HttpClient();
-            web.BaseAddress = new Uri(Core.Config.ServerUrl);
-            using var answ = await web.GetAsync($"SetQualityVideo?id={Id:0}&quality={quality:0}", ct);
-            return answ.IsSuccessStatusCode;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    public async Task<bool> SendCommandAsync(int command, CancellationToken ct = default)
+    public async Task<bool> SendCommandAsync(uint command, CancellationToken ct = default)
     {
         // Список команд для объекта
+        //0xFFx00x00x00 - включить логирование
+        //0xFFx00x00x01 - выключить логирование
+        //0xFEx00x0fx0q - изменить качество видео f-fps, q-качество
+        //0x30x01x0nx0e - Управление реле 8каналов n-номер канала(0n), e-вкл(01)/выкл(00)
+        //0x30x02x0nx0e - Управление реле 4канала n-номер канала(0n), e-вкл(01)/выкл(00)
         //0x0Fx00x00x00 - вернуть чеку на взрыватель
         //0x0Fx00x00x01 - снять чеку со взрывателя
         //0x0Fx00x00xFF - подрыв (только со снятой чекой)
@@ -274,25 +237,6 @@ public abstract class GameObject : IDrawing
             using var web = new HttpClient();
             web.BaseAddress = new Uri(Core.Config.ServerUrl);
             using var answ = await web.GetAsync($"GameObjectCommand?id={Id:0}&command={command:0}", ct);
-            return answ.IsSuccessStatusCode;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    public async Task<bool> RewriteRelayAsync(RelaysForWrite relays, CancellationToken ct = default)
-    {
-        try
-        {
-            using var web = new HttpClient();
-            web.BaseAddress = new Uri(Core.Config.ServerUrl);
-            var jsonString = JsonSerializer.Serialize(relays);
-            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            content.Headers.ContentLength = jsonString.Length;
-            using var answ = await web.PostAsync($"SetGameObjectRelay?id={Id:0}", content, ct);
             return answ.IsSuccessStatusCode;
         }
         catch
@@ -330,6 +274,37 @@ public abstract class GameObject : IDrawing
             {
                 Values = Core.Joystick.Channels
             };
+            switch (number)
+            {
+                case 0: // это канал управления для лодки, нужно менять каналы местами
+                    rcNew.Values = new float[8];
+                    rcNew.Values[1] = Core.Joystick.Channels[2]; // LY CH2<-CH3
+                    rcNew.Values[3] = Core.Joystick.Channels[3]; // LX CH4<-CH4
+                    rcNew.Values[2] = Core.Joystick.Channels[1]; // RY CH3<-CH2
+                    rcNew.Values[0] = Core.Joystick.Channels[0]; // RX CH1<-CH1
+                    rcNew.Values[4] = Core.Joystick.Channels[4]; // ДЛ CH5<-CH5
+                    rcNew.Values[5] = Core.Joystick.Channels[5]; // ДП CH6<-CH5
+                    rcNew.Values[6] = Core.Joystick.Channels[6]; // БЛ CH7<-CH5
+                    rcNew.Values[7] = Core.Joystick.Channels[7]; // БП CH8<-CH5
+                    break;
+                case 2: // это каналы управления птицами, нужно менять каналы местами
+                case 3:
+                case 4:
+                case 5:
+                    rcNew.Values = new float[8];
+                    rcNew.Values[0] = Core.Joystick.Channels[2]; // LY CH1<-CH3
+                    rcNew.Values[3] = Core.Joystick.Channels[3]; // LX CH4<-CH4
+                    rcNew.Values[2] = Core.Joystick.Channels[1]; // RY CH3<-CH2
+                    rcNew.Values[1] = Core.Joystick.Channels[0]; // RX CH2<-CH1
+                    rcNew.Values[4] = Core.Joystick.Channels[4]; // ДЛ CH5<-CH5
+                    rcNew.Values[5] = Core.Joystick.Channels[5]; // ДП CH6<-CH5
+                    rcNew.Values[6] = Core.Joystick.Channels[6]; // БЛ CH7<-CH5
+                    rcNew.Values[7] = Core.Joystick.Channels[7]; // БП CH8<-CH5
+                    break;
+                case 1: // это камера PTZ, изменения не нужны
+                default:
+                    break;
+            }
             var jsonString = JsonSerializer.Serialize(rcNew);
             var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");

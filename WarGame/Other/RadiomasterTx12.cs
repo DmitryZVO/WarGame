@@ -11,7 +11,7 @@ public class RadiomasterTx12
     private Joystick? _joystick; // Джйостик
     private const float StickTolerance = 0.00001f;
 
-    public float[] Channels { get; private set; } = new float[16]; // Данные каналов нормированные от -1.0 до 1.0;
+    public float[] Channels { get; private set; } = new float[8]; // Данные каналов нормированные от -1.0 до 1.0;
 
     public async void StartAsync()
     {
@@ -96,16 +96,6 @@ public class RadiomasterTx12
                 Channels[7] = value;
                 continue;
             }
-            if (vals.Offset == JoystickOffset.Buttons0) // Левая кнопка А
-            {
-                Channels[8] = vals.Value;
-                continue;
-            }
-            if (vals.Offset == JoystickOffset.Buttons1) // Правая кнопка D
-            {
-                Channels[9] = vals.Value;
-                continue;
-            }
             //Console.WriteLine(vals.Offset);
         }
         _lastUpdate = DateTime.Now;
@@ -131,6 +121,6 @@ public class RadiomasterTx12
     }
     public class JoyChannels
     {
-        public float[] Channels { get; set; } = new float[16];
+        public float[] Channels { get; set; } = new float[8];
     }
 }

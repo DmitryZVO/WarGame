@@ -103,6 +103,12 @@ partial class FormTelem
         buttonAliveMosfets = new Button();
         buttonAliveBoom = new Button();
         buttonLogEnable = new Button();
+        buttonWifi58In = new Button();
+        buttonWifi58Out = new Button();
+        buttonWifiMeshOut = new Button();
+        buttonWifiMeshIn = new Button();
+        buttonWifiCbsOut = new Button();
+        buttonWifiCbsIn = new Button();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMain).BeginInit();
         SuspendLayout();
         // 
@@ -118,7 +124,7 @@ partial class FormTelem
         // 
         // buttonRelay1
         // 
-        buttonRelay1.Location = new Point(12, 12);
+        buttonRelay1.Location = new Point(12, 70);
         buttonRelay1.Name = "buttonRelay1";
         buttonRelay1.Size = new Size(125, 23);
         buttonRelay1.TabIndex = 1;
@@ -127,7 +133,7 @@ partial class FormTelem
         // 
         // buttonRelay2
         // 
-        buttonRelay2.Location = new Point(12, 41);
+        buttonRelay2.Location = new Point(12, 99);
         buttonRelay2.Name = "buttonRelay2";
         buttonRelay2.Size = new Size(125, 23);
         buttonRelay2.TabIndex = 2;
@@ -136,7 +142,7 @@ partial class FormTelem
         // 
         // buttonRelay3
         // 
-        buttonRelay3.Location = new Point(12, 70);
+        buttonRelay3.Location = new Point(12, 128);
         buttonRelay3.Name = "buttonRelay3";
         buttonRelay3.Size = new Size(125, 23);
         buttonRelay3.TabIndex = 3;
@@ -145,7 +151,7 @@ partial class FormTelem
         // 
         // buttonRelay4
         // 
-        buttonRelay4.Location = new Point(12, 99);
+        buttonRelay4.Location = new Point(12, 157);
         buttonRelay4.Name = "buttonRelay4";
         buttonRelay4.Size = new Size(125, 23);
         buttonRelay4.TabIndex = 4;
@@ -153,7 +159,7 @@ partial class FormTelem
         // 
         // buttonRelay5
         // 
-        buttonRelay5.Location = new Point(12, 128);
+        buttonRelay5.Location = new Point(12, 186);
         buttonRelay5.Name = "buttonRelay5";
         buttonRelay5.Size = new Size(125, 23);
         buttonRelay5.TabIndex = 5;
@@ -162,7 +168,7 @@ partial class FormTelem
         // 
         // buttonRelay6
         // 
-        buttonRelay6.Location = new Point(12, 157);
+        buttonRelay6.Location = new Point(12, 215);
         buttonRelay6.Name = "buttonRelay6";
         buttonRelay6.Size = new Size(125, 23);
         buttonRelay6.TabIndex = 6;
@@ -171,7 +177,7 @@ partial class FormTelem
         // 
         // buttonRelay7
         // 
-        buttonRelay7.Location = new Point(12, 186);
+        buttonRelay7.Location = new Point(12, 244);
         buttonRelay7.Name = "buttonRelay7";
         buttonRelay7.Size = new Size(125, 23);
         buttonRelay7.TabIndex = 7;
@@ -179,7 +185,7 @@ partial class FormTelem
         // 
         // buttonRelay8
         // 
-        buttonRelay8.Location = new Point(12, 215);
+        buttonRelay8.Location = new Point(12, 273);
         buttonRelay8.Name = "buttonRelay8";
         buttonRelay8.Size = new Size(125, 23);
         buttonRelay8.TabIndex = 8;
@@ -187,7 +193,7 @@ partial class FormTelem
         // 
         // buttonRelayF2
         // 
-        buttonRelayF2.Location = new Point(12, 302);
+        buttonRelayF2.Location = new Point(12, 360);
         buttonRelayF2.Name = "buttonRelayF2";
         buttonRelayF2.Size = new Size(125, 23);
         buttonRelayF2.TabIndex = 9;
@@ -195,7 +201,7 @@ partial class FormTelem
         // 
         // buttonRelayF1
         // 
-        buttonRelayF1.Location = new Point(12, 273);
+        buttonRelayF1.Location = new Point(12, 331);
         buttonRelayF1.Name = "buttonRelayF1";
         buttonRelayF1.Size = new Size(125, 23);
         buttonRelayF1.TabIndex = 10;
@@ -203,7 +209,7 @@ partial class FormTelem
         // 
         // buttonRelayF3
         // 
-        buttonRelayF3.Location = new Point(12, 331);
+        buttonRelayF3.Location = new Point(12, 389);
         buttonRelayF3.Name = "buttonRelayF3";
         buttonRelayF3.Size = new Size(125, 23);
         buttonRelayF3.TabIndex = 11;
@@ -211,7 +217,7 @@ partial class FormTelem
         // 
         // buttonRelayF4
         // 
-        buttonRelayF4.Location = new Point(12, 360);
+        buttonRelayF4.Location = new Point(12, 418);
         buttonRelayF4.Name = "buttonRelayF4";
         buttonRelayF4.Size = new Size(125, 23);
         buttonRelayF4.TabIndex = 12;
@@ -522,7 +528,7 @@ partial class FormTelem
         // buttonAliveServer
         // 
         buttonAliveServer.Enabled = false;
-        buttonAliveServer.Location = new Point(1582, 12);
+        buttonAliveServer.Location = new Point(1774, 12);
         buttonAliveServer.Name = "buttonAliveServer";
         buttonAliveServer.Size = new Size(134, 23);
         buttonAliveServer.TabIndex = 43;
@@ -532,7 +538,7 @@ partial class FormTelem
         // buttonAliveCamFrwd
         // 
         buttonAliveCamFrwd.Enabled = false;
-        buttonAliveCamFrwd.Location = new Point(1582, 41);
+        buttonAliveCamFrwd.Location = new Point(1774, 41);
         buttonAliveCamFrwd.Name = "buttonAliveCamFrwd";
         buttonAliveCamFrwd.Size = new Size(134, 23);
         buttonAliveCamFrwd.TabIndex = 44;
@@ -542,7 +548,7 @@ partial class FormTelem
         // buttonAliveCamBack
         // 
         buttonAliveCamBack.Enabled = false;
-        buttonAliveCamBack.Location = new Point(1582, 70);
+        buttonAliveCamBack.Location = new Point(1774, 70);
         buttonAliveCamBack.Name = "buttonAliveCamBack";
         buttonAliveCamBack.Size = new Size(134, 23);
         buttonAliveCamBack.TabIndex = 45;
@@ -552,7 +558,7 @@ partial class FormTelem
         // buttonAliveCamLeft
         // 
         buttonAliveCamLeft.Enabled = false;
-        buttonAliveCamLeft.Location = new Point(1582, 99);
+        buttonAliveCamLeft.Location = new Point(1774, 99);
         buttonAliveCamLeft.Name = "buttonAliveCamLeft";
         buttonAliveCamLeft.Size = new Size(134, 23);
         buttonAliveCamLeft.TabIndex = 46;
@@ -562,7 +568,7 @@ partial class FormTelem
         // buttonAliveCamRight
         // 
         buttonAliveCamRight.Enabled = false;
-        buttonAliveCamRight.Location = new Point(1582, 128);
+        buttonAliveCamRight.Location = new Point(1774, 128);
         buttonAliveCamRight.Name = "buttonAliveCamRight";
         buttonAliveCamRight.Size = new Size(134, 23);
         buttonAliveCamRight.TabIndex = 47;
@@ -572,7 +578,7 @@ partial class FormTelem
         // buttonAliveCamPtz
         // 
         buttonAliveCamPtz.Enabled = false;
-        buttonAliveCamPtz.Location = new Point(1582, 157);
+        buttonAliveCamPtz.Location = new Point(1774, 157);
         buttonAliveCamPtz.Name = "buttonAliveCamPtz";
         buttonAliveCamPtz.Size = new Size(134, 23);
         buttonAliveCamPtz.TabIndex = 48;
@@ -582,7 +588,7 @@ partial class FormTelem
         // buttonAliveCamWarm
         // 
         buttonAliveCamWarm.Enabled = false;
-        buttonAliveCamWarm.Location = new Point(1582, 186);
+        buttonAliveCamWarm.Location = new Point(1774, 186);
         buttonAliveCamWarm.Name = "buttonAliveCamWarm";
         buttonAliveCamWarm.Size = new Size(134, 23);
         buttonAliveCamWarm.TabIndex = 49;
@@ -592,7 +598,7 @@ partial class FormTelem
         // buttonAliveCamFpv1
         // 
         buttonAliveCamFpv1.Enabled = false;
-        buttonAliveCamFpv1.Location = new Point(1582, 215);
+        buttonAliveCamFpv1.Location = new Point(1774, 215);
         buttonAliveCamFpv1.Name = "buttonAliveCamFpv1";
         buttonAliveCamFpv1.Size = new Size(134, 23);
         buttonAliveCamFpv1.TabIndex = 50;
@@ -602,7 +608,7 @@ partial class FormTelem
         // buttonAliveCamFpv2
         // 
         buttonAliveCamFpv2.Enabled = false;
-        buttonAliveCamFpv2.Location = new Point(1582, 244);
+        buttonAliveCamFpv2.Location = new Point(1774, 244);
         buttonAliveCamFpv2.Name = "buttonAliveCamFpv2";
         buttonAliveCamFpv2.Size = new Size(134, 23);
         buttonAliveCamFpv2.TabIndex = 51;
@@ -612,7 +618,7 @@ partial class FormTelem
         // buttonAliveCamFpv3
         // 
         buttonAliveCamFpv3.Enabled = false;
-        buttonAliveCamFpv3.Location = new Point(1582, 273);
+        buttonAliveCamFpv3.Location = new Point(1774, 273);
         buttonAliveCamFpv3.Name = "buttonAliveCamFpv3";
         buttonAliveCamFpv3.Size = new Size(134, 23);
         buttonAliveCamFpv3.TabIndex = 52;
@@ -622,7 +628,7 @@ partial class FormTelem
         // buttonAliveCamFpv4
         // 
         buttonAliveCamFpv4.Enabled = false;
-        buttonAliveCamFpv4.Location = new Point(1582, 302);
+        buttonAliveCamFpv4.Location = new Point(1774, 302);
         buttonAliveCamFpv4.Name = "buttonAliveCamFpv4";
         buttonAliveCamFpv4.Size = new Size(134, 23);
         buttonAliveCamFpv4.TabIndex = 53;
@@ -632,7 +638,7 @@ partial class FormTelem
         // buttonAliveCompas
         // 
         buttonAliveCompas.Enabled = false;
-        buttonAliveCompas.Location = new Point(1582, 331);
+        buttonAliveCompas.Location = new Point(1774, 331);
         buttonAliveCompas.Name = "buttonAliveCompas";
         buttonAliveCompas.Size = new Size(134, 23);
         buttonAliveCompas.TabIndex = 54;
@@ -642,7 +648,7 @@ partial class FormTelem
         // buttonAliveCubic
         // 
         buttonAliveCubic.Enabled = false;
-        buttonAliveCubic.Location = new Point(1582, 360);
+        buttonAliveCubic.Location = new Point(1774, 360);
         buttonAliveCubic.Name = "buttonAliveCubic";
         buttonAliveCubic.Size = new Size(134, 23);
         buttonAliveCubic.TabIndex = 55;
@@ -652,7 +658,7 @@ partial class FormTelem
         // buttonAliveGpsF
         // 
         buttonAliveGpsF.Enabled = false;
-        buttonAliveGpsF.Location = new Point(1582, 389);
+        buttonAliveGpsF.Location = new Point(1774, 389);
         buttonAliveGpsF.Name = "buttonAliveGpsF";
         buttonAliveGpsF.Size = new Size(134, 23);
         buttonAliveGpsF.TabIndex = 56;
@@ -662,7 +668,7 @@ partial class FormTelem
         // buttonAliveGpsB
         // 
         buttonAliveGpsB.Enabled = false;
-        buttonAliveGpsB.Location = new Point(1582, 418);
+        buttonAliveGpsB.Location = new Point(1774, 418);
         buttonAliveGpsB.Name = "buttonAliveGpsB";
         buttonAliveGpsB.Size = new Size(134, 23);
         buttonAliveGpsB.TabIndex = 57;
@@ -672,7 +678,7 @@ partial class FormTelem
         // buttonAliveRelay
         // 
         buttonAliveRelay.Enabled = false;
-        buttonAliveRelay.Location = new Point(1582, 447);
+        buttonAliveRelay.Location = new Point(1774, 447);
         buttonAliveRelay.Name = "buttonAliveRelay";
         buttonAliveRelay.Size = new Size(134, 23);
         buttonAliveRelay.TabIndex = 58;
@@ -682,7 +688,7 @@ partial class FormTelem
         // buttonAliveRelayFrw
         // 
         buttonAliveRelayFrw.Enabled = false;
-        buttonAliveRelayFrw.Location = new Point(1582, 476);
+        buttonAliveRelayFrw.Location = new Point(1774, 476);
         buttonAliveRelayFrw.Name = "buttonAliveRelayFrw";
         buttonAliveRelayFrw.Size = new Size(134, 23);
         buttonAliveRelayFrw.TabIndex = 59;
@@ -692,7 +698,7 @@ partial class FormTelem
         // buttonAliveFuel
         // 
         buttonAliveFuel.Enabled = false;
-        buttonAliveFuel.Location = new Point(1582, 505);
+        buttonAliveFuel.Location = new Point(1774, 505);
         buttonAliveFuel.Name = "buttonAliveFuel";
         buttonAliveFuel.Size = new Size(134, 23);
         buttonAliveFuel.TabIndex = 60;
@@ -702,7 +708,7 @@ partial class FormTelem
         // buttonAliveInertial
         // 
         buttonAliveInertial.Enabled = false;
-        buttonAliveInertial.Location = new Point(1582, 534);
+        buttonAliveInertial.Location = new Point(1774, 534);
         buttonAliveInertial.Name = "buttonAliveInertial";
         buttonAliveInertial.Size = new Size(134, 23);
         buttonAliveInertial.TabIndex = 61;
@@ -712,7 +718,7 @@ partial class FormTelem
         // buttonAliveEngine
         // 
         buttonAliveEngine.Enabled = false;
-        buttonAliveEngine.Location = new Point(1582, 563);
+        buttonAliveEngine.Location = new Point(1774, 563);
         buttonAliveEngine.Name = "buttonAliveEngine";
         buttonAliveEngine.Size = new Size(134, 23);
         buttonAliveEngine.TabIndex = 62;
@@ -722,7 +728,7 @@ partial class FormTelem
         // buttonAliveBox1
         // 
         buttonAliveBox1.Enabled = false;
-        buttonAliveBox1.Location = new Point(1582, 592);
+        buttonAliveBox1.Location = new Point(1774, 592);
         buttonAliveBox1.Name = "buttonAliveBox1";
         buttonAliveBox1.Size = new Size(65, 23);
         buttonAliveBox1.TabIndex = 63;
@@ -732,7 +738,7 @@ partial class FormTelem
         // buttonAliveBoxCrsf1
         // 
         buttonAliveBoxCrsf1.Enabled = false;
-        buttonAliveBoxCrsf1.Location = new Point(1651, 592);
+        buttonAliveBoxCrsf1.Location = new Point(1843, 592);
         buttonAliveBoxCrsf1.Name = "buttonAliveBoxCrsf1";
         buttonAliveBoxCrsf1.Size = new Size(65, 23);
         buttonAliveBoxCrsf1.TabIndex = 64;
@@ -742,7 +748,7 @@ partial class FormTelem
         // buttonAliveBoxCrsf2
         // 
         buttonAliveBoxCrsf2.Enabled = false;
-        buttonAliveBoxCrsf2.Location = new Point(1651, 621);
+        buttonAliveBoxCrsf2.Location = new Point(1843, 621);
         buttonAliveBoxCrsf2.Name = "buttonAliveBoxCrsf2";
         buttonAliveBoxCrsf2.Size = new Size(65, 23);
         buttonAliveBoxCrsf2.TabIndex = 66;
@@ -752,7 +758,7 @@ partial class FormTelem
         // buttonAliveBox2
         // 
         buttonAliveBox2.Enabled = false;
-        buttonAliveBox2.Location = new Point(1582, 621);
+        buttonAliveBox2.Location = new Point(1774, 621);
         buttonAliveBox2.Name = "buttonAliveBox2";
         buttonAliveBox2.Size = new Size(65, 23);
         buttonAliveBox2.TabIndex = 65;
@@ -762,7 +768,7 @@ partial class FormTelem
         // buttonAliveBoxCrsf3
         // 
         buttonAliveBoxCrsf3.Enabled = false;
-        buttonAliveBoxCrsf3.Location = new Point(1651, 650);
+        buttonAliveBoxCrsf3.Location = new Point(1843, 650);
         buttonAliveBoxCrsf3.Name = "buttonAliveBoxCrsf3";
         buttonAliveBoxCrsf3.Size = new Size(65, 23);
         buttonAliveBoxCrsf3.TabIndex = 68;
@@ -772,7 +778,7 @@ partial class FormTelem
         // buttonAliveBox3
         // 
         buttonAliveBox3.Enabled = false;
-        buttonAliveBox3.Location = new Point(1582, 650);
+        buttonAliveBox3.Location = new Point(1774, 650);
         buttonAliveBox3.Name = "buttonAliveBox3";
         buttonAliveBox3.Size = new Size(65, 23);
         buttonAliveBox3.TabIndex = 67;
@@ -782,7 +788,7 @@ partial class FormTelem
         // buttonAliveBoxCrsf4
         // 
         buttonAliveBoxCrsf4.Enabled = false;
-        buttonAliveBoxCrsf4.Location = new Point(1651, 679);
+        buttonAliveBoxCrsf4.Location = new Point(1843, 679);
         buttonAliveBoxCrsf4.Name = "buttonAliveBoxCrsf4";
         buttonAliveBoxCrsf4.Size = new Size(65, 23);
         buttonAliveBoxCrsf4.TabIndex = 70;
@@ -792,7 +798,7 @@ partial class FormTelem
         // buttonAliveBox4
         // 
         buttonAliveBox4.Enabled = false;
-        buttonAliveBox4.Location = new Point(1582, 679);
+        buttonAliveBox4.Location = new Point(1774, 679);
         buttonAliveBox4.Name = "buttonAliveBox4";
         buttonAliveBox4.Size = new Size(65, 23);
         buttonAliveBox4.TabIndex = 69;
@@ -802,7 +808,7 @@ partial class FormTelem
         // buttonAlivePtzRs485
         // 
         buttonAlivePtzRs485.Enabled = false;
-        buttonAlivePtzRs485.Location = new Point(1582, 708);
+        buttonAlivePtzRs485.Location = new Point(1774, 708);
         buttonAlivePtzRs485.Name = "buttonAlivePtzRs485";
         buttonAlivePtzRs485.Size = new Size(134, 23);
         buttonAlivePtzRs485.TabIndex = 71;
@@ -812,7 +818,7 @@ partial class FormTelem
         // buttonAliveMosfets
         // 
         buttonAliveMosfets.Enabled = false;
-        buttonAliveMosfets.Location = new Point(1582, 737);
+        buttonAliveMosfets.Location = new Point(1774, 737);
         buttonAliveMosfets.Name = "buttonAliveMosfets";
         buttonAliveMosfets.Size = new Size(134, 23);
         buttonAliveMosfets.TabIndex = 72;
@@ -822,7 +828,7 @@ partial class FormTelem
         // buttonAliveBoom
         // 
         buttonAliveBoom.Enabled = false;
-        buttonAliveBoom.Location = new Point(1582, 766);
+        buttonAliveBoom.Location = new Point(1774, 766);
         buttonAliveBoom.Name = "buttonAliveBoom";
         buttonAliveBoom.Size = new Size(134, 23);
         buttonAliveBoom.TabIndex = 73;
@@ -831,12 +837,78 @@ partial class FormTelem
         // 
         // buttonLogEnable
         // 
-        buttonLogEnable.Location = new Point(12, 427);
+        buttonLogEnable.Location = new Point(12, 12);
         buttonLogEnable.Name = "buttonLogEnable";
         buttonLogEnable.Size = new Size(125, 23);
         buttonLogEnable.TabIndex = 74;
         buttonLogEnable.Text = "ПИСАТЬ ЛОГ";
         buttonLogEnable.UseVisualStyleBackColor = true;
+        // 
+        // buttonWifi58In
+        // 
+        buttonWifi58In.Enabled = false;
+        buttonWifi58In.Font = new Font("Segoe UI", 7F);
+        buttonWifi58In.Location = new Point(1774, 795);
+        buttonWifi58In.Name = "buttonWifi58In";
+        buttonWifi58In.Size = new Size(65, 23);
+        buttonWifi58In.TabIndex = 75;
+        buttonWifi58In.Text = "WF 5.8 IN";
+        buttonWifi58In.UseVisualStyleBackColor = true;
+        // 
+        // buttonWifi58Out
+        // 
+        buttonWifi58Out.Enabled = false;
+        buttonWifi58Out.Font = new Font("Segoe UI", 7F);
+        buttonWifi58Out.Location = new Point(1843, 795);
+        buttonWifi58Out.Name = "buttonWifi58Out";
+        buttonWifi58Out.Size = new Size(65, 23);
+        buttonWifi58Out.TabIndex = 76;
+        buttonWifi58Out.Text = "WF 5.8 OUT";
+        buttonWifi58Out.UseVisualStyleBackColor = true;
+        // 
+        // buttonWifiMeshOut
+        // 
+        buttonWifiMeshOut.Enabled = false;
+        buttonWifiMeshOut.Font = new Font("Segoe UI", 7F);
+        buttonWifiMeshOut.Location = new Point(1843, 824);
+        buttonWifiMeshOut.Name = "buttonWifiMeshOut";
+        buttonWifiMeshOut.Size = new Size(65, 23);
+        buttonWifiMeshOut.TabIndex = 78;
+        buttonWifiMeshOut.Text = "M 1.3 OUT";
+        buttonWifiMeshOut.UseVisualStyleBackColor = true;
+        // 
+        // buttonWifiMeshIn
+        // 
+        buttonWifiMeshIn.Enabled = false;
+        buttonWifiMeshIn.Font = new Font("Segoe UI", 7F);
+        buttonWifiMeshIn.Location = new Point(1774, 824);
+        buttonWifiMeshIn.Name = "buttonWifiMeshIn";
+        buttonWifiMeshIn.Size = new Size(65, 23);
+        buttonWifiMeshIn.TabIndex = 77;
+        buttonWifiMeshIn.Text = "M 1.3 IN";
+        buttonWifiMeshIn.UseVisualStyleBackColor = true;
+        // 
+        // buttonWifiCbsOut
+        // 
+        buttonWifiCbsOut.Enabled = false;
+        buttonWifiCbsOut.Font = new Font("Segoe UI", 7F);
+        buttonWifiCbsOut.Location = new Point(1843, 853);
+        buttonWifiCbsOut.Name = "buttonWifiCbsOut";
+        buttonWifiCbsOut.Size = new Size(65, 23);
+        buttonWifiCbsOut.TabIndex = 80;
+        buttonWifiCbsOut.Text = "CBS OUT";
+        buttonWifiCbsOut.UseVisualStyleBackColor = true;
+        // 
+        // buttonWifiCbsIn
+        // 
+        buttonWifiCbsIn.Enabled = false;
+        buttonWifiCbsIn.Font = new Font("Segoe UI", 7F);
+        buttonWifiCbsIn.Location = new Point(1774, 853);
+        buttonWifiCbsIn.Name = "buttonWifiCbsIn";
+        buttonWifiCbsIn.Size = new Size(65, 23);
+        buttonWifiCbsIn.TabIndex = 79;
+        buttonWifiCbsIn.Text = "CBS IN";
+        buttonWifiCbsIn.UseVisualStyleBackColor = true;
         // 
         // FormTelem
         // 
@@ -844,6 +916,12 @@ partial class FormTelem
         AutoScaleMode = AutoScaleMode.Font;
         ClientSize = new Size(1920, 1080);
         ControlBox = false;
+        Controls.Add(buttonWifiCbsOut);
+        Controls.Add(buttonWifiCbsIn);
+        Controls.Add(buttonWifiMeshOut);
+        Controls.Add(buttonWifiMeshIn);
+        Controls.Add(buttonWifi58Out);
+        Controls.Add(buttonWifi58In);
         Controls.Add(buttonLogEnable);
         Controls.Add(buttonAliveBoom);
         Controls.Add(buttonAliveMosfets);
@@ -1008,4 +1086,10 @@ partial class FormTelem
     private Button buttonAliveMosfets;
     private Button buttonAliveBoom;
     private Button buttonLogEnable;
+    private Button buttonWifi58In;
+    private Button buttonWifi58Out;
+    private Button buttonWifiMeshOut;
+    private Button buttonWifiMeshIn;
+    private Button buttonWifiCbsOut;
+    private Button buttonWifiCbsIn;
 }
