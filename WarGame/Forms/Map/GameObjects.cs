@@ -112,8 +112,6 @@ public class GameObjects
                 switch (camSel)
                 {
                     case 0: // Камера PTZ
-                        number = 1;
-                        break;
                     case 1: // Камера PTZ
                         number = 1;
                         break;
