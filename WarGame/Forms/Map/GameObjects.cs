@@ -129,9 +129,9 @@ public class GameObjects
                     case 9: // Камера BOX4
                         number = 5;
                         break;
-                    case -1: // Камера не выбрана, управляем лодкой
+                    case -1: // Камера не выбрана
                     default:
-                        number = 0;
+                        number = 0; // управляем лодкой
                         break;
                 }
                 await obj.RewriteRcAsync(number, ct);
