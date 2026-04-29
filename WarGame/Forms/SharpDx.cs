@@ -39,6 +39,8 @@ public abstract class SharpDx : IDisposable
     public int BaseWidth;
     public int BaseHeight;
 
+    public SharpDX.Direct2D1.Bitmap? BitmapTank { get; set; }
+
     public RawMatrix3x2 ZeroTransform = new(1, 0, 0, 1, 0, 0);
     private bool _closed;
 

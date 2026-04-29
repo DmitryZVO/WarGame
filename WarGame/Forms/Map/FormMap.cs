@@ -40,7 +40,7 @@ public sealed partial class FormMap : Form
         _dx = new SharpDxMap(pictureBoxMain, fps);
 
         ObjectsStatic.Init(_dx);
-        ObjectsGame.Init(_dx);
+        ObjectsGame.Init();
 
         Icon = EmbeddedResources.Get<Icon>("Sprites.WarGame.ico");
 
@@ -66,7 +66,7 @@ public sealed partial class FormMap : Form
         buttonToObject.BackColor = ObjectBlocked ? Color.LightGreen : Color.White;
     }
 
-    public void ObjectToCenter()
+    public static void ObjectToCenter()
     {
         if (ObjectsGame.Items.Count <= 0) return;
         var obj = ObjectsGame.Items.First();

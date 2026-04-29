@@ -3,7 +3,6 @@ using SharpDX.Mathematics.Interop;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Windows.Markup;
 using WarGame.Model;
 using WarGame.Remote;
 
@@ -11,7 +10,6 @@ namespace WarGame.Forms.Map;
 
 public class GameObjects
 {
-    public static SharpDX.Direct2D1.Bitmap? BitmapTank { get; set; }
     public long TimeStamp { get; set; } = 0;
     public List<GameObject> Items { get; set; } = [];
 
@@ -63,18 +61,12 @@ public class GameObjects
         return true;
     }
 
-    public async void Init(SharpDx dx, CancellationToken ct = default)
+    public async void Init(CancellationToken ct = default)
     {
         RcSendAsync(ct);
 
         while (!ct.IsCancellationRequested)
         {
-            if (BitmapTank == null)
-            {
-                var ret = await Files.GetSpriteAsync("Sprites", "Ship.png", ct);
-                if (ret != null) BitmapTank = dx.CreateDxBitmap(ret);
-            }
-
             await UpdateAsync(ct);
             await Task.Delay(50, ct); // 20гц
 
@@ -109,29 +101,21 @@ public class GameObjects
             {
                 var number = 0; // По умолчанию идет управление лодкой
                 int camSel = Core.FrmVideo?.SelectedCamera ?? -1;
-                switch (camSel)
+                number = camSel switch
                 {
-                    case 0: // Камера PTZ
-                    case 1: // Камера PTZ
-                        number = 1;
-                        break;
-                    case 6: // Камера BOX1
-                        number = 2;
-                        break;
-                    case 7: // Камера BOX2
-                        number = 3;
-                        break;
-                    case 8: // Камера BOX3
-                        number = 4;
-                        break;
-                    case 9: // Камера BOX4
-                        number = 5;
-                        break;
-                    case -1: // Камера не выбрана
-                    default:
-                        number = 0; // управляем лодкой
-                        break;
-                }
+                    // Камера PTZ
+                    0 or 1 => 1,
+                    // Камера BOX1
+                    6 => 2,
+                    // Камера BOX2
+                    7 => 3,
+                    // Камера BOX3
+                    8 => 4,
+                    // Камера BOX4
+                    9 => 5,
+                    // Камера не выбрана
+                    _ => 0,// управляем лодкой
+                };
                 await obj.RewriteRcAsync(number, ct);
             }
         }
@@ -159,19 +143,28 @@ public abstract class GameObject : IDrawing
     [JsonIgnore] public GameObjectTelem Telem { get; set; } = new(); // Телеметрия объекта
     public class GameObjectTelem // Параметры телеметрии
     {
+        public static float KoeffEngineOb = 23.0f; // Коэффициент оборота двигателя
+        public static float KoeffEngineGear = 0.4884f; // Коэффициент положения газа
+        public static float KoeffEngineTemp = 0.310344828f; // Коэффициент температуры
+        public static float KoeffEngineAkb = 0.073251534f; // Коэффициент АКБ
         public ushort[] RcChannels { get; set; } = new ushort[8]; // Значения каналов управления
         public float MBitObjectIn { get; set; } // Прием данных от сервера в мегабитах (на объекте)
         public float MBitServerIn { get; set; } // Прием данных на сервер в мегабитах (на сервере)
         public float MBitObjectOut { get; set; } // Передача данных от объекта в мегабитах (на объекте)
         public float MBitServerOut { get; set; } // Передача данных от сервера в мегабитах (на сервере)
+        public float RollGrad { get; set; } // Угол наклона
+        public float PitchGrad { get; set; } // Угол наклона
+        public float YawGrad { get; set; } // Угол наклона
+        public sbyte FuelTemp { get; set; } // Температура в баке
+        public byte FuelLcurr { get; set; } // Уровень топлива (0..255)
+        public ushort FuelVcurr { get; set; } // Объем топлива в литрах
         public float PingToServer { get; set; } // Ping UDP до сервера и обратно
-        public byte[] Relay { get; set; } = new byte[8]; // Значения каналов реле
-        public byte[] RelayFrw { get; set; } = new byte[4]; // Значения каналов реле на носу
         public byte VideoFps { get; set; } // FPS видео с камер (0->5)
         public byte VideoQuality { get; set; } // Качество видео с камер (0->5)
         public byte CommandCount { get; set; } // Количество команд под исполнение
         public byte[] CanEngineBits { get; set; } = new byte[5];  // биты двигателя
         public ulong AliveCheck { get; set; } // статусы компонентов устройства
+        public ulong EnableCheck { get; set; } // статусы компонентов устройства
     }
     public class RcChannelsForWrite
     {
@@ -182,7 +175,7 @@ public abstract class GameObject : IDrawing
     {
         return o.Type switch
         {
-            (0 | 1) => new GameObjShip()
+            0 or 1 => new GameObjShip()
             {
                 Type = o.Type,
                 Id = o.Id,
@@ -215,6 +208,7 @@ public abstract class GameObject : IDrawing
         // Список команд для объекта
         //0xFFx00x00x0e - логирование на БЭКе, e-вкл(01)/выкл(00)
         //0xFEx00x0fx0q - изменить качество видео f-fps, q-качество
+        //0xEEx0nx00xbb - какие датчики использовать, n - система (0=ГИРОСКОП, 1=КОМПАС, 2=ПОЗИЦИЯ) bb - битовая маска устройств
         //0x30x01x0nx0e - Управление реле 8каналов n-номер канала(0n), e-вкл(01)/выкл(00)
         //0x30x02x0nx0e - Управление реле 4канала n-номер канала(0n), e-вкл(01)/выкл(00)
         //0x0Fx00x00x00 - вернуть чеку на взрыватель
@@ -371,7 +365,7 @@ public class GameObjShip : GameObject // Type=1 (ровер)
         dx.Rt.DrawText($"{Name}", dx.Brushes.SysText20, posText, dx.Brushes.SysTextBrushRed);
         var mat = dx.TransformGet();
         dx.TransformSet(SharpDX.Matrix3x2.Multiply(mat, SharpDX.Matrix3x2.Rotation(GeoMath.GradToRad(Angle), pos)));
-        dx.Rt.DrawBitmap(GameObjects.BitmapTank ?? ((SharpDxMap)dx).BitmapNone, rectBmp, 0.8f, BitmapInterpolationMode.Linear);
+        dx.Rt.DrawBitmap(dx.BitmapTank ?? ((SharpDxMap)dx).BitmapNone, rectBmp, 0.8f, BitmapInterpolationMode.Linear);
         dx.Rt.DrawLine(new RawVector2(pos.X, pos.Y), new RawVector2(pos.X, pos.Y - 100.0f), dx.Brushes.RoiGray03, 5.0f);
         dx.TransformSet(dx.ZeroTransform);
 

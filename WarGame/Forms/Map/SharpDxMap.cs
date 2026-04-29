@@ -1,4 +1,4 @@
-﻿using WarGame.Model;
+﻿using WarGame.Remote;
 using WarGame.Resources;
 
 namespace WarGame.Forms.Map;
@@ -13,8 +13,15 @@ internal class SharpDxMap : SharpDx
     }
     public bool NotActive { get; set; }
 
-    protected sealed override void DrawUser()
+    protected sealed override async void DrawUser()
     {
+        if (BitmapTank == null)
+        {
+            var ret = await Files.GetSpriteAsync("Sprites", "Drone0.png");
+            if (ret != null) BitmapTank = CreateDxBitmap(ret);
+            return;
+        }
+
         lock (this)
         {
             FormMap.Map.Draw(this);

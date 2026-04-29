@@ -8,6 +8,8 @@ public sealed partial class FormTelem : Form
 
     private Point _posFromDisplays;
     private readonly SharpDx _dx;
+    private readonly Color _grayColor = Color.FromArgb(0xFF, 0xA8, 0xA8, 0xA8);
+
     public FormTelem(Point pos, int fps)
     {
         InitializeComponent();
@@ -46,36 +48,19 @@ public sealed partial class FormTelem : Form
         buttonBoomCheck.Visible = visible;
         buttonBoom.Visible = visible;
 
-        buttonPower1On.Visible = visible;
-        buttonPower1Off.Visible = visible;
-        buttonPower2On.Visible = visible;
-        buttonPower2Off.Visible = visible;
-        buttonPower3On.Visible = visible;
-        buttonPower3Off.Visible = visible;
-        buttonPower4On.Visible = visible;
-        buttonPower4Off.Visible = visible;
+        buttonMosfet1.Visible = visible;
+        buttonMosfet2.Visible = visible;
+        buttonMosfet3.Visible = visible;
+        buttonMosfet4.Visible = visible;
+        buttonBox1.Visible = visible;
+        buttonBox2.Visible = visible;
+        buttonBox3.Visible = visible;
+        buttonBox4.Visible = visible;
+        buttonFpv1.Visible = visible;
+        buttonFpv2.Visible = visible;
+        buttonFpv3.Visible = visible;
+        buttonFpv4.Visible = visible;
 
-        buttonFpv1Open.Visible = visible;
-        buttonFpv1Close.Visible = visible;
-        buttonFpv1Stop.Visible = visible;
-        buttonFpv1On.Visible = visible;
-        buttonFpv1Off.Visible = visible;
-        buttonFpv2Open.Visible = visible;
-        buttonFpv2Close.Visible = visible;
-        buttonFpv2Stop.Visible = visible;
-        buttonFpv2On.Visible = visible;
-        buttonFpv2Off.Visible = visible;
-        buttonFpv3Open.Visible = visible;
-        buttonFpv3Close.Visible = visible;
-        buttonFpv3Stop.Visible = visible;
-        buttonFpv3On.Visible = visible;
-        buttonFpv3Off.Visible = visible;
-        buttonFpv4Open.Visible = visible;
-        buttonFpv4Close.Visible = visible;
-        buttonFpv4Stop.Visible = visible;
-        buttonFpv4On.Visible = visible;
-        buttonFpv4Off.Visible = visible;
-        
         buttonAliveServer.Visible = visible;
         buttonAliveCamFrwd.Visible = visible;
         buttonAliveCamBack.Visible = visible;
@@ -115,8 +100,17 @@ public sealed partial class FormTelem : Form
         buttonWifiCbsIn.Visible = visible;
         buttonWifiCbsOut.Visible = visible;
 
-        buttonBoom.Enabled = !(buttonBoomCheck.BackColor == Color.White);
-        buttonBoom.BackColor = buttonBoomCheck.BackColor == Color.White ? Color.LightGray : Color.White;
+        buttonUseGyroCompas.Visible = visible;
+        buttonUseGyroCubic.Visible = visible;
+        buttonUseGyroInert.Visible = visible;
+        buttonUseCompasCompas.Visible = visible;
+        buttonUseCompasInert.Visible = visible;
+        buttonUsePosInert.Visible = visible;
+        buttonUsePosGpsF.Visible = visible;
+        buttonUsePosGpsB.Visible = visible;
+
+        buttonBoom.Enabled = buttonBoomCheck.BackColor == Color.LightPink;
+        buttonBoom.BackColor = buttonBoomCheck.BackColor == Color.LightPink ? Color.White : _grayColor;
 
         if (obj == null)
         {
@@ -155,26 +149,82 @@ public sealed partial class FormTelem : Form
         buttonAlivePtzRs485.BackColor = ((obj.Telem.AliveCheck & 0b0000000000000000000000000000000000010000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
         buttonAliveMosfets.BackColor = ((obj.Telem.AliveCheck &  0b0000000000000000000000000000000000100000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
         buttonAliveBoom.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000000001000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonLogEnable.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000000010000000000000000000000000000000) > 0) ? Color.Yellow : Color.White;
-        buttonWifi58In.BackColor = ((obj.Telem.AliveCheck &      0b0000000000000000000000000000000100000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonWifi58Out.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000001000000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonWifiMeshIn.BackColor = ((obj.Telem.AliveCheck &    0b0000000000000000000000000000010000000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonWifiMeshOut.BackColor = ((obj.Telem.AliveCheck &   0b0000000000000000000000000000100000000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonWifiCbsIn.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000001000000000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
-        buttonWifiCbsOut.BackColor = ((obj.Telem.AliveCheck &    0b0000000000000000000000000010000000000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonWifi58In.BackColor = ((obj.Telem.AliveCheck &      0b0000000000000000000000000000000010000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonWifi58Out.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000000100000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonWifiMeshIn.BackColor = ((obj.Telem.AliveCheck &    0b0000000000000000000000000000001000000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonWifiMeshOut.BackColor = ((obj.Telem.AliveCheck &   0b0000000000000000000000000000010000000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonWifiCbsIn.BackColor = ((obj.Telem.AliveCheck &     0b0000000000000000000000000000100000000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
+        buttonWifiCbsOut.BackColor = ((obj.Telem.AliveCheck &    0b0000000000000000000000000001000000000000000000000000000000000000) > 0) ? Color.LightGreen : Color.LightPink;
 
-        buttonRelay1.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[0] == 0 ? Color.White : Color.LightGreen;
-        buttonRelay2.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[1] == 0 ? Color.White : Color.LightGreen;
-        buttonRelay3.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[2] == 0 ? Color.White : Color.LightGreen;
-        buttonRelay4.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[3] == 0 ? Color.White : Color.LightGreen;
-        buttonRelay5.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[4] == 0 ? Color.White : Color.LightGreen;
-        buttonRelay6.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[5] == 0 ? Color.White : Color.LightGreen;
-        buttonRelay7.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[6] == 0 ? Color.White : Color.LightGreen;
-        buttonRelay8.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.Relay[7] == 0 ? Color.White : Color.LightGreen;
-        buttonRelayF1.BackColor = buttonAliveRelayFrw.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.RelayFrw[0] == 0 ? Color.White : Color.LightGreen;
-        buttonRelayF2.BackColor = buttonAliveRelayFrw.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.RelayFrw[1] == 0 ? Color.White : Color.LightGreen;
-        buttonRelayF3.BackColor = buttonAliveRelayFrw.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.RelayFrw[2] == 0 ? Color.White : Color.LightGreen;
-        buttonRelayF4.BackColor = buttonAliveRelayFrw.BackColor == Color.LightPink ? Color.LightGray : obj.Telem.RelayFrw[3] == 0 ? Color.White : Color.LightGreen;
+        buttonLogEnable.BackColor = ((obj.Telem.EnableCheck &                                                                     0b0000000000000000000000000000000000000000000000000000000000000001) > 0) ? Color.Yellow : Color.White;
+        buttonRelay1.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? _grayColor :     (obj.Telem.EnableCheck &        0b0000000000000000000000000000000000000000000000000000000000000010) == 0 ? Color.White : Color.LightGreen;
+        buttonRelay2.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? _grayColor :     (obj.Telem.EnableCheck &        0b0000000000000000000000000000000000000000000000000000000000000100) == 0 ? Color.White : Color.LightGreen;
+        buttonRelay3.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? _grayColor :     (obj.Telem.EnableCheck &        0b0000000000000000000000000000000000000000000000000000000000001000) == 0 ? Color.White : Color.LightGreen;
+        buttonRelay4.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? _grayColor :     (obj.Telem.EnableCheck &        0b0000000000000000000000000000000000000000000000000000000000010000) == 0 ? Color.White : Color.LightGreen;
+        buttonRelay5.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? _grayColor :     (obj.Telem.EnableCheck &        0b0000000000000000000000000000000000000000000000000000000000100000) == 0 ? Color.White : Color.LightGreen;
+        buttonRelay6.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? _grayColor :     (obj.Telem.EnableCheck &        0b0000000000000000000000000000000000000000000000000000000001000000) == 0 ? Color.White : Color.LightGreen;
+        buttonRelay7.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? _grayColor :     (obj.Telem.EnableCheck &        0b0000000000000000000000000000000000000000000000000000000010000000) == 0 ? Color.White : Color.LightGreen;
+        buttonRelay8.BackColor = buttonAliveRelay.BackColor == Color.LightPink ? _grayColor :     (obj.Telem.EnableCheck &        0b0000000000000000000000000000000000000000000000000000000100000000) == 0 ? Color.White : Color.LightGreen;
+        buttonRelayF1.BackColor = buttonAliveRelayFrw.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &        0b0000000000000000000000000000000000000000000000000000001000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonRelayF2.BackColor = buttonAliveRelayFrw.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &        0b0000000000000000000000000000000000000000000000000000010000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonRelayF3.BackColor = buttonAliveRelayFrw.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &        0b0000000000000000000000000000000000000000000000000000100000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonRelayF4.BackColor = buttonAliveRelayFrw.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &        0b0000000000000000000000000000000000000000000000000001000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonMosfet1.BackColor = buttonAliveMosfets.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &         0b0000000000000000000000000000000000000000000000000010000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonMosfet2.BackColor = buttonAliveMosfets.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &         0b0000000000000000000000000000000000000000000000000100000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonMosfet3.BackColor = buttonAliveMosfets.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &         0b0000000000000000000000000000000000000000000000001000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonMosfet4.BackColor = buttonAliveMosfets.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &         0b0000000000000000000000000000000000000000000000010000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonBox1.BackColor = buttonAliveBox1.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &               0b0000000000000000000000000000000000000000000000100000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonBox2.BackColor = buttonAliveBox2.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &               0b0000000000000000000000000000000000000000000001000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonBox3.BackColor = buttonAliveBox3.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &               0b0000000000000000000000000000000000000000000010000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonBox4.BackColor = buttonAliveBox4.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &               0b0000000000000000000000000000000000000000000100000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonFpv1.BackColor = buttonAliveBoxCrsf1.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &           0b0000000000000000000000000000000000000000001000000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonFpv2.BackColor = buttonAliveBoxCrsf2.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &           0b0000000000000000000000000000000000000000010000000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonFpv3.BackColor = buttonAliveBoxCrsf3.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &           0b0000000000000000000000000000000000000000100000000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonFpv4.BackColor = buttonAliveBoxCrsf4.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &           0b0000000000000000000000000000000000000001000000000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonBoomCheck.BackColor = buttonAliveBoom.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &          0b0000000000000000000000000000000000000010000000000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonUseGyroCompas.BackColor = buttonAliveCompas.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &    0b0000000000000000000000000000000000000100000000000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonUseGyroInert.BackColor = buttonAliveInertial.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &   0b0000000000000000000000000000000000001000000000000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonUseGyroCubic.BackColor = buttonAliveCubic.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &      0b0000000000000000000000000000000000010000000000000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonUseCompasCompas.BackColor = buttonAliveCompas.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &  0b0000000000000000000000000000000000100000000000000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonUseCompasInert.BackColor = buttonAliveInertial.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck & 0b0000000000000000000000000000000001000000000000000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonUsePosInert.BackColor = buttonAliveInertial.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &    0b0000000000000000000000000000000010000000000000000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonUsePosGpsF.BackColor = buttonAliveGpsF.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &         0b0000000000000000000000000000000100000000000000000000000000000000) == 0 ? Color.White : Color.LightGreen;
+        buttonUsePosGpsB.BackColor = buttonAliveGpsB.BackColor == Color.LightPink ? _grayColor : (obj.Telem.EnableCheck &         0b0000000000000000000000000000001000000000000000000000000000000000) == 0 ? Color.White : Color.LightGreen;
+
+        buttonRelay1.Enabled = buttonRelay1.BackColor != _grayColor;
+        buttonRelay2.Enabled = buttonRelay2.BackColor != _grayColor;
+        buttonRelay3.Enabled = buttonRelay3.BackColor != _grayColor;
+        buttonRelay4.Enabled = buttonRelay4.BackColor != _grayColor;
+        buttonRelay5.Enabled = buttonRelay5.BackColor != _grayColor;
+        buttonRelay6.Enabled = buttonRelay6.BackColor != _grayColor;
+        buttonRelay7.Enabled = buttonRelay7.BackColor != _grayColor;
+        buttonRelay8.Enabled = buttonRelay8.BackColor != _grayColor;
+        buttonRelayF1.Enabled = buttonRelayF1.BackColor != _grayColor;
+        buttonRelayF2.Enabled = buttonRelayF2.BackColor != _grayColor;
+        buttonRelayF3.Enabled = buttonRelayF3.BackColor != _grayColor;
+        buttonRelayF4.Enabled = buttonRelayF4.BackColor != _grayColor;
+        buttonMosfet1.Enabled = buttonMosfet1.BackColor != _grayColor;
+        buttonMosfet2.Enabled = buttonMosfet2.BackColor != _grayColor;
+        buttonMosfet3.Enabled = buttonMosfet3.BackColor != _grayColor;
+        buttonMosfet4.Enabled = buttonMosfet4.BackColor != _grayColor;
+        buttonBox1.Enabled = buttonBox1.BackColor != _grayColor;
+        buttonBox2.Enabled = buttonBox2.BackColor != _grayColor;
+        buttonBox3.Enabled = buttonBox3.BackColor != _grayColor;
+        buttonBox4.Enabled = buttonBox4.BackColor != _grayColor;
+        buttonFpv1.Enabled = buttonFpv1.BackColor != _grayColor;
+        buttonFpv2.Enabled = buttonFpv2.BackColor != _grayColor;
+        buttonFpv3.Enabled = buttonFpv3.BackColor != _grayColor;
+        buttonFpv4.Enabled = buttonFpv4.BackColor != _grayColor;
+        buttonUseGyroCompas.Enabled = buttonUseGyroCompas.BackColor != _grayColor;
+        buttonUseGyroInert.Enabled = buttonUseGyroInert.BackColor != _grayColor;
+        buttonUseGyroCubic.Enabled = buttonUseGyroCubic.BackColor != _grayColor;
+        buttonUseCompasCompas.Enabled = buttonUseCompasCompas.BackColor != _grayColor;
+        buttonUseCompasInert.Enabled = buttonUseCompasInert.BackColor != _grayColor;
+        buttonUsePosInert.Enabled = buttonUsePosInert.BackColor != _grayColor;
+        buttonUsePosGpsF.Enabled = buttonUsePosGpsF.BackColor != _grayColor;
+        buttonUsePosGpsB.Enabled = buttonUsePosGpsB.BackColor != _grayColor;
+        buttonBoomCheck.Enabled = buttonBoomCheck.BackColor != _grayColor;
+
     }
 
     private void FormShown(object? sender, EventArgs e)
@@ -195,45 +245,132 @@ public sealed partial class FormTelem : Form
         buttonRelayF3.Click += ButtonRelayF3_Click;
         buttonRelayF4.Click += ButtonRelayF4_Click;
 
-        buttonFpv1Open.Click += ButtonFpv1Open_Click;
-        buttonFpv1Close.Click += ButtonFpv1Close_Click;
-        buttonFpv1Stop.Click += ButtonFpv1Stop_Click;
-        buttonFpv1On.Click += ButtonFpv1On_Click;
-        buttonFpv1Off.Click += ButtonFpv1Off_Click;
-        buttonFpv2Open.Click += ButtonFpv2Open_Click;
-        buttonFpv2Close.Click += ButtonFpv2Close_Click;
-        buttonFpv2Stop.Click += ButtonFpv2Stop_Click;
-        buttonFpv2On.Click += ButtonFpv2On_Click;
-        buttonFpv2Off.Click += ButtonFpv2Off_Click;
-        buttonFpv3Open.Click += ButtonFpv3Open_Click;
-        buttonFpv3Close.Click += ButtonFpv3Close_Click;
-        buttonFpv3Stop.Click += ButtonFpv3Stop_Click;
-        buttonFpv3On.Click += ButtonFpv3On_Click;
-        buttonFpv3Off.Click += ButtonFpv3Off_Click;
-        buttonFpv4Open.Click += ButtonFpv4Open_Click;
-        buttonFpv4Close.Click += ButtonFpv4Close_Click;
-        buttonFpv4Stop.Click += ButtonFpv4Stop_Click;
-        buttonFpv4On.Click += ButtonFpv4On_Click;
-        buttonFpv4Off.Click += ButtonFpv4Off_Click;
+        buttonBox1.Click += ButtonBox1_Click;
+        buttonBox2.Click += ButtonBox2_Click;
+        buttonBox3.Click += ButtonBox3_Click;
+        buttonBox4.Click += ButtonBox4_Click;
+        buttonFpv1.Click += ButtonFpv1_Click;
+        buttonFpv2.Click += ButtonFpv2_Click;
+        buttonFpv3.Click += ButtonFpv3_Click;
+        buttonFpv4.Click += ButtonFpv4_Click;
 
-        buttonPower1Off.Click += ButtonPower1Off_Click;
-        buttonPower1On.Click += ButtonPower1On_Click;
-        buttonPower2Off.Click += ButtonPower2Off_Click;
-        buttonPower2On.Click += ButtonPower2On_Click;
-        buttonPower3Off.Click += ButtonPower3Off_Click;
-        buttonPower3On.Click += ButtonPower3On_Click;
-        buttonPower4Off.Click += ButtonPower4Off_Click;
-        buttonPower4On.Click += ButtonPower4On_Click;
+        buttonMosfet1.Click += ButtonMosfet1_Click;
+        buttonMosfet2.Click += ButtonMosfet2_Click;
+        buttonMosfet3.Click += ButtonMosfet3_Click;
+        buttonMosfet4.Click += ButtonMosfet4_Click;
 
         buttonBoomCheck.Click += ButtonBoomCheck_Click;
         buttonBoom.Click += ButtonBoom_Click;
         buttonLogEnable.Click += ButtonLogEnable_Click;
-        
-        buttonBoomCheck.BackColor = Color.White;
-        buttonBoom.Enabled = !(buttonBoomCheck.BackColor == Color.White);
-        buttonBoom.BackColor = buttonBoomCheck.BackColor == Color.White ? Color.LightGray : Color.White;
+
+        buttonUseGyroCompas.Click += ButtonUseGyroCompas_Click;
+        buttonUseGyroInert.Click += ButtonUseGyroInert_Click;
+        buttonUseGyroCubic.Click += ButtonUseGyroCubic_Click;
+        buttonUseCompasCompas.Click += ButtonUseCompasCompas_Click;
+        buttonUseCompasInert.Click += ButtonUseCompasInert_Click;
+        buttonUsePosInert.Click += ButtonUsePosInert_Click;
+        buttonUsePosGpsF.Click += ButtonUsePosGpsF_Click;
+        buttonUsePosGpsB.Click += ButtonUsePosGpsB_Click;
+
+        buttonBoomCheck.BackColor = _grayColor;
+        buttonBoom.Enabled = buttonBoomCheck.BackColor == Color.LightPink;
+        buttonBoom.BackColor = buttonBoomCheck.BackColor == Color.LightPink ? Color.White : _grayColor;
 
         _ = _dx.StartAsync(default);
+    }
+
+    private async void ButtonUsePosGpsB_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        var bits = 0;
+        bits += buttonUsePosInert.BackColor == Color.LightGreen ? 0b00000001 : 0b00000000;
+        bits += buttonUsePosGpsF.BackColor == Color.LightGreen ? 0b00000010 : 0b00000000;
+        bits += buttonUsePosGpsB.BackColor == Color.LightGreen ? 0 : 0b00000100;
+        if (bits == 0) return; // Все выключится, не даем выключить
+        await obj.SendCommandAsync((uint)(0xEE020000 + bits));
+    }
+
+    private async void ButtonUsePosGpsF_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        var bits = 0;
+        bits += buttonUsePosInert.BackColor == Color.LightGreen ? 0b00000001 : 0b00000000;
+        bits += buttonUsePosGpsF.BackColor == Color.LightGreen ? 0 : 0b00000010;
+        bits += buttonUsePosGpsB.BackColor == Color.LightGreen ? 0b00000100 : 0b00000000;
+        if (bits == 0) return; // Все выключится, не даем выключить
+        await obj.SendCommandAsync((uint)(0xEE020000 + bits));
+    }
+
+    private async void ButtonUsePosInert_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        var bits = 0;
+        bits += buttonUsePosInert.BackColor == Color.LightGreen ? 0 : 0b00000001;
+        bits += buttonUsePosGpsF.BackColor == Color.LightGreen ? 0b00000010 : 0b00000000;
+        bits += buttonUsePosGpsB.BackColor == Color.LightGreen ? 0b00000100 : 0b00000000;
+        if (bits == 0) return; // Все выключится, не даем выключить
+        await obj.SendCommandAsync((uint)(0xEE020000 + bits));
+    }
+
+    private async void ButtonUseCompasInert_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        var bits = 0;
+        bits += buttonUseCompasCompas.BackColor == Color.LightGreen ? 0b00000001 : 0b00000000;
+        bits += buttonUseCompasInert.BackColor == Color.LightGreen ? 0 : 0b00000010;
+        if (bits == 0) return; // Все выключится, не даем выключить
+        await obj.SendCommandAsync((uint)(0xEE010000 + bits));
+    }
+
+    private async void ButtonUseCompasCompas_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        var bits = 0;
+        bits += buttonUseCompasCompas.BackColor == Color.LightGreen ? 0 : 0b00000001;
+        bits += buttonUseCompasInert.BackColor == Color.LightGreen ? 0b00000010 : 0b00000000;
+        if (bits == 0) return; // Все выключится, не даем выключить
+        await obj.SendCommandAsync((uint)(0xEE010000 + bits));
+    }
+
+    private async void ButtonUseGyroCubic_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        var bits = 0;
+        bits += buttonUseGyroCompas.BackColor == Color.LightGreen ? 0b00000001 : 0b00000000;
+        bits += buttonUseGyroInert.BackColor == Color.LightGreen ? 0b00000010 : 0b00000000;
+        bits += buttonUseGyroCubic.BackColor == Color.LightGreen ? 0 : 0b00000100;
+        if (bits == 0) return; // Все выключится, не даем выключить
+        await obj.SendCommandAsync((uint)(0xEE000000 + bits));
+    }
+
+    private async void ButtonUseGyroInert_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        var bits = 0;
+        bits += buttonUseGyroCompas.BackColor == Color.LightGreen ? 0b00000001 : 0b00000000;
+        bits += buttonUseGyroInert.BackColor == Color.LightGreen ? 0 : 0b00000010; 
+        bits += buttonUseGyroCubic.BackColor == Color.LightGreen ? 0b00000100 : 0b00000000;
+        if (bits == 0) return; // Все выключится, не даем выключить
+        await obj.SendCommandAsync((uint)(0xEE000000 + bits));
+    }
+
+    private async void ButtonUseGyroCompas_Click(object? sender, EventArgs e)
+    {
+        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
+        if (obj == null) return;
+        var bits = 0;
+        bits += buttonUseGyroCompas.BackColor == Color.LightGreen ? 0 : 0b00000001;
+        bits += buttonUseGyroInert.BackColor == Color.LightGreen ? 0b00000010 : 0b00000000;
+        bits += buttonUseGyroCubic.BackColor == Color.LightGreen ? 0b00000100 : 0b00000000;
+        if (bits == 0) return; // Все выключится, не даем выключить
+        await obj.SendCommandAsync((uint)(0xEE000000 + bits));
     }
 
     private async void ButtonLogEnable_Click(object? sender, EventArgs e)
@@ -254,186 +391,81 @@ public sealed partial class FormTelem : Form
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-
-        if (buttonBoomCheck.BackColor == Color.White)
-        {
-            await obj.SendCommandAsync(0x0F000001);
-            buttonBoomCheck.BackColor = Color.LightPink;
-            return;
-        }
-
-        await obj.SendCommandAsync(0x0F000000);
-        buttonBoomCheck.BackColor = Color.White;
+        await obj.SendCommandAsync((uint)(buttonBoomCheck.BackColor == Color.White ? 0x0F000001 : 0x0F000000));
     }
 
-    private async void ButtonPower1Off_Click(object? sender, EventArgs e)
+    private async void ButtonMosfet1_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SendCommandAsync(0x22000000);
+        await obj.SendCommandAsync((uint)(buttonMosfet1.BackColor == Color.White ? 0x22000001 : 0x22000000));
     }
-    private async void ButtonPower1On_Click(object? sender, EventArgs e)
+    private async void ButtonMosfet2_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SendCommandAsync(0x22000001);
+        await obj.SendCommandAsync((uint)(buttonMosfet2.BackColor == Color.White ? 0x22010001 : 0x22010000));
     }
-    private async void ButtonPower2Off_Click(object? sender, EventArgs e)
+    private async void ButtonMosfet3_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SendCommandAsync(0x22010000);
+        await obj.SendCommandAsync((uint)(buttonMosfet3.BackColor == Color.White ? 0x22020001 : 0x22020000));
     }
-    private async void ButtonPower2On_Click(object? sender, EventArgs e)
+    private async void ButtonMosfet4_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SendCommandAsync(0x22010001);
-    }
-    private async void ButtonPower3Off_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x22020000);
-    }
-    private async void ButtonPower3On_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x22020001);
-    }
-    private async void ButtonPower4Off_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x22030000);
-    }
-    private async void ButtonPower4On_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x22030001);
+        await obj.SendCommandAsync((uint)(buttonMosfet4.BackColor == Color.White ? 0x22030001 : 0x22030000));
     }
 
-    private async void ButtonFpv1Open_Click(object? sender, EventArgs e)
+    private async void ButtonBox1_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SendCommandAsync(0x11000001);
+        await obj.SendCommandAsync((uint)(buttonBox1.BackColor == Color.White ? 0x11000001 : 0x11000000));
     }
-    private async void ButtonFpv1Close_Click(object? sender, EventArgs e)
+    private async void ButtonBox2_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SendCommandAsync(0x11000000);
+        await obj.SendCommandAsync((uint)(buttonBox2.BackColor == Color.White ? 0x11010001 : 0x11010000));
     }
-    private async void ButtonFpv1Stop_Click(object? sender, EventArgs e)
+    private async void ButtonBox3_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SendCommandAsync(0x11000002);
+        await obj.SendCommandAsync((uint)(buttonBox3.BackColor == Color.White ? 0x11020001 : 0x11020000));
     }
-    private async void ButtonFpv1Off_Click(object? sender, EventArgs e)
+    private async void ButtonBox4_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SendCommandAsync(0x11000010);
+        await obj.SendCommandAsync((uint)(buttonBox4.BackColor == Color.White ? 0x11030001 : 0x11030000));
     }
-    private async void ButtonFpv1On_Click(object? sender, EventArgs e)
+    private async void ButtonFpv1_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SendCommandAsync(0x11000011);
+        await obj.SendCommandAsync((uint)(buttonFpv1.BackColor == Color.White ? 0x11000011 : 0x11000010));
     }
-    private async void ButtonFpv2Open_Click(object? sender, EventArgs e)
+    private async void ButtonFpv2_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SendCommandAsync(0x11010001);
+        await obj.SendCommandAsync((uint)(buttonFpv2.BackColor == Color.White ? 0x11010011 : 0x11010010));
     }
-    private async void ButtonFpv2Close_Click(object? sender, EventArgs e)
+    private async void ButtonFpv3_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SendCommandAsync(0x11010000);
+        await obj.SendCommandAsync((uint)(buttonFpv2.BackColor == Color.White ? 0x11020011 : 0x11020010));
     }
-    private async void ButtonFpv2Stop_Click(object? sender, EventArgs e)
+    private async void ButtonFpv4_Click(object? sender, EventArgs e)
     {
         var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
         if (obj == null) return;
-        await obj.SendCommandAsync(0x11010002);
-    }
-    private async void ButtonFpv2Off_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x11010010);
-    }
-    private async void ButtonFpv2On_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x11010011);
-    }
-    private async void ButtonFpv3Open_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x11020001);
-    }
-    private async void ButtonFpv3Close_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x11020000);
-    }
-    private async void ButtonFpv3Stop_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x11020002);
-    }
-    private async void ButtonFpv3Off_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x11020010);
-    }
-    private async void ButtonFpv3On_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x11020011);
-    }
-    private async void ButtonFpv4Open_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x11030001);
-    }
-    private async void ButtonFpv4Close_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x11030000);
-    }
-    private async void ButtonFpv4Stop_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x11030002);
-    }
-    private async void ButtonFpv4Off_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x11030010);
-    }
-    private async void ButtonFpv4On_Click(object? sender, EventArgs e)
-    {
-        var obj = FormMap.ObjectsGame.Items.Find(x => x.Selected); // Есть ли выбранный игровой объект?
-        if (obj == null) return;
-        await obj.SendCommandAsync(0x11030011);
+        await obj.SendCommandAsync((uint)(buttonFpv2.BackColor == Color.White ? 0x11030011 : 0x11030010));
     }
 
     private async void ButtonRelay1_Click(object? sender, EventArgs e)
